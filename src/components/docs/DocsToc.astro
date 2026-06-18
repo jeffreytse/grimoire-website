@@ -1,0 +1,68 @@
+---
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+}
+
+const { headings } = Astro.props as Props;
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{tocHeadings.length > 0 && (
+  <nav class="docs-toc" aria-label="On this page">
+    <h3 class="mb-3 text-xs font-semibold tracking-widest uppercase" style="color:#64748b">On this page</h3>
+    <ul class="space-y-1.5 text-sm toc-list">
+      {tocHeadings.map((h) => (
+        <li style={h.depth === 3 ? 'padding-left:0.75rem' : undefined}>
+          <a
+            href={`#${h.slug}`}
+            data-toc-slug={h.slug}
+            class="block transition-colors"
+            style="color:#64748b"
+            onmouseover="this.style.color='#e8d08a'"
+            onmouseout="if(!this.classList.contains('toc-active')) this.style.color='#64748b'"
+          >
+            {h.text}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+)}
+
+<style>
+  .toc-active { color: #c9933a !important; font-weight: 600; }
+</style>
+
+<script>
+  const tocLinks = document.querySelectorAll<HTMLAnchorElement>('[data-toc-slug]');
+  if (tocLinks.length > 0) {
+    const headingEls = Array.from(tocLinks)
+      .map((link) => document.getElementById(link.dataset.tocSlug!))
+      .filter((el): el is HTMLElement => !!el);
+
+    const setActive = (slug: string | null) => {
+      tocLinks.forEach((link) => {
+        link.classList.toggle('toc-active', link.dataset.tocSlug === slug);
+        if (link.dataset.tocSlug !== slug) link.style.color = '#64748b';
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((e) => e.isIntersecting);
+        if (visible.length > 0) {
+          setActive(visible[0].target.id);
+        }
+      },
+      { rootMargin: '0px 0px -70% 0px' }
+    );
+
+    headingEls.forEach((el) => observer.observe(el));
+  }
+</script>

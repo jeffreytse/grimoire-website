@@ -1,0 +1,34 @@
+---
+interface NavItem {
+  slug: string;
+  label: string;
+}
+
+interface Props {
+  prev: NavItem | null;
+  next: NavItem | null;
+}
+
+const { prev, next } = Astro.props as Props;
+---
+
+{(prev || next) && (
+  <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-4 not-prose">
+    <div>
+      {prev && (
+        <a href={`/docs/${prev.slug}`} class="card-hover block rounded-xl p-4" style="background:#0d1120; border:1px solid #1e2a3a; text-decoration:none">
+          <div class="mb-1 text-xs uppercase tracking-widest" style="color:#64748b">← Previous</div>
+          <div class="text-sm font-semibold" style="color:#e2e8f0">{prev.label}</div>
+        </a>
+      )}
+    </div>
+    <div class="sm:text-right">
+      {next && (
+        <a href={`/docs/${next.slug}`} class="card-hover block rounded-xl p-4" style="background:#0d1120; border:1px solid #1e2a3a; text-decoration:none">
+          <div class="mb-1 text-xs uppercase tracking-widest" style="color:#64748b">Next →</div>
+          <div class="text-sm font-semibold" style="color:#e2e8f0">{next.label}</div>
+        </a>
+      )}
+    </div>
+  </div>
+)}

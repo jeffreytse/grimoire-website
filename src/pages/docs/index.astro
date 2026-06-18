@@ -1,0 +1,49 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import NavSimple from '../../components/NavSimple.astro';
+import FooterSimple from '../../components/FooterSimple.astro';
+import { docsNav } from '../../config/docs-nav';
+---
+
+<Layout
+  title="Grimoire Docs — Documentation"
+  description="Guides, reference, and concepts for grimoire — the skills package manager and best-practice linter for AI agents."
+>
+  <NavSimple />
+
+  <main>
+    <section class="px-6 py-16 text-center" style="background:#080c18">
+      <div class="max-w-2xl mx-auto">
+        <p class="mb-3 text-sm font-semibold tracking-widest uppercase" style="color:#c9933a">Documentation</p>
+        <h1 class="mb-4 text-4xl font-black leading-tight tracking-tight md:text-5xl">
+          <span class="gold-gradient">Grimoire Docs</span>
+        </h1>
+        <p class="text-lg text-slate-400">Everything you need to install, use, and contribute to grimoire.</p>
+      </div>
+    </section>
+
+    <section class="px-6 pb-20" style="background:#080c18">
+      <div class="max-w-5xl mx-auto grid sm:grid-cols-2 gap-6">
+        {docsNav.map((section) => (
+          <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
+            <h2 class="mb-4 text-sm font-semibold tracking-widest uppercase" style="color:#c9933a">{section.title}</h2>
+            <ul class="space-y-3">
+              {section.items.map((item) => (
+                <li>
+                  <a href={`/docs/${item.slug}`} class="block group" style="text-decoration:none">
+                    <div class="text-sm font-semibold transition-colors" style="color:#e2e8f0" >
+                      <span class="group-hover:underline" style="text-decoration-color:rgba(201,147,58,0.4)">{item.label}</span>
+                    </div>
+                    <div class="text-xs mt-0.5" style="color:#64748b">{item.blurb}</div>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+  </main>
+
+  <FooterSimple />
+</Layout>
