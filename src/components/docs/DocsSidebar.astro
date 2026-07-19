@@ -11,7 +11,7 @@ const { currentSlug } = Astro.props as Props;
 <nav class="docs-sidebar-nav">
   {docsNav.map((section) => (
     <div class="mb-6">
-      <h3 class="mb-2 px-3 text-xs font-semibold tracking-widest uppercase" style="color:#64748b">{section.title}</h3>
+      <h3 class="mb-2 px-3 text-xs font-semibold tracking-widest uppercase" style="color:#94a3b8">{section.title}</h3>
       <ul class="space-y-0.5">
         {section.items.map((item) => {
           const active = item.slug === currentSlug;

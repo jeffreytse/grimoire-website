@@ -41,10 +41,10 @@ import Footer from '../components/Footer.astro';
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    { "@type": "Question", "name": "What is Grimoire?", "acceptedAnswer": { "@type": "Answer", "text": "Grimoire is a free, open-source package manager for best practices — 1000+ skills across 26 domains (engineering, law, finance, design, health, and more), each sourced from a real institution or study. Install once, and your AI routes to the right skill automatically." } },
+    { "@type": "Question", "name": "What is Grimoire?", "acceptedAnswer": { "@type": "Answer", "text": "Grimoire is a free, open-source skills manager for best practices — 1000+ skills across 26 domains (engineering, law, finance, design, health, and more), each sourced from a real institution or study. Install once, and your AI routes to the right skill automatically." } },
     { "@type": "Question", "name": "Is Grimoire free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Grimoire is free and open-source under the MIT license, published at github.com/jeffreytse/grimoire." } },
     { "@type": "Question", "name": "How is Grimoire different from a prompt library or just asking the AI directly?", "acceptedAnswer": { "@type": "Answer", "text": "Prompt libraries collect ad-hoc instructions with no verification. Every Grimoire skill must cite a real institution, pass a quality review, and prove it changes behavior — the difference between telling an AI to 'act like an expert' and handing it the expert's actual, sourced playbook." } },
-    { "@type": "Question", "name": "Does Grimoire enforce best practices, or is it just a skill library?", "acceptedAnswer": { "@type": "Answer", "text": "Both. Grimoire is a package manager for best practices — install, manage, and update skills like npm — with a built-in compliance linter, grimoire check, that verifies any artifact against your declared standards, the same way ESLint checks code style." } },
+    { "@type": "Question", "name": "Does Grimoire enforce best practices, or is it just a skill library?", "acceptedAnswer": { "@type": "Answer", "text": "Both. Grimoire is a skills manager for best practices — install, manage, and update skills like npm — with a built-in compliance linter, grimoire check, that verifies any artifact against your declared standards, the same way ESLint checks code style." } },
     { "@type": "Question", "name": "How do I install Grimoire?", "acceptedAnswer": { "@type": "Answer", "text": "Run curl -fsSL https://raw.githubusercontent.com/jeffreytse/grimoire/main/scripts/install.sh | bash, then grimoire wizard — it detects your installed AI agents and walks you through setup. Works with Claude Code, Copilot CLI, Gemini CLI, Antigravity, OpenCode, OpenClaw, Codex CLI, and Cursor." } },
     { "@type": "Question", "name": "What AI assistants does Grimoire support?", "acceptedAnswer": { "@type": "Answer", "text": "Claude Code, GitHub Copilot CLI, Gemini CLI, Google Antigravity, OpenCode, OpenClaw, Codex CLI, and Cursor — install once and every detected agent picks it up automatically." } },
     { "@type": "Question", "name": "How many best-practice skills are included, and where do they come from?", "acceptedAnswer": { "@type": "Answer", "text": "1000+ skills across 26 domains, each cited to a named institution, study, or professional standard — McKinsey, Google, WHO, ABA, NSCA, and more — not generic advice." } },
@@ -84,7 +84,7 @@ import Footer from '../components/Footer.astro';
         <span class="font-medium text-slate-300">The world's practice is not.</span><br/>
         <span class="text-base font-medium" style="color:#e8d08a">Install like a package manager. Enforce like a linter.</span>
       </p>
-      <p class="max-w-xl mx-auto mb-10 text-base text-slate-500">
+      <p class="max-w-xl mx-auto mb-10 text-base text-slate-400">
         <span id="hero-total">1000+</span> verified best practices across <span id="hero-domains">26</span> domains — engineering, law, medicine, finance, and more.
         Works with every major AI assistant.
       </p>
@@ -107,7 +107,7 @@ import Footer from '../components/Footer.astro';
           </button>
         </div>
       </div>
-      <p class="mb-8 text-xs text-slate-600">Free &amp; open-source · MIT license · 60 seconds to install</p>
+      <p class="mb-8 text-xs text-slate-400">Free &amp; open-source · MIT license · 60 seconds to install</p>
 
       <div class="flex flex-col justify-center sm:flex-row gap-4">
         <a
@@ -134,7 +134,7 @@ import Footer from '../components/Footer.astro';
       </div>
     </div>
 
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce text-slate-600">
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce text-slate-400">
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
     </div>
   </section>
@@ -145,19 +145,19 @@ import Footer from '../components/Footer.astro';
       <div class="text-center grid grid-cols-2 md:grid-cols-4 gap-6">
         <div class="reveal">
           <div id="domain-total-label" class="text-4xl font-black gold-gradient">1000+</div>
-          <div class="mt-1 text-sm tracking-wider uppercase text-slate-500">Skills</div>
+          <div class="mt-1 text-sm tracking-wider uppercase text-slate-400">Skills</div>
         </div>
         <div class="reveal">
           <div class="text-4xl font-black counter gold-gradient" data-target="26">0</div>
-          <div class="mt-1 text-sm tracking-wider uppercase text-slate-500">Domains</div>
+          <div class="mt-1 text-sm tracking-wider uppercase text-slate-400">Domains</div>
         </div>
         <div class="reveal">
           <div class="text-4xl font-black counter gold-gradient" data-target="7">0</div>
-          <div class="mt-1 text-sm tracking-wider uppercase text-slate-500">AI Platforms</div>
+          <div class="mt-1 text-sm tracking-wider uppercase text-slate-400">AI Platforms</div>
         </div>
         <div class="reveal">
           <div class="text-4xl font-black text-slate-300">MIT</div>
-          <div class="mt-1 text-sm tracking-wider uppercase text-slate-500">License</div>
+          <div class="mt-1 text-sm tracking-wider uppercase text-slate-400">License</div>
         </div>
       </div>
     </div>
@@ -209,12 +209,17 @@ import Footer from '../components/Footer.astro';
       </div>
 
       <div class="mb-8 overflow-hidden border rounded-2xl" style="border-color:#1e2a3a; box-shadow:0 0 60px rgba(201,147,58,0.08)">
-        <img
-          src="/assets/demo.gif"
-          alt="Grimoire demo — AI routing through expert skills"
+        <video
+          id="demo-video"
           class="w-full"
-          loading="lazy"
-        />
+          muted
+          loop
+          playsinline
+          preload="none"
+          aria-label="Grimoire demo — AI routing through expert skills"
+        >
+          <source data-src="/assets/demo.mp4" type="video/mp4" />
+        </video>
       </div>
 
       <div class="p-5 text-sm rounded-xl" style="background:#111826; border:1px solid #1e2a3a">
@@ -222,7 +227,7 @@ import Footer from '../components/Footer.astro';
           <span class="font-semibold text-gold-light">Prompt:</span>
           <span class="italic text-slate-300"> "We're launching our SaaS in 48 hours. I'm terrified something will break. What do we do?"</span>
         </p>
-        <p class="mb-2 text-xs font-medium tracking-wider uppercase text-slate-500">Surfaced and applied — 4 practices:</p>
+        <p class="mb-2 text-xs font-medium tracking-wider uppercase text-slate-400">Surfaced and applied — 4 practices:</p>
         <div class="flex flex-wrap gap-2">
           <span class="px-3 py-1 text-xs font-medium rounded-full" style="background:rgba(201,147,58,0.15); color:#e8d08a; border:1px solid rgba(201,147,58,0.3)">apply-premortem</span>
           <span class="px-3 py-1 text-xs font-medium rounded-full" style="background:rgba(201,147,58,0.15); color:#e8d08a; border:1px solid rgba(201,147,58,0.3)">design-slo</span>
@@ -281,8 +286,8 @@ import Footer from '../components/Footer.astro';
               <p class="text-sm leading-relaxed text-slate-400">Your AI follows the same frameworks as top institutions — McKinsey, Google, WHO, ABA, NSCA — and produces actionable, verifiable, specific output. Not summaries. Steps.</p>
               <div class="p-4 mt-4 rounded-xl" style="background:#111826; border:1px solid rgba(201,147,58,0.3)">
                 <div class="mb-2 text-sm font-bold" style="color:#e8d08a">Enforce it automatically</div>
-                <p class="mb-3 text-sm leading-relaxed text-slate-400">Declare your quality standard once in <code style="color:#e8d08a">grimoire.toml</code>. <a href="/bpdd" style="color:#c9933a" onmouseover="this.style.color='#e8d08a'" onmouseout="this.style.color='#c9933a'">Best Practice Driven Development (BPDD)</a> checks every artifact against it automatically — like a linter, for practices instead of syntax.</p>
-                <pre class="text-xs overflow-x-auto text-slate-300" style="background:#0a0e1a; border:1px solid #1e2a3a; border-radius:6px; padding:0.75rem"><span style="color:#c9933a">$</span> grimoire check</pre>
+                <p class="mb-3 text-sm leading-relaxed text-slate-400">Declare your quality standard once in <code style="color:#e8d08a">grimoire.toml</code>. <a href="/bpdd" style="color:#c9933a; text-decoration:underline; text-decoration-color:rgba(201,147,58,0.4)" onmouseover="this.style.color='#e8d08a'" onmouseout="this.style.color='#c9933a'">Best Practice Driven Development (BPDD)</a> checks every artifact against it automatically — like a linter, for practices instead of syntax.</p>
+                <pre class="overflow-x-auto text-xs text-slate-300" style="background:#0a0e1a; border:1px solid #1e2a3a; border-radius:6px; padding:0.75rem"><span style="color:#c9933a">$</span> grimoire check</pre>
               </div>
             </div>
           </div>
@@ -460,61 +465,61 @@ import Footer from '../components/Footer.astro';
           <div class="p-5 text-center rounded-xl card-hover" style="background:#111826; border:1px solid #1e2a3a">
             <div class="mb-2 text-2xl">🤖</div>
             <div class="text-sm font-semibold text-slate-200">Claude Code</div>
-            <div class="mt-1 text-xs text-slate-500">Anthropic</div>
+            <div class="mt-1 text-xs text-slate-400">Anthropic</div>
           </div>
         </a>
         <div class="p-5 text-center rounded-xl card-hover" style="background:#111826; border:1px solid #1e2a3a">
           <div class="mb-2 text-2xl">⌨️</div>
           <div class="text-sm font-semibold text-slate-200">Cursor</div>
-          <div class="mt-1 text-xs text-slate-500">AI Editor</div>
+          <div class="mt-1 text-xs text-slate-400">AI Editor</div>
         </div>
         <a href="/codex" class="block" style="text-decoration:none">
           <div class="p-5 text-center rounded-xl card-hover" style="background:#111826; border:1px solid #1e2a3a">
             <div class="mb-2 text-2xl">💻</div>
             <div class="text-sm font-semibold text-slate-200">Codex</div>
-            <div class="mt-1 text-xs text-slate-500">OpenAI</div>
+            <div class="mt-1 text-xs text-slate-400">OpenAI</div>
           </div>
         </a>
         <a href="/copilot" class="block" style="text-decoration:none">
           <div class="p-5 text-center rounded-xl card-hover" style="background:#111826; border:1px solid #1e2a3a">
             <div class="mb-2 text-2xl">🐙</div>
             <div class="text-sm font-semibold text-slate-200">Copilot</div>
-            <div class="mt-1 text-xs text-slate-500">GitHub</div>
+            <div class="mt-1 text-xs text-slate-400">GitHub</div>
           </div>
         </a>
         <a href="/gemini" class="block" style="text-decoration:none">
           <div class="p-5 text-center rounded-xl card-hover" style="background:#111826; border:1px solid #1e2a3a">
             <div class="mb-2 text-2xl">🔷</div>
             <div class="text-sm font-semibold text-slate-200">Gemini CLI</div>
-            <div class="mt-1 text-xs text-slate-500">Google</div>
+            <div class="mt-1 text-xs text-slate-400">Google</div>
           </div>
         </a>
         <a href="/docs/agents#antigravity-cli" class="block" style="text-decoration:none">
           <div class="p-5 text-center rounded-xl card-hover" style="background:#111826; border:1px solid #1e2a3a">
             <div class="mb-2 text-2xl">🚀</div>
             <div class="text-sm font-semibold text-slate-200">Antigravity</div>
-            <div class="mt-1 text-xs text-slate-500">Google</div>
+            <div class="mt-1 text-xs text-slate-400">Google</div>
           </div>
         </a>
         <a href="/opencode" class="block" style="text-decoration:none">
           <div class="p-5 text-center rounded-xl card-hover" style="background:#111826; border:1px solid #1e2a3a">
             <div class="mb-2 text-2xl">🔵</div>
             <div class="text-sm font-semibold text-slate-200">OpenCode</div>
-            <div class="mt-1 text-xs text-slate-500">Community</div>
+            <div class="mt-1 text-xs text-slate-400">Community</div>
           </div>
         </a>
         <a href="/openclaw" class="block" style="text-decoration:none">
           <div class="p-5 text-center rounded-xl card-hover" style="background:#111826; border:1px solid #1e2a3a">
             <div class="mb-2 text-2xl">🦞</div>
             <div class="text-sm font-semibold text-slate-200">OpenClaw</div>
-            <div class="mt-1 text-xs text-slate-500">Messaging AI</div>
+            <div class="mt-1 text-xs text-slate-400">Messaging AI</div>
           </div>
         </a>
         <a href="/bpdd" class="block" style="text-decoration:none">
           <div class="p-5 text-center rounded-xl card-hover" style="background:#111826; border:1px solid rgba(201,147,58,0.2)">
             <div class="mb-2 text-2xl">🔄</div>
             <div class="text-sm font-semibold text-slate-200">BPDD</div>
-            <div class="mt-1 text-xs text-slate-500">Methodology</div>
+            <div class="mt-1 text-xs text-slate-400">Methodology</div>
           </div>
         </a>
       </div>
@@ -543,7 +548,7 @@ import Footer from '../components/Footer.astro';
             <pre class="flex-1 min-w-0 overflow-x-auto text-sm text-slate-300">curl -fsSL https://raw.githubusercontent.com/jeffreytse/grimoire/main/scripts/install.sh | bash</pre>
             <button class="copy-btn px-3 py-1.5 rounded text-xs font-medium text-slate-400 border shrink-0 transition-all" style="border-color:#1e2a3a" onclick="copyText('curl -fsSL https://raw.githubusercontent.com/jeffreytse/grimoire/main/scripts/install.sh | bash', 'btn-mac')" id="btn-mac">Copy</button>
           </div>
-          <p class="text-xs text-slate-500">Downloads the grimoire binary and places it in <code style="color:#e8d08a">/usr/local/bin</code>. Supports macOS (amd64, arm64) and Linux (amd64, arm64).</p>
+          <p class="text-xs text-slate-400">Downloads the grimoire binary and places it in <code style="color:#e8d08a">/usr/local/bin</code>. Supports macOS (amd64, arm64) and Linux (amd64, arm64).</p>
         </div>
       </div>
 
@@ -553,7 +558,7 @@ import Footer from '../components/Footer.astro';
             <pre class="flex-1 min-w-0 overflow-x-auto text-sm text-slate-300">irm https://raw.githubusercontent.com/jeffreytse/grimoire/main/scripts/install.ps1 | iex</pre>
             <button class="copy-btn px-3 py-1.5 rounded text-xs font-medium text-slate-400 border shrink-0 transition-all" style="border-color:#1e2a3a" onclick="copyText('irm https://raw.githubusercontent.com/jeffreytse/grimoire/main/scripts/install.ps1 | iex', 'btn-win')" id="btn-win">Copy</button>
           </div>
-          <p class="text-xs text-slate-500">Runs in PowerShell. Downloads and installs the grimoire binary automatically.</p>
+          <p class="text-xs text-slate-400">Runs in PowerShell. Downloads and installs the grimoire binary automatically.</p>
         </div>
       </div>
 
@@ -563,7 +568,7 @@ import Footer from '../components/Footer.astro';
             <pre class="flex-1 min-w-0 overflow-x-auto text-sm text-slate-300">go install github.com/jeffreytse/grimoire@latest</pre>
             <button class="copy-btn px-3 py-1.5 rounded text-xs font-medium text-slate-400 border shrink-0 transition-all" style="border-color:#1e2a3a" onclick="copyText('go install github.com/jeffreytse/grimoire@latest', 'btn-go')" id="btn-go">Copy</button>
           </div>
-          <p class="text-xs text-slate-500">Requires Go 1.21+. Installs the <code style="color:#e8d08a">grimoire</code> binary to <code style="color:#e8d08a">$GOPATH/bin</code>.</p>
+          <p class="text-xs text-slate-400">Requires Go 1.21+. Installs the <code style="color:#e8d08a">grimoire</code> binary to <code style="color:#e8d08a">$GOPATH/bin</code>.</p>
         </div>
       </div>
 
@@ -573,7 +578,7 @@ import Footer from '../components/Footer.astro';
             <pre class="flex-1 min-w-0 overflow-x-auto text-sm text-slate-300">/plugin marketplace add jeffreytse/grimoire-core</pre>
             <button class="copy-btn px-3 py-1.5 rounded text-xs font-medium text-slate-400 border shrink-0 transition-all" style="border-color:#1e2a3a" onclick="copyText('/plugin marketplace add jeffreytse/grimoire-core', 'btn-claude')" id="btn-claude">Copy</button>
           </div>
-          <p class="text-xs text-slate-500">Step 1: register the marketplace inside Claude Code. Then run <code style="color:#e8d08a">/plugin install grimoire@grimoire-core</code> to install all <span id="install-total-2">1000+</span> skills. No CLI needed.</p>
+          <p class="text-xs text-slate-400">Step 1: register the marketplace inside Claude Code. Then run <code style="color:#e8d08a">/plugin install grimoire@grimoire-core</code> to install all <span id="install-total-2">1000+</span> skills. No CLI needed.</p>
         </div>
       </div>
 
@@ -582,21 +587,21 @@ import Footer from '../components/Footer.astro';
           <h2 class="mb-2 text-3xl font-bold text-white md:text-4xl">Step 2 — Install skills</h2>
           <p class="text-slate-400">Guided setup, or do it manually — your call.</p>
         </div>
-        <div class="p-5 install-block mb-4">
+        <div class="p-5 mb-4 install-block">
           <div class="flex items-start justify-between mb-3 gap-4">
             <pre class="flex-1 min-w-0 overflow-x-auto text-sm text-slate-300">grimoire wizard</pre>
             <button class="copy-btn px-3 py-1.5 rounded text-xs font-medium text-slate-400 border shrink-0 transition-all" style="border-color:#1e2a3a" onclick="copyText('grimoire wizard', 'btn-wizard')" id="btn-wizard">Copy</button>
           </div>
-          <p class="text-xs text-slate-500">Guided setup — detects your installed AI agents and walks you through registry and domain choice. No config editing required.</p>
+          <p class="text-xs text-slate-400">Guided setup — detects your installed AI agents and walks you through registry and domain choice. No config editing required.</p>
         </div>
-        <p class="mb-3 text-xs font-semibold tracking-widest uppercase text-center" style="color:#64748b">Or set up manually</p>
+        <p class="mb-3 text-xs font-semibold tracking-widest text-center uppercase" style="color:#94a3b8">Or set up manually</p>
         <div class="p-5 install-block">
           <div class="flex items-start justify-between mb-3 gap-4">
             <pre class="flex-1 min-w-0 overflow-x-auto text-sm text-slate-300">grimoire update    # clone skill library → ~/.grimoire
 grimoire install   # install to all detected agents</pre>
             <button class="copy-btn px-3 py-1.5 rounded text-xs font-medium text-slate-400 border shrink-0 transition-all" style="border-color:#1e2a3a" onclick="copyText('grimoire update\\ngrimoire install', 'btn-skills')" id="btn-skills">Copy</button>
           </div>
-          <p class="text-xs text-slate-500">Detects Claude Code, Codex, Gemini CLI, OpenCode, OpenClaw, and Cursor. Installs <span id="install-total-1">1000+</span> skills to all found agents.</p>
+          <p class="text-xs text-slate-400">Detects Claude Code, Codex, Gemini CLI, OpenCode, OpenClaw, and Cursor. Installs <span id="install-total-1">1000+</span> skills to all found agents.</p>
         </div>
       </div>
     </div>
@@ -633,7 +638,7 @@ grimoire install   # install to all detected agents</pre>
         </div>
       </div>
       <div class="mt-8 text-center">
-        <a href="https://github.com/jeffreytse/grimoire-core/blob/main/STANDARD.md" target="_blank" class="text-sm text-slate-500 hover:text-gold-light transition-colors">
+        <a href="https://github.com/jeffreytse/grimoire-core/blob/main/STANDARD.md" target="_blank" class="text-sm text-slate-400 hover:text-gold-light transition-colors">
           Read the full quality standard →
         </a>
       </div>
@@ -655,15 +660,15 @@ grimoire install   # install to all detected agents</pre>
       <div class="mb-10 text-left grid sm:grid-cols-3 gap-4">
         <div class="p-5 rounded-xl" style="background:#111826; border:1px solid #1e2a3a">
           <div class="mb-1 text-base font-semibold text-white">Write the skill</div>
-          <p class="text-xs text-slate-500">Plain Markdown. Follow the template. Add your 10,000-hour steps.</p>
+          <p class="text-xs text-slate-400">Plain Markdown. Follow the template. Add your 10,000-hour steps.</p>
         </div>
         <div class="p-5 rounded-xl" style="background:#111826; border:1px solid #1e2a3a">
           <div class="mb-1 text-base font-semibold text-white">Pass quality review</div>
-          <p class="text-xs text-slate-500">Automated validation + human review. Proven, actionable, specific.</p>
+          <p class="text-xs text-slate-400">Automated validation + human review. Proven, actionable, specific.</p>
         </div>
         <div class="p-5 rounded-xl" style="background:#111826; border:1px solid #1e2a3a">
           <div class="mb-1 text-base font-semibold text-white">Ship to everyone</div>
-          <p class="text-xs text-slate-500">Merged to main. Available to every AI agent globally. Forever.</p>
+          <p class="text-xs text-slate-400">Merged to main. Available to every AI agent globally. Forever.</p>
         </div>
       </div>
       <a
@@ -689,12 +694,12 @@ grimoire install   # install to all detected agents</pre>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
           <h3 class="mb-3 text-lg font-semibold text-white">What is Grimoire?</h3>
-          <p class="text-slate-400">Grimoire is a free, open-source package manager for best practices — 1000+ skills across 26 domains (engineering, law, finance, design, health, and more), each sourced from a real institution or study. Install once, and your AI routes to the right skill automatically.</p>
+          <p class="text-slate-400">Grimoire is a free, open-source skills manager for best practices — 1000+ skills across 26 domains (engineering, law, finance, design, health, and more), each sourced from a real institution or study. Install once, and your AI routes to the right skill automatically.</p>
         </div>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
           <h3 class="mb-3 text-lg font-semibold text-white">Is Grimoire free?</h3>
-          <p class="text-slate-400">Yes. Grimoire is free and open-source under the MIT license, published at <a href="https://github.com/jeffreytse/grimoire" target="_blank" style="color:#c9933a">github.com/jeffreytse/grimoire</a>.</p>
+          <p class="text-slate-400">Yes. Grimoire is free and open-source under the MIT license, published at <a href="https://github.com/jeffreytse/grimoire" target="_blank" style="color:#c9933a; text-decoration:underline; text-decoration-color:rgba(201,147,58,0.4)">github.com/jeffreytse/grimoire</a>.</p>
         </div>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
@@ -704,7 +709,7 @@ grimoire install   # install to all detected agents</pre>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
           <h3 class="mb-3 text-lg font-semibold text-white">Does Grimoire enforce best practices, or is it just a skill library?</h3>
-          <p class="text-slate-400">Both. Grimoire is a package manager for best practices — install, manage, and update skills like npm — with a built-in compliance linter. Run <code class="text-gold-light">grimoire check</code> to verify any artifact against your declared standards, the same way ESLint checks code style. See <a href="/bpdd" class="text-gold-light">BPDD</a> for the full methodology.</p>
+          <p class="text-slate-400">Both. Grimoire is a skills manager for best practices — install, manage, and update skills like npm — with a built-in compliance linter. Run <code class="text-gold-light">grimoire check</code> to verify any artifact against your declared standards, the same way ESLint checks code style. See <a href="/bpdd" class="underline text-gold-light decoration-gold/40">BPDD</a> for the full methodology.</p>
         </div>
 
       </div>
@@ -713,7 +718,7 @@ grimoire install   # install to all detected agents</pre>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
           <h3 class="mb-3 text-lg font-semibold text-white">How do I install Grimoire?</h3>
-          <p class="text-slate-400">Run <code class="text-gold-light">curl -fsSL https://raw.githubusercontent.com/jeffreytse/grimoire/main/scripts/install.sh | bash</code>, then <code class="text-gold-light">grimoire wizard</code> — it detects your installed AI agents and walks you through setup. See the <a href="/docs/getting-started" class="text-gold-light">Getting Started guide</a> or your platform's page above for exact commands.</p>
+          <p class="text-slate-400">Run <code class="text-gold-light">curl -fsSL https://raw.githubusercontent.com/jeffreytse/grimoire/main/scripts/install.sh | bash</code>, then <code class="text-gold-light">grimoire wizard</code> — it detects your installed AI agents and walks you through setup. See the <a href="/docs/getting-started" class="underline text-gold-light decoration-gold/40">Getting Started guide</a> or your platform's page above for exact commands.</p>
         </div>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
@@ -797,6 +802,25 @@ grimoire install   # install to all detected agents</pre>
   }, { threshold: 0.15 });
 
   document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+
+  // Lazy-load + autoplay the demo video only once it nears the viewport
+  const demoVideo = document.getElementById('demo-video');
+  if (demoVideo) {
+    const videoObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          const source = demoVideo.querySelector('source[data-src]');
+          if (source) {
+            source.src = source.dataset.src;
+            demoVideo.load();
+            demoVideo.play().catch(function() {});
+          }
+          videoObserver.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '200px' });
+    videoObserver.observe(demoVideo);
+  }
 
   // Tab switching
   function showTab(name) {

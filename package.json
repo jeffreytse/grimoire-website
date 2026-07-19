@@ -13,10 +13,13 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
+    "@fontsource-variable/inter": "^5.2.8",
     "astro": "6.4.7"
   },
   "packageManager": "pnpm@11.7.0",
   "devDependencies": {
-    "pagefind": "^1.5.2"
+    "@tailwindcss/vite": "^4.3.3",
+    "pagefind": "^1.5.2",
+    "tailwindcss": "^4.3.3"
   }
 }

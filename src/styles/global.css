@@ -1,0 +1,127 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+
+@theme {
+  --color-gold: #c9933a;
+  --color-gold-light: #e8d08a;
+  --color-gold-dark: #8b6220;
+  --color-gold-glow: rgba(201, 147, 58, 0.15);
+
+  --color-night: #080c18;
+  --color-night-2: #0d1120;
+  --color-night-3: #111826;
+  --color-night-4: #1a2233;
+  --color-night-border: #1e2a3a;
+
+  --font-sans: "Inter Variable", system-ui, sans-serif;
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-gold: pulse-gold 3s ease-in-out infinite;
+  --animate-fade-up: fade-up 0.6s ease-out forwards;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201, 147, 58, 0); }
+  50% { box-shadow: 0 0 24px 4px rgba(201, 147, 58, 0.25); }
+}
+@keyframes fade-up {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+* { box-sizing: border-box; }
+html { background: #080c18; color: #e2e8f0; }
+
+.glass {
+  background: rgba(13, 17, 32, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(30, 42, 58, 0.8);
+}
+
+.card-hover { transition: all 0.25s ease; }
+.card-hover:hover {
+  transform: translateY(-3px);
+  border-color: rgba(201, 147, 58, 0.5);
+  box-shadow: 0 8px 32px rgba(201, 147, 58, 0.12);
+}
+
+.gold-gradient {
+  background: linear-gradient(135deg, #c9933a 0%, #e8d08a 50%, #c9933a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-glow {
+  background: radial-gradient(ellipse 60% 40% at 50% 60%, rgba(201,147,58,0.12) 0%, transparent 70%);
+}
+
+.install-block {
+  background: #0a0e1a;
+  border: 1px solid #1e2a3a;
+  border-radius: 12px;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+.tab-btn.active {
+  background: rgba(201, 147, 58, 0.15);
+  border-color: rgba(201, 147, 58, 0.5);
+  color: #e8d08a;
+}
+
+.domain-card {
+  background: #111826;
+  border: 1px solid #1e2a3a;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: block;
+}
+.domain-card:hover {
+  border-color: rgba(201, 147, 58, 0.45);
+  background: #1a2233;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(201, 147, 58, 0.1);
+}
+
+.step-line {
+  background: linear-gradient(180deg, #c9933a 0%, rgba(201,147,58,0.1) 100%);
+}
+
+.counter { font-variant-numeric: tabular-nums; }
+
+.stars { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: #ffffff;
+  animation: twinkle var(--dur, 4s) var(--delay, 0s) ease-in-out infinite;
+}
+@keyframes twinkle {
+  0%,100% { opacity: var(--min-op, 0.1); }
+  50% { opacity: var(--max-op, 0.5); }
+}
+
+.copy-btn:hover { background: rgba(201,147,58,0.15); }
+.copy-btn.copied { color: #4ade80; }
+
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+.install-block pre::-webkit-scrollbar,
+#hero-cmd::-webkit-scrollbar { height: 2px; }
+.install-block pre::-webkit-scrollbar-track,
+#hero-cmd::-webkit-scrollbar-track { background: transparent; }
+.install-block pre::-webkit-scrollbar-thumb,
+#hero-cmd::-webkit-scrollbar-thumb { background: transparent; border-radius: 999px; transition: background 0.2s; }
+.install-block:hover pre::-webkit-scrollbar-thumb,
+#hero-cmd:hover::-webkit-scrollbar-thumb { background: rgba(201,147,58,0.25); }
+.install-block pre,
+#hero-cmd { scrollbar-width: thin; scrollbar-color: transparent transparent; }
+.install-block:hover pre,
+#hero-cmd:hover { scrollbar-color: rgba(201,147,58,0.25) transparent; }

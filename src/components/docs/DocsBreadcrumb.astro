@@ -7,7 +7,7 @@ interface Props {
 const { section, title } = Astro.props as Props;
 ---
 
-<nav class="mb-6 text-sm" aria-label="Breadcrumb" style="color:#64748b">
+<nav class="mb-6 text-sm" aria-label="Breadcrumb" style="color:#94a3b8">
   <a href="/docs" class="transition-colors" style="color:#94a3b8" onmouseover="this.style.color='#e8d08a'" onmouseout="this.style.color='#94a3b8'">Docs</a>
   {section && <span> / {section}</span>}
   <span> / </span><span style="color:#e2e8f0">{title}</span>
