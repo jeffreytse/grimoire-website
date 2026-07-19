@@ -254,15 +254,15 @@ User: "design-api-versioning-strategy says use URL versioning, but our pinned RE
 
 ### configure-grimoire
 
-**When to use:** When the user wants to view, edit, remove, or validate `settings.toml` — reading current preferences, changing or deleting a setting, switching a profile, or checking for contradictions and expired entries.
+**When to use:** When the user wants to view, edit, remove, or validate `grimoire.toml` — reading current preferences, changing or deleting a setting, switching a profile, or checking for contradictions and expired entries.
 
-**What it produces:** A guided read/write interface over `settings.toml`, with confirmation before destructive edits and validation of the resulting file.
+**What it produces:** A guided read/write interface over `grimoire.toml`, with confirmation before destructive edits and validation of the resulting file.
 
 **Example invocation:**
 
 ```
 User: "What profile am I currently using for engineering?"
-→ configure-grimoire: reads settings.toml, reports the resolved profile and its source file
+→ configure-grimoire: reads grimoire.toml, reports the resolved profile and its source file
 ```
 
 ---
@@ -286,7 +286,7 @@ User: "Uninstall the cooking domain, I don't need it."
 
 **When to use:** When the user wants to systematically align a project or artifact to their stated best-practice preferences — "apply BPDD", "align this project to our settings", "enforce our best practices like TDD."
 
-**What it produces:** A Red-Green-Refactor style compliance cycle driven by `settings.toml` and profiles — check, fix, re-check — applicable to codebases, legal documents, business plans, or any work product with declared practices.
+**What it produces:** A Red-Green-Refactor style compliance cycle driven by `grimoire.toml` and profiles — check, fix, re-check — applicable to codebases, legal documents, business plans, or any work product with declared practices.
 
 **Example invocation:**
 

@@ -39,6 +39,14 @@ description: 'Every grimoire CLI command — install, check, profiles, packages,
 
 See [BPDD](/bpdd) for the full methodology behind `grimoire check`.
 
+## Validation
+
+| Command | What it does |
+|---------|-------------|
+| `grimoire validate [<skill-path>...]` | Validate skill files against the grimoire STANDARD |
+
+Not to be confused with `grimoire package validate` above, which checks a package's directory structure. `grimoire validate` lints individual SKILL.md files for STANDARD.md conformance — flags include `--strict`, `--json`, `--no-duplicates`, `--test-schema <dir>`, and an AI-powered `--fix` (via a local agent or API key — see `--via`/`--prefer-api`).
+
 ## Diagnostics
 
 | Command                | What it does                                         |

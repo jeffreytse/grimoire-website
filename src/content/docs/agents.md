@@ -1,6 +1,6 @@
 # Agent Integration Guide
 
-grimoire works across six AI agents. Each has its own plugin format and installation method. This guide covers installation, usage, and tool mapping for each.
+grimoire works across eight AI agents. Each has its own plugin format and installation method. This guide covers installation, usage, and tool mapping for each.
 
 ---
 
@@ -11,7 +11,9 @@ grimoire works across six AI agents. Each has its own plugin format and installa
 | Claude Code        | `.claude-plugin/plugin.json`          | `/plugin marketplace add jeffreytse/grimoire-core` then `/plugin install grimoire@grimoire-core`               |
 | GitHub Copilot CLI | `.claude-plugin/plugin.json` (shared) | `copilot plugin marketplace add jeffreytse/grimoire-core` then `copilot plugin install grimoire@grimoire-core` |
 | Gemini CLI         | `gemini-extension.json` + `GEMINI.md` | `gemini extensions install https://github.com/jeffreytse/grimoire-core`                                        |
+| Antigravity CLI    | `~/.gemini/AGENTS.md`                 | `grimoire install --target antigravity`                                                                        |
 | OpenCode           | `.opencode/plugins/grimoire.js`       | `.opencode/plugins/` auto-load or `opencode.json` plugin array                                                 |
+| OpenClaw           | See `.openclaw/INSTALL.md`            | `grimoire install --target openclaw`                                                                           |
 | Codex CLI          | `AGENTS.md` (auto-loaded)             | `grimoire --target codex` for skills                                                                           |
 | Cursor             | `AGENTS.md` (context injection)       | `grimoire --target cursor`                                                                                     |
 
@@ -170,6 +172,34 @@ activate skill: engineering/development/propose-conventional-commit
 **Key difference from Claude Code:** Gemini CLI uses `activate_skill` rather than slash commands. `GEMINI.md` provides the routing bootstrap; individual skills are activated on demand from their SKILL.md files.
 
 **Tool mapping:** See `GEMINI.md` in the repo root for Gemini-specific tool references.
+
+---
+
+## Antigravity CLI
+
+Google's successor to Gemini CLI (see the note above) — grimoire treats it as its own target, binary name `agy`.
+
+**Install:**
+
+```bash
+grimoire install --target antigravity
+```
+
+**Plugin file:** `~/.gemini/AGENTS.md` — same bootstrap-context mechanism as other `AGENTS.md`-reading agents.
+
+Skills install to `~/.gemini/antigravity-cli/skills` (global) or `.gemini/antigravity-cli/skills` (project-scoped) — auto-detected by `grimoire install` like any other agent.
+
+---
+
+## OpenClaw
+
+**Install:**
+
+```bash
+grimoire install --target openclaw
+```
+
+See [`.openclaw/INSTALL.md`](https://github.com/jeffreytse/grimoire-core/blob/main/.openclaw/INSTALL.md) for plugin configuration.
 
 ---
 

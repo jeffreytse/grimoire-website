@@ -9,7 +9,7 @@ import Footer from '../components/Footer.astro';
   description="1000+ best practices skills for Claude, Codex, Copilot, OpenCode, Gemini & every AI assistant. Free and open-source on GitHub — expert frameworks for engineering, law, medicine, finance, and 26 domains."
   ogTitle="Grimoire — Best Practices for Claude, OpenCode, OpenClaw & Every AI"
   ogDescription="1000+ best practices skills for Claude, Codex, Copilot, OpenCode, OpenClaw, Gemini, and every AI assistant. Free on GitHub — engineering, law, medicine, finance, and 26 domains. Start in 60 seconds."
-  ogImage="https://raw.githubusercontent.com/jeffreytse/grimoire/main/assets/banner-1280x640.svg"
+  ogImage="https://grimoire.jeffreytse.net/assets/banner-1280x640.svg"
   ogUrl="https://grimoire.jeffreytse.net/"
   canonical="https://grimoire.jeffreytse.net/"
   keywords="best practice driven development, BPDD, BPDD methodology, claude best practices, codex best practices, copilot best practices, opencode best practices, openclaw best practices, gemini best practices, best practices skills, best practices github, AI skills, Claude Code skills, open source AI skills, expert skills, Cursor, engineering, AI assistant, grimoire"
@@ -28,7 +28,7 @@ import Footer from '../components/Footer.astro';
   "license": "https://opensource.org/licenses/MIT",
   "codeRepository": "https://github.com/jeffreytse/grimoire",
   "keywords": "claude best practices, codex best practices, copilot best practices, opencode best practices, openclaw best practices, gemini best practices, best practices skills, best practices github, AI skills, open source, engineering, law, medicine, finance",
-  "image": "https://raw.githubusercontent.com/jeffreytse/grimoire/main/assets/banner-1280x640.svg"
+  "image": "https://grimoire.jeffreytse.net/assets/banner-1280x640.svg"
 }</script>
     <script type="application/ld+json">{
   "@context": "https://schema.org",
@@ -41,12 +41,15 @@ import Footer from '../components/Footer.astro';
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    { "@type": "Question", "name": "What is Grimoire?", "acceptedAnswer": { "@type": "Answer", "text": "Grimoire is a free, open-source collection of 1000+ best practices skills for Claude, Codex, Copilot, OpenCode, Gemini CLI, and every AI assistant. Available on GitHub under the MIT license." } },
-    { "@type": "Question", "name": "What Claude best practices skills are included?", "acceptedAnswer": { "@type": "Answer", "text": "Grimoire includes 1000+ best practices skills across 26 domains — engineering, law, medicine, finance, writing, design, marketing, health, and more. Each skill encodes a proven expert framework that Claude follows step-by-step." } },
-    { "@type": "Question", "name": "Is Grimoire free on GitHub?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Grimoire is free and open-source, published at https://github.com/jeffreytse/grimoire under the MIT license. Install with one command into Claude Code, Cursor, Codex, Copilot, or Gemini CLI." } },
-    { "@type": "Question", "name": "How do I use best practices skills with Claude?", "acceptedAnswer": { "@type": "Answer", "text": "Run /plugin marketplace add jeffreytse/grimoire-core, then /plugin install grimoire@grimoire-core. Claude will automatically detect and apply the relevant best practices skill for any task you describe." } },
-    { "@type": "Question", "name": "Does Grimoire work with Codex, Copilot, and OpenCode?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Grimoire provides best practices skills for Codex, Copilot, OpenCode, Claude, Gemini CLI, Cursor, and every major AI assistant. Install once with the grimoire script and all supported agents detect it automatically." } },
-    { "@type": "Question", "name": "Is Grimoire just a skill library, or does it enforce anything?", "acceptedAnswer": { "@type": "Answer", "text": "Both. Grimoire is a package manager for best practices — install, manage, and update skills the way npm manages packages — with a built-in compliance linter. Run grimoire check to verify any artifact against your declared standards, the same way ESLint checks code style." } }
+    { "@type": "Question", "name": "What is Grimoire?", "acceptedAnswer": { "@type": "Answer", "text": "Grimoire is a free, open-source package manager for best practices — 1000+ skills across 26 domains (engineering, law, finance, design, health, and more), each sourced from a real institution or study. Install once, and your AI routes to the right skill automatically." } },
+    { "@type": "Question", "name": "Is Grimoire free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Grimoire is free and open-source under the MIT license, published at github.com/jeffreytse/grimoire." } },
+    { "@type": "Question", "name": "How is Grimoire different from a prompt library or just asking the AI directly?", "acceptedAnswer": { "@type": "Answer", "text": "Prompt libraries collect ad-hoc instructions with no verification. Every Grimoire skill must cite a real institution, pass a quality review, and prove it changes behavior — the difference between telling an AI to 'act like an expert' and handing it the expert's actual, sourced playbook." } },
+    { "@type": "Question", "name": "Does Grimoire enforce best practices, or is it just a skill library?", "acceptedAnswer": { "@type": "Answer", "text": "Both. Grimoire is a package manager for best practices — install, manage, and update skills like npm — with a built-in compliance linter, grimoire check, that verifies any artifact against your declared standards, the same way ESLint checks code style." } },
+    { "@type": "Question", "name": "How do I install Grimoire?", "acceptedAnswer": { "@type": "Answer", "text": "Run curl -fsSL https://raw.githubusercontent.com/jeffreytse/grimoire/main/scripts/install.sh | bash, then grimoire wizard — it detects your installed AI agents and walks you through setup. Works with Claude Code, Copilot CLI, Gemini CLI, Antigravity, OpenCode, OpenClaw, Codex CLI, and Cursor." } },
+    { "@type": "Question", "name": "What AI assistants does Grimoire support?", "acceptedAnswer": { "@type": "Answer", "text": "Claude Code, GitHub Copilot CLI, Gemini CLI, Google Antigravity, OpenCode, OpenClaw, Codex CLI, and Cursor — install once and every detected agent picks it up automatically." } },
+    { "@type": "Question", "name": "How many best-practice skills are included, and where do they come from?", "acceptedAnswer": { "@type": "Answer", "text": "1000+ skills across 26 domains, each cited to a named institution, study, or professional standard — McKinsey, Google, WHO, ABA, NSCA, and more — not generic advice." } },
+    { "@type": "Question", "name": "Can I contribute my own best-practice skill?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Anyone with real expertise can contribute — a doctor, lawyer, engineer, or coach. Every submission passes an automated and human quality review (source, actionability, specificity, consensus) before merging." } },
+    { "@type": "Question", "name": "Does Grimoire send my data anywhere?", "acceptedAnswer": { "@type": "Answer", "text": "No. Skills run entirely inside your AI assistant, client-side — Grimoire doesn't call any external API or server. grimoire check --independent can optionally call an LLM provider for deeper AI-judged compliance checks, but only if you enable it." } }
   ]
 }</script>
   </Fragment>
@@ -64,7 +67,7 @@ import Footer from '../components/Footer.astro';
     <div class="relative z-10 max-w-4xl px-6 mx-auto text-center">
       <div class="flex justify-center mb-8">
         <img
-          src="https://raw.githubusercontent.com/jeffreytse/grimoire/main/assets/icon-book.svg"
+          src="/assets/icon-book.svg"
           alt="Grimoire"
           class="w-36 h-36 animate-float drop-shadow-2xl"
           style="filter: drop-shadow(0 0 24px rgba(201,147,58,0.4))"
@@ -79,7 +82,6 @@ import Footer from '../components/Footer.astro';
       <p class="max-w-2xl mx-auto mb-4 text-xl font-light leading-relaxed md:text-2xl text-slate-400">
         The world's knowledge is in your AI.<br/>
         <span class="font-medium text-slate-300">The world's practice is not.</span><br/>
-        <span class="text-base text-slate-500">Most people don't know which practice applies — and AI won't enforce one unless guided. Grimoire closes both gaps.</span><br/>
         <span class="text-base font-medium" style="color:#e8d08a">Install like a package manager. Enforce like a linter.</span>
       </p>
       <p class="max-w-xl mx-auto mb-10 text-base text-slate-500">
@@ -90,7 +92,7 @@ import Footer from '../components/Footer.astro';
         Claude best practices, Codex best practices, Copilot best practices, OpenCode best practices, OpenClaw best practices, Gemini best practices — one library, every AI assistant.
       </p>
 
-      <div class="max-w-xl p-4 mx-auto mb-8 install-block">
+      <div class="max-w-xl p-4 mx-auto mb-3 install-block">
         <div class="flex items-start justify-between gap-4">
           <pre class="flex-1 min-w-0 overflow-x-auto text-sm text-slate-300" id="hero-cmd"><span style="color:#c9933a">$</span> curl -fsSL https://raw.githubusercontent.com/jeffreytse/grimoire/main/scripts/install.sh | bash
 <span style="color:#c9933a">$</span> grimoire update
@@ -105,28 +107,29 @@ import Footer from '../components/Footer.astro';
           </button>
         </div>
       </div>
+      <p class="mb-8 text-xs text-slate-600">Free &amp; open-source · MIT license · 60 seconds to install</p>
 
       <div class="flex flex-col justify-center sm:flex-row gap-4">
         <a
-          href="https://github.com/jeffreytse/grimoire"
-          target="_blank"
+          href="#domains"
           class="flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl text-base font-bold transition-all animate-pulse-gold"
           style="background:linear-gradient(135deg,#c9933a,#8b6220); color:#fff; box-shadow:0 4px 24px rgba(201,147,58,0.3)"
           onmouseover="this.style.transform='scale(1.03)'; this.style.boxShadow='0 6px 32px rgba(201,147,58,0.45)'"
           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 24px rgba(201,147,58,0.3)'"
         >
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-          Star on GitHub
+          Browse <span id="cta-total">1000+</span> Skills
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
         </a>
         <a
-          href="#domains"
+          href="https://github.com/jeffreytse/grimoire"
+          target="_blank"
           class="flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl text-base font-semibold transition-all"
           style="border:1px solid #1e2a3a; color:#94a3b8;"
           onmouseover="this.style.borderColor='rgba(201,147,58,0.4)'; this.style.color='#e8d08a'; this.style.background='rgba(201,147,58,0.05)'"
           onmouseout="this.style.borderColor='#1e2a3a'; this.style.color='#94a3b8'; this.style.background='transparent'"
         >
-          Browse <span id="cta-total">1000+</span> Skills
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          Star on GitHub
         </a>
       </div>
     </div>
@@ -149,7 +152,7 @@ import Footer from '../components/Footer.astro';
           <div class="mt-1 text-sm tracking-wider uppercase text-slate-500">Domains</div>
         </div>
         <div class="reveal">
-          <div class="text-4xl font-black counter gold-gradient" data-target="6">0</div>
+          <div class="text-4xl font-black counter gold-gradient" data-target="7">0</div>
           <div class="mt-1 text-sm tracking-wider uppercase text-slate-500">AI Platforms</div>
         </div>
         <div class="reveal">
@@ -207,7 +210,7 @@ import Footer from '../components/Footer.astro';
 
       <div class="mb-8 overflow-hidden border rounded-2xl" style="border-color:#1e2a3a; box-shadow:0 0 60px rgba(201,147,58,0.08)">
         <img
-          src="https://raw.githubusercontent.com/jeffreytse/grimoire/main/assets/demo.gif"
+          src="/assets/demo.gif"
           alt="Grimoire demo — AI routing through expert skills"
           class="w-full"
           loading="lazy"
@@ -278,7 +281,7 @@ import Footer from '../components/Footer.astro';
               <p class="text-sm leading-relaxed text-slate-400">Your AI follows the same frameworks as top institutions — McKinsey, Google, WHO, ABA, NSCA — and produces actionable, verifiable, specific output. Not summaries. Steps.</p>
               <div class="p-4 mt-4 rounded-xl" style="background:#111826; border:1px solid rgba(201,147,58,0.3)">
                 <div class="mb-2 text-sm font-bold" style="color:#e8d08a">Enforce it automatically</div>
-                <p class="mb-3 text-sm leading-relaxed text-slate-400">Declare your quality standard once in <code style="color:#e8d08a">settings.toml</code>. <a href="/bpdd" style="color:#c9933a" onmouseover="this.style.color='#e8d08a'" onmouseout="this.style.color='#c9933a'">Best Practice Driven Development (BPDD)</a> checks every artifact against it automatically — like a linter, for practices instead of syntax.</p>
+                <p class="mb-3 text-sm leading-relaxed text-slate-400">Declare your quality standard once in <code style="color:#e8d08a">grimoire.toml</code>. <a href="/bpdd" style="color:#c9933a" onmouseover="this.style.color='#e8d08a'" onmouseout="this.style.color='#c9933a'">Best Practice Driven Development (BPDD)</a> checks every artifact against it automatically — like a linter, for practices instead of syntax.</p>
                 <pre class="text-xs overflow-x-auto text-slate-300" style="background:#0a0e1a; border:1px solid #1e2a3a; border-radius:6px; padding:0.75rem"><span style="color:#c9933a">$</span> grimoire check</pre>
               </div>
             </div>
@@ -486,6 +489,13 @@ import Footer from '../components/Footer.astro';
             <div class="mt-1 text-xs text-slate-500">Google</div>
           </div>
         </a>
+        <a href="/docs/agents#antigravity-cli" class="block" style="text-decoration:none">
+          <div class="p-5 text-center rounded-xl card-hover" style="background:#111826; border:1px solid #1e2a3a">
+            <div class="mb-2 text-2xl">🚀</div>
+            <div class="text-sm font-semibold text-slate-200">Antigravity</div>
+            <div class="mt-1 text-xs text-slate-500">Google</div>
+          </div>
+        </a>
         <a href="/opencode" class="block" style="text-decoration:none">
           <div class="p-5 text-center rounded-xl card-hover" style="background:#111826; border:1px solid #1e2a3a">
             <div class="mb-2 text-2xl">🔵</div>
@@ -679,27 +689,22 @@ grimoire install   # install to all detected agents</pre>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
           <h3 class="mb-3 text-lg font-semibold text-white">What is Grimoire?</h3>
-          <p class="text-slate-400">Grimoire is a free, open-source collection of 1000+ best practices skills for Claude, Codex, Copilot, OpenCode, Gemini CLI, and every AI assistant. Available on GitHub under the MIT license.</p>
+          <p class="text-slate-400">Grimoire is a free, open-source package manager for best practices — 1000+ skills across 26 domains (engineering, law, finance, design, health, and more), each sourced from a real institution or study. Install once, and your AI routes to the right skill automatically.</p>
         </div>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
-          <h3 class="mb-3 text-lg font-semibold text-white">What Claude best practices skills are included?</h3>
-          <p class="text-slate-400">Grimoire includes 1000+ best practices skills across 26 domains — engineering, law, medicine, finance, writing, design, marketing, health, and more. Each skill encodes a proven expert framework that Claude follows step-by-step.</p>
+          <h3 class="mb-3 text-lg font-semibold text-white">Is Grimoire free?</h3>
+          <p class="text-slate-400">Yes. Grimoire is free and open-source under the MIT license, published at <a href="https://github.com/jeffreytse/grimoire" target="_blank" style="color:#c9933a">github.com/jeffreytse/grimoire</a>.</p>
         </div>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
-          <h3 class="mb-3 text-lg font-semibold text-white">How do I install Grimoire for OpenCode?</h3>
-          <p class="text-slate-400">Run <code class="text-gold-light">curl -fsSL https://raw.githubusercontent.com/jeffreytse/grimoire/main/scripts/install.sh | bash</code>, then <code class="text-gold-light">grimoire update && grimoire install</code> — auto-detects OpenCode and installs to <code class="text-gold-light">~/.config/opencode/skills/</code>. Or target directly: <code class="text-gold-light">grimoire install --target opencode</code>.</p>
+          <h3 class="mb-3 text-lg font-semibold text-white">How is Grimoire different from a prompt library or just asking the AI directly?</h3>
+          <p class="text-slate-400">Prompt libraries collect ad-hoc instructions with no verification. Every Grimoire skill must cite a real institution, pass a quality review, and prove it changes behavior — the difference between telling an AI to "act like an expert" and handing it the expert's actual, sourced playbook.</p>
         </div>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
-          <h3 class="mb-3 text-lg font-semibold text-white">How do I install Grimoire for OpenClaw?</h3>
-          <p class="text-slate-400">Run <code class="text-gold-light">curl -fsSL https://raw.githubusercontent.com/jeffreytse/grimoire/main/scripts/install.sh | bash</code>, then <code class="text-gold-light">grimoire update && grimoire install</code> — auto-detects OpenClaw and installs to <code class="text-gold-light">~/.openclaw/skills/</code>. Or target directly: <code class="text-gold-light">grimoire install --target openclaw</code>.</p>
-        </div>
-
-        <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
-          <h3 class="mb-3 text-lg font-semibold text-white">Is Grimoire just a skill library, or does it enforce anything?</h3>
-          <p class="text-slate-400">Both. Grimoire is a package manager for best practices — install, manage, and update skills the way npm manages packages — with a built-in compliance linter. Run <code class="text-gold-light">grimoire check</code> to verify any artifact against your declared standards, the same way ESLint checks code style. See <a href="/bpdd" class="text-gold-light">BPDD</a> for the full methodology.</p>
+          <h3 class="mb-3 text-lg font-semibold text-white">Does Grimoire enforce best practices, or is it just a skill library?</h3>
+          <p class="text-slate-400">Both. Grimoire is a package manager for best practices — install, manage, and update skills like npm — with a built-in compliance linter. Run <code class="text-gold-light">grimoire check</code> to verify any artifact against your declared standards, the same way ESLint checks code style. See <a href="/bpdd" class="text-gold-light">BPDD</a> for the full methodology.</p>
         </div>
 
       </div>
@@ -707,33 +712,28 @@ grimoire install   # install to all detected agents</pre>
       <div id="faq-more" class="hidden mt-6 space-y-6">
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
-          <h3 class="mb-3 text-lg font-semibold text-white">How do I install Grimoire for Claude Code?</h3>
-          <p class="text-slate-400">Run <code class="text-gold-light">/plugin marketplace add jeffreytse/grimoire-core</code>, then <code class="text-gold-light">/plugin install grimoire@grimoire-core</code> inside Claude Code. Claude will automatically detect and apply the relevant best practices skill for any task you describe.</p>
+          <h3 class="mb-3 text-lg font-semibold text-white">How do I install Grimoire?</h3>
+          <p class="text-slate-400">Run <code class="text-gold-light">curl -fsSL https://raw.githubusercontent.com/jeffreytse/grimoire/main/scripts/install.sh | bash</code>, then <code class="text-gold-light">grimoire wizard</code> — it detects your installed AI agents and walks you through setup. See the <a href="/docs/getting-started" class="text-gold-light">Getting Started guide</a> or your platform's page above for exact commands.</p>
         </div>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
-          <h3 class="mb-3 text-lg font-semibold text-white">How do I install Grimoire for Codex?</h3>
-          <p class="text-slate-400">Run <code class="text-gold-light">curl -fsSL https://raw.githubusercontent.com/jeffreytse/grimoire/main/scripts/install.sh | bash</code>, then <code class="text-gold-light">grimoire update && grimoire install</code> — auto-detects Codex and installs to <code class="text-gold-light">~/.agents/skills/</code>. Or target directly: <code class="text-gold-light">grimoire install --target codex</code>.</p>
+          <h3 class="mb-3 text-lg font-semibold text-white">What AI assistants does Grimoire support?</h3>
+          <p class="text-slate-400">Claude Code, GitHub Copilot CLI, Gemini CLI, Google Antigravity, OpenCode, OpenClaw, Codex CLI, and Cursor — install once and every detected agent picks it up automatically.</p>
         </div>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
-          <h3 class="mb-3 text-lg font-semibold text-white">How do I install Grimoire for Gemini CLI?</h3>
-          <p class="text-slate-400">Run <code class="text-gold-light">curl -fsSL https://raw.githubusercontent.com/jeffreytse/grimoire/main/scripts/install.sh | bash</code>, then <code class="text-gold-light">grimoire update && grimoire install</code> — auto-detects Gemini CLI and installs to <code class="text-gold-light">~/.gemini/skills/</code>. Or target directly: <code class="text-gold-light">grimoire install --target gemini</code>.</p>
+          <h3 class="mb-3 text-lg font-semibold text-white">How many best-practice skills are included, and where do they come from?</h3>
+          <p class="text-slate-400">1000+ skills across 26 domains, each cited to a named institution, study, or professional standard — McKinsey, Google, WHO, ABA, NSCA, and more — not generic advice.</p>
         </div>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
-          <h3 class="mb-3 text-lg font-semibold text-white">How do I install Grimoire for Copilot?</h3>
-          <p class="text-slate-400">Run <code class="text-gold-light">copilot plugin marketplace add jeffreytse/grimoire-core</code>, then <code class="text-gold-light">copilot plugin install grimoire@grimoire-core</code>. Or use the grimoire CLI: <code class="text-gold-light">curl -fsSL https://raw.githubusercontent.com/jeffreytse/grimoire/main/scripts/install.sh | bash</code>, then <code class="text-gold-light">grimoire update && grimoire install</code> — it installs to all detected agents including Copilot.</p>
+          <h3 class="mb-3 text-lg font-semibold text-white">Can I contribute my own best-practice skill?</h3>
+          <p class="text-slate-400">Yes. Anyone with real expertise can contribute — a doctor, lawyer, engineer, or coach. Every submission passes an automated and human quality review (source, actionability, specificity, consensus) before merging.</p>
         </div>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
-          <h3 class="mb-3 text-lg font-semibold text-white">Is Grimoire free on GitHub?</h3>
-          <p class="text-slate-400">Yes. Grimoire is free and open-source, published at <a href="https://github.com/jeffreytse/grimoire" target="_blank" style="color:#c9933a">github.com/jeffreytse/grimoire</a> under the MIT license. Install with one command into Claude Code, Cursor, Codex, Copilot, Gemini CLI, OpenCode, or OpenClaw.</p>
-        </div>
-
-        <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
-          <h3 class="mb-3 text-lg font-semibold text-white">Does Grimoire work with Codex, Copilot, OpenCode, and OpenClaw?</h3>
-          <p class="text-slate-400">Yes. Grimoire provides best practices skills for Codex, Copilot, OpenCode, OpenClaw, Claude, Gemini CLI, Cursor, and every major AI assistant. Install once with the grimoire script and all supported agents detect it automatically.</p>
+          <h3 class="mb-3 text-lg font-semibold text-white">Does Grimoire send my data anywhere?</h3>
+          <p class="text-slate-400">No. Skills run entirely inside your AI assistant, client-side — Grimoire doesn't call any external API or server. <code class="text-gold-light">grimoire check --independent</code> can optionally call an LLM provider for deeper AI-judged compliance checks, but only if you enable it.</p>
         </div>
 
       </div>
@@ -763,8 +763,8 @@ grimoire install   # install to all detected agents</pre>
   for (let i = 0; i < 80; i++) {
     const s = document.createElement('div');
     s.className = 'star';
-    const size = Math.random() * 2 + 0.5;
-    s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--dur:${Math.random()*4+3}s;--delay:${Math.random()*4}s;--min-op:${Math.random()*0.1};--max-op:${Math.random()*0.4+0.1};`;
+    const size = Math.random() * 1 + 0.5;
+    s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--dur:${Math.random()*4+3}s;--delay:${Math.random()*4}s;--min-op:${Math.random()*0.1};--max-op:${Math.random()*0.25+0.1};`;
     starsEl.appendChild(s);
   }
 

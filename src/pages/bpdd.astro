@@ -6,13 +6,13 @@ import FooterSimple from '../components/FooterSimple.astro';
 
 <Layout
   title="Best Practice Driven Development (BPDD) — Grimoire"
-  description="BPDD is a Red-Green-Refactor compliance cycle for AI assistants. Define quality standards in settings.toml, audit gaps with check-best-practice-compliance, apply grimoire skills to fix. Free and open-source."
+  description="BPDD is a Red-Green-Refactor compliance cycle for AI assistants. Define quality standards in grimoire.toml, audit gaps with check-best-practice-compliance, apply grimoire skills to fix. Free and open-source."
   ogTitle="Best Practice Driven Development (BPDD) — Grimoire"
   ogDescription="BPDD inverts the usual workflow: declare what 'good' looks like first, then bring any artifact into alignment. Works for code, contracts, business plans, and every domain."
-  ogImage="https://raw.githubusercontent.com/jeffreytse/grimoire/main/assets/banner-1280x640.svg"
+  ogImage="https://grimoire.jeffreytse.net/assets/banner-1280x640.svg"
   ogUrl="https://grimoire.jeffreytse.net/bpdd"
   canonical="https://grimoire.jeffreytse.net/bpdd"
-  keywords="best practice driven development, BPDD, BPDD methodology, AI compliance checking, best practices enforcement, grimoire compliance, check-best-practice-compliance, AI quality enforcement, settings.toml grimoire, best practices linter"
+  keywords="best practice driven development, BPDD, BPDD methodology, AI compliance checking, best practices enforcement, grimoire compliance, check-best-practice-compliance, AI quality enforcement, grimoire.toml grimoire, best practices linter"
 >
   <Fragment slot="head">
     <script type="application/ld+json">{
@@ -22,7 +22,7 @@ import FooterSimple from '../components/FooterSimple.astro';
   "description": "BPDD is a Red-Green-Refactor compliance cycle. Declare quality standards, run a compliance check, apply grimoire skills to fix gaps, repeat until all practices pass.",
   "totalTime": "PT5M",
   "step": [
-    { "@type": "HowToStep", "position": 1, "name": "Red — run compliance check", "text": "Run /check-best-practice-compliance. Grimoire identifies which practices FAIL or are PARTIAL against your settings.toml spec." },
+    { "@type": "HowToStep", "position": 1, "name": "Red — run compliance check", "text": "Run /check-best-practice-compliance. Grimoire identifies which practices FAIL or are PARTIAL against your grimoire.toml spec." },
     { "@type": "HowToStep", "position": 2, "name": "Green — apply grimoire skill", "text": "Invoke the relevant grimoire skill for each failing practice. Fix the artifact until the compliance check passes." },
     { "@type": "HowToStep", "position": 3, "name": "Refactor — clean the implementation", "text": "Clean up the implementation while keeping the compliance check green." },
     { "@type": "HowToStep", "position": 4, "name": "Commit — repeat for next gap", "text": "Record progress and return to step 1 for the next compliance gap." }
@@ -32,8 +32,8 @@ import FooterSimple from '../components/FooterSimple.astro';
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    { "@type": "Question", "name": "What is Best Practice Driven Development (BPDD)?", "acceptedAnswer": { "@type": "Answer", "text": "BPDD is a Red-Green-Refactor compliance cycle powered by grimoire skills. You declare what 'good' looks like in settings.toml, then run check-best-practice-compliance to identify gaps, apply grimoire skills to fix them, and repeat until all practices pass." } },
-    { "@type": "Question", "name": "How is BPDD different from TDD (Test-Driven Development)?", "acceptedAnswer": { "@type": "Answer", "text": "TDD is code-specific. BPDD extends this pattern to any domain and any artifact. Instead of test files, the spec is settings.toml. Instead of a test runner, the check is check-best-practice-compliance." } },
+    { "@type": "Question", "name": "What is Best Practice Driven Development (BPDD)?", "acceptedAnswer": { "@type": "Answer", "text": "BPDD is a Red-Green-Refactor compliance cycle powered by grimoire skills. You declare what 'good' looks like in grimoire.toml, then run check-best-practice-compliance to identify gaps, apply grimoire skills to fix them, and repeat until all practices pass." } },
+    { "@type": "Question", "name": "How is BPDD different from TDD (Test-Driven Development)?", "acceptedAnswer": { "@type": "Answer", "text": "TDD is code-specific. BPDD extends this pattern to any domain and any artifact. Instead of test files, the spec is grimoire.toml. Instead of a test runner, the check is check-best-practice-compliance." } },
     { "@type": "Question", "name": "Does BPDD only work for engineering?", "acceptedAnswer": { "@type": "Answer", "text": "No. BPDD works for any domain grimoire covers — engineering, law, medicine, finance, marketing, and 22 more. The cycle is identical regardless of domain." } }
   ]
 }</script>
@@ -57,7 +57,7 @@ import FooterSimple from '../components/FooterSimple.astro';
         Declare quality first. Then align everything to it.
       </p>
       <p class="max-w-2xl mx-auto mb-8 text-base text-slate-400 leading-relaxed">
-        BPDD is a Red-Green-Refactor compliance cycle powered by grimoire skills. Define what "good" looks like in <code style="color:#e8d08a">settings.toml</code>, run a compliance check to find gaps, apply the matching grimoire skill to fix them, and repeat until all practices pass.
+        BPDD is a Red-Green-Refactor compliance cycle powered by grimoire skills. Define what "good" looks like in <code style="color:#e8d08a">grimoire.toml</code>, run a compliance check to find gaps, apply the matching grimoire skill to fix them, and repeat until all practices pass.
       </p>
       <div class="flex flex-col sm:flex-row justify-center gap-4">
         <a href="/#install" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl text-base font-bold transition-all"
@@ -94,7 +94,7 @@ import FooterSimple from '../components/FooterSimple.astro';
         <div class="p-6 rounded-xl" style="background:#0f1c12; border:1px solid rgba(74,222,128,0.2)">
           <div class="mb-4 text-sm font-semibold tracking-wider text-green-400 uppercase">With BPDD</div>
           <ul class="text-sm space-y-3 text-slate-300">
-            <li class="flex gap-3"><span class="text-green-400 mt-0.5">✓</span> Spec declared once in <code style="color:#e8d08a">settings.toml</code></li>
+            <li class="flex gap-3"><span class="text-green-400 mt-0.5">✓</span> Spec declared once in <code style="color:#e8d08a">grimoire.toml</code></li>
             <li class="flex gap-3"><span class="text-green-400 mt-0.5">✓</span> Same criteria applied every run — no inconsistency</li>
             <li class="flex gap-3"><span class="text-green-400 mt-0.5">✓</span> LSP-compatible compliance reports for CI and editors</li>
             <li class="flex gap-3"><span class="text-green-400 mt-0.5">✓</span> Gaps that survive human review get caught by the check</li>
@@ -119,7 +119,7 @@ import FooterSimple from '../components/FooterSimple.astro';
           </div>
           <div class="pb-10">
             <h3 class="mb-2 text-lg font-bold text-white">Red — run compliance check</h3>
-            <p class="mb-3 text-sm leading-relaxed text-slate-400">Run <code style="color:#e8d08a">/check-best-practice-compliance</code>. Grimoire evaluates the artifact against your <code style="color:#e8d08a">settings.toml</code> spec and identifies every failing or partial practice.</p>
+            <p class="mb-3 text-sm leading-relaxed text-slate-400">Run <code style="color:#e8d08a">/check-best-practice-compliance</code>. Grimoire evaluates the artifact against your <code style="color:#e8d08a">grimoire.toml</code> spec and identifies every failing or partial practice.</p>
             <div class="p-4 install-block text-xs text-slate-300 overflow-x-auto">
 <pre>Compliance report — src/contracts/VendorAgreement.md
 
@@ -174,13 +174,14 @@ Coverage: 61.1%  ·  Threshold: 80%  ·  Result: FAIL</pre>
     <div class="max-w-3xl mx-auto">
       <p class="mb-3 text-sm font-semibold tracking-widest text-center uppercase" style="color:#c9933a">How It Works</p>
       <h2 class="mb-4 text-3xl font-bold text-center text-white">Grimoire as a linter — for any domain</h2>
-      <p class="mb-8 text-center text-slate-400 max-w-2xl mx-auto"><code style="color:#e8d08a">check-best-practice-compliance</code> works like ESLint or Rubocop — but for best practices across any domain. Encode quality criteria once in <code style="color:#e8d08a">settings.toml</code>. Same criteria every run.</p>
+      <p class="mb-8 text-center text-slate-400 max-w-2xl mx-auto"><code style="color:#e8d08a">check-best-practice-compliance</code> works like ESLint or Rubocop — but for best practices across any domain. Encode quality criteria once in <code style="color:#e8d08a">grimoire.toml</code>. Same criteria every run.</p>
 
       <div class="p-5 install-block mb-8">
-        <p class="mb-2 text-xs font-semibold tracking-widest uppercase" style="color:#c9933a">.grimoire/settings.toml</p>
-        <pre class="text-sm text-slate-300 overflow-x-auto">profiles = ["oop"]
+        <p class="mb-2 text-xs font-semibold tracking-widest uppercase" style="color:#c9933a">grimoire.toml</p>
+        <pre class="text-sm text-slate-300 overflow-x-auto">[standards]
+profiles = ["oop"]
 
-[engineering.architecture]
+[standards.engineering.architecture]
 practices = ["apply-solid-principles", "apply-law-of-demeter"]
 compliance-threshold = 80
 compliance-threshold-error = 0   # fail if any errors remain</pre>
@@ -277,17 +278,17 @@ compliance-threshold-error = 0   # fail if any errors remain</pre>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
           <h3 class="mb-3 text-lg font-semibold text-white">What is Best Practice Driven Development (BPDD)?</h3>
-          <p class="text-slate-400">BPDD is a Red-Green-Refactor compliance cycle powered by grimoire skills. Declare what "good" looks like in <code style="color:#e8d08a">settings.toml</code>, run <code style="color:#e8d08a">check-best-practice-compliance</code> to find gaps, apply grimoire skills to fix them, and repeat until all practices pass. Works for code, contracts, business plans, training programs — any work product.</p>
+          <p class="text-slate-400">BPDD is a Red-Green-Refactor compliance cycle powered by grimoire skills. Declare what "good" looks like in <code style="color:#e8d08a">grimoire.toml</code>, run <code style="color:#e8d08a">check-best-practice-compliance</code> to find gaps, apply grimoire skills to fix them, and repeat until all practices pass. Works for code, contracts, business plans, training programs — any work product.</p>
         </div>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
           <h3 class="mb-3 text-lg font-semibold text-white">How is BPDD different from TDD?</h3>
-          <p class="text-slate-400">TDD is code-specific: write a failing test, make it pass, refactor. BPDD extends this pattern to any domain and any artifact. Instead of test files, the spec is <code style="color:#e8d08a">settings.toml</code>. Instead of a test runner, the check is <code style="color:#e8d08a">check-best-practice-compliance</code>. The artifact can be a legal clause, a workout plan, or a marketing brief — not just code.</p>
+          <p class="text-slate-400">TDD is code-specific: write a failing test, make it pass, refactor. BPDD extends this pattern to any domain and any artifact. Instead of test files, the spec is <code style="color:#e8d08a">grimoire.toml</code>. Instead of a test runner, the check is <code style="color:#e8d08a">check-best-practice-compliance</code>. The artifact can be a legal clause, a workout plan, or a marketing brief — not just code.</p>
         </div>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
           <h3 class="mb-3 text-lg font-semibold text-white">How do I configure BPDD for my project?</h3>
-          <p class="text-slate-400">Create <code style="color:#e8d08a">.grimoire/settings.toml</code> in your project root. Add <code style="color:#e8d08a">profiles = ["oop"]</code> to activate skill bundles, or list practices explicitly under <code style="color:#e8d08a">[domain.subdomain]</code>. Set <code style="color:#e8d08a">compliance-threshold = 80</code> to gate CI at 80% minimum coverage.</p>
+          <p class="text-slate-400">Create <code style="color:#e8d08a">grimoire.toml</code> in your project root. Add <code style="color:#e8d08a">profiles = ["oop"]</code> under <code style="color:#e8d08a">[standards]</code> to activate skill bundles, or list practices explicitly under <code style="color:#e8d08a">[standards.domain.subdomain]</code>. Set <code style="color:#e8d08a">compliance-threshold = 80</code> to gate CI at 80% minimum coverage.</p>
         </div>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">

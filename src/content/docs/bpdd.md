@@ -1,12 +1,12 @@
 # Best Practice Driven Development
 
-Systematically align any project or artifact to its stated best practice preferences — using a Red-Green-Refactor cycle driven by `settings.toml`.
+Systematically align any project or artifact to its stated best practice preferences — using a Red-Green-Refactor cycle driven by `grimoire.toml`.
 
 ---
 
 ## What It Is
 
-BPDD inverts the usual workflow: declare what "good" looks like first, then bring the artifact into alignment. The spec is `settings.toml` plus any active profiles — no separate test files, no checklist to maintain. When the compliance check passes, the artifact matches the spec.
+BPDD inverts the usual workflow: declare what "good" looks like first, then bring the artifact into alignment. The spec is `grimoire.toml` plus any active profiles — no separate test files, no checklist to maintain. When the compliance check passes, the artifact matches the spec.
 
 It works for any work product: a codebase, a legal contract, a business plan, a training program, a marketing campaign. The cycle is identical regardless of domain.
 
@@ -29,13 +29,14 @@ Invoke with `/apply-best-practice-driven-development`. The skill resolves the ef
 
 `check-best-practice-compliance` works like ESLint or Rubocop — but for best practices across any domain.
 
-Encode quality criteria once in `settings.toml`. Run against any artifact, any number of times. Same criteria every run: no inconsistency from who reviewed or when. Gaps that would survive human review get caught by the check.
+Encode quality criteria once in `grimoire.toml`. Run against any artifact, any number of times. Same criteria every run: no inconsistency from who reviewed or when. Gaps that would survive human review get caught by the check.
 
 ```toml
-# .grimoire/settings.toml
+# grimoire.toml
+[standards]
 profiles = ["oop"]
 
-[engineering.architecture]
+[standards.engineering.architecture]
 practices = ["apply-solid-principles", "apply-law-of-demeter"]
 compliance-threshold = 80
 ```
@@ -74,7 +75,7 @@ Reports:  .grimoire/reports/compliance-2026-06-09T14-32.json
 **Coverage** — `overall_pct` = criteria passing / criteria total. Set a threshold to gate CI:
 
 ```toml
-[engineering]
+[standards.engineering]
 compliance-threshold = 80        # fail if overall coverage drops below 80%
 compliance-threshold-error = 0   # fail if any error-severity violations remain
 ```
@@ -92,7 +93,7 @@ The JSON report follows the LSP Diagnostic schema — consumable by any editor, 
   "mode": "full",
   "scope": "src/contracts/VendorAgreement.md",
   "spec": {
-    "sources": [".grimoire/settings.toml", "~/.config/grimoire/settings.toml"],
+    "sources": ["grimoire.toml", "~/.config/grimoire/grimoire.toml"],
     "resolved_from": "project-shared + global"
   },
   "result": "fail",
@@ -180,16 +181,16 @@ Scope `[c] Changed only` checks only modified lines or sections — faster for C
 
 ---
 
-## Settings Reference
+## Config Reference
 
-| Key                          | Where              | Description                              |
-| ---------------------------- | ------------------ | ---------------------------------------- |
-| `profiles`                   | top-level          | Activate skill bundles by name or tag    |
-| `practices`                  | `[domain]` section | Explicit ordered skill list for a domain |
-| `compliance-threshold`       | `[domain]` section | Minimum overall coverage % to pass       |
-| `compliance-threshold-error` | `[domain]` section | Max allowed error-severity violations    |
+| Key                          | Where                           | Description                               |
+| ----------------------------- | -------------------------------- | ----------------------------------------- |
+| `profiles`                   | `[standards]` top-level          | Activate skill bundles by name or tag     |
+| `practices`                  | `[standards.<domain>]` section   | Explicit ordered skill list for a domain  |
+| `compliance-threshold`       | `[standards.<domain>]` section   | Minimum overall coverage % to pass        |
+| `compliance-threshold-error` | `[standards.<domain>]` section   | Max allowed error-severity violations     |
 
-See [profiles.md](./profiles.md) for how `profiles` resolves and how to author custom profile files.
+See [Config](./config.md) for the full key reference and override hierarchy, and [profiles.md](./profiles.md) for how `profiles` resolves and how to author custom profile files.
 
 ---
 

@@ -1,0 +1,258 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640">
+  <defs>
+    <pattern id="leather" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
+      <rect width="8" height="8" fill="#0a1d06"/>
+      <line x1="0" y1="0" x2="8" y2="8" stroke="#031a04" stroke-width="0.6" opacity="0.7"/>
+      <line x1="8" y1="0" x2="0" y2="8" stroke="#031a04" stroke-width="0.6" opacity="0.7"/>
+    </pattern>
+    <linearGradient id="cover-sheen" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.12"/>
+      <stop offset="40%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="cover-top" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.1"/>
+      <stop offset="25%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="soft-glow" x="-25%" y="-25%" width="150%" height="150%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="title-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="aura" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="35"/>
+    </filter>
+    <filter id="sparkle-glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- BACKGROUND -->
+  <rect width="1280" height="640" fill="#080c18"/>
+
+  <!-- Star field (1280×640 — extra vertical space above/below the 480px content band) -->
+  <circle cx="48"   cy="40"  r="1.6" fill="#ffffff" opacity="0.22"/>
+  <circle cx="120"  cy="60"  r="1.3" fill="#ffffff" opacity="0.18"/>
+  <circle cx="77"   cy="210" r="1.9" fill="#ffffff" opacity="0.18"/>
+  <circle cx="35"   cy="289" r="1.3" fill="#ffffff" opacity="0.18"/>
+  <circle cx="154"  cy="569" r="1.3" fill="#ffffff" opacity="0.14"/>
+  <circle cx="35"   cy="404" r="1.3" fill="#ffffff" opacity="0.14"/>
+  <circle cx="552"  cy="35"  r="1.3" fill="#ffffff" opacity="0.14"/>
+  <circle cx="616"  cy="141" r="1.9" fill="#ffffff" opacity="0.18"/>
+  <circle cx="669"  cy="445" r="1.3" fill="#ffffff" opacity="0.14"/>
+  <circle cx="552"  cy="575" r="1.6" fill="#ffffff" opacity="0.18"/>
+  <circle cx="808"  cy="141" r="1.9" fill="#ffffff" opacity="0.18"/>
+  <circle cx="836"  cy="445" r="1.3" fill="#ffffff" opacity="0.14"/>
+  <circle cx="980"  cy="51"  r="1.6" fill="#ffffff" opacity="0.18"/>
+  <circle cx="1013" cy="429" r="1.3" fill="#ffffff" opacity="0.14"/>
+  <circle cx="931"  cy="557" r="1.3" fill="#ffffff" opacity="0.14"/>
+  <circle cx="1030" cy="237" r="1.9" fill="#ffffff" opacity="0.18"/>
+  <circle cx="1027" cy="429" r="1.3" fill="#ffffff" opacity="0.14"/>
+  <circle cx="1171" cy="237" r="1.3" fill="#ffffff" opacity="0.14"/>
+  <circle cx="1053" cy="429" r="1.6" fill="#ffffff" opacity="0.18"/>
+  <circle cx="1253" cy="51"  r="1.9" fill="#ffffff" opacity="0.18"/>
+  <circle cx="1251" cy="413" r="1.3" fill="#ffffff" opacity="0.14"/>
+  <circle cx="1251" cy="605" r="1.6" fill="#ffffff" opacity="0.18"/>
+  <circle cx="723"  cy="237" r="1.3" fill="#ffffff" opacity="0.10"/>
+  <circle cx="979"  cy="317" r="1.3" fill="#ffffff" opacity="0.10"/>
+  <circle cx="563"  cy="317" r="1.6" fill="#ffffff" opacity="0.10"/>
+  <!-- Extra stars in top/bottom bands -->
+  <circle cx="200"  cy="22"  r="1.3" fill="#ffffff" opacity="0.14"/>
+  <circle cx="620"  cy="18"  r="1.0" fill="#ffffff" opacity="0.12"/>
+  <circle cx="900"  cy="25"  r="1.3" fill="#ffffff" opacity="0.14"/>
+  <circle cx="1100" cy="15"  r="1.0" fill="#ffffff" opacity="0.12"/>
+  <circle cx="350"  cy="615" r="1.3" fill="#ffffff" opacity="0.14"/>
+  <circle cx="700"  cy="622" r="1.0" fill="#ffffff" opacity="0.12"/>
+  <circle cx="1000" cy="618" r="1.3" fill="#ffffff" opacity="0.14"/>
+  <circle cx="1200" cy="610" r="1.0" fill="#ffffff" opacity="0.12"/>
+
+  <!-- Book ambient warm glow (cx=306, cy=320, scaled from 191,150) -->
+  <ellipse cx="306" cy="320" rx="184" ry="232" fill="#c9933a" opacity="0.07" filter="url(#aura)"/>
+
+  <!-- ── BOOK SHAPE (scale=1.6, y_offset=80) ── -->
+
+  <!-- Spine: orig x=100,y=18,w=14,h=264 → x=160,y=109,w=22,h=422 -->
+  <rect x="160" y="109" width="22" height="422" fill="#011804"/>
+  <line x1="162" y1="176" x2="181" y2="176" stroke="#c9933a" stroke-width="1.3" opacity="0.35"/>
+  <line x1="162" y1="224" x2="181" y2="224" stroke="#c9933a" stroke-width="1.3" opacity="0.35"/>
+  <line x1="162" y1="272" x2="181" y2="272" stroke="#c9933a" stroke-width="0.8" opacity="0.22"/>
+  <line x1="162" y1="320" x2="181" y2="320" stroke="#c9933a" stroke-width="1.3" opacity="0.35"/>
+  <line x1="162" y1="368" x2="181" y2="368" stroke="#c9933a" stroke-width="0.8" opacity="0.22"/>
+  <line x1="162" y1="416" x2="181" y2="416" stroke="#c9933a" stroke-width="1.3" opacity="0.35"/>
+  <line x1="162" y1="464" x2="181" y2="464" stroke="#c9933a" stroke-width="1.3" opacity="0.35"/>
+  <line x1="160" y1="109" x2="160" y2="531" stroke="#c9933a" stroke-width="1.2" opacity="0.55"/>
+  <line x1="182" y1="109" x2="182" y2="531" stroke="#000000" stroke-width="1.6" opacity="0.4"/>
+
+  <!-- Cover: x=182,y=109,w=246,h=422 -->
+  <rect x="182" y="109" width="246" height="422" fill="url(#leather)"/>
+  <rect x="182" y="109" width="246" height="422" fill="url(#cover-sheen)"/>
+  <rect x="182" y="109" width="246" height="128" fill="url(#cover-top)"/>
+
+  <!-- Page edges: x=429,y=115,w=11,h=410 -->
+  <rect x="429" y="115" width="11" height="410" fill="#6a5228" opacity="0.55"/>
+  <line x1="430" y1="128" x2="440" y2="128" stroke="#c9a84c" stroke-width="1" opacity="0.55"/>
+  <line x1="430" y1="150" x2="440" y2="150" stroke="#c9a84c" stroke-width="1" opacity="0.55"/>
+  <line x1="430" y1="173" x2="440" y2="173" stroke="#c9a84c" stroke-width="1" opacity="0.55"/>
+  <line x1="430" y1="195" x2="440" y2="195" stroke="#c9a84c" stroke-width="1" opacity="0.55"/>
+  <line x1="430" y1="218" x2="440" y2="218" stroke="#c9a84c" stroke-width="1" opacity="0.55"/>
+  <line x1="430" y1="240" x2="440" y2="240" stroke="#c9a84c" stroke-width="1" opacity="0.55"/>
+  <line x1="430" y1="266" x2="440" y2="266" stroke="#c9a84c" stroke-width="1" opacity="0.40"/>
+  <line x1="430" y1="291" x2="440" y2="291" stroke="#c9a84c" stroke-width="1" opacity="0.55"/>
+  <line x1="430" y1="320" x2="440" y2="320" stroke="#c9a84c" stroke-width="1" opacity="0.55"/>
+  <line x1="430" y1="349" x2="440" y2="349" stroke="#c9a84c" stroke-width="1" opacity="0.40"/>
+  <line x1="430" y1="374" x2="440" y2="374" stroke="#c9a84c" stroke-width="1" opacity="0.55"/>
+  <line x1="430" y1="400" x2="440" y2="400" stroke="#c9a84c" stroke-width="1" opacity="0.55"/>
+  <line x1="430" y1="426" x2="440" y2="426" stroke="#c9a84c" stroke-width="1" opacity="0.55"/>
+  <line x1="430" y1="451" x2="440" y2="451" stroke="#c9a84c" stroke-width="1" opacity="0.55"/>
+  <line x1="430" y1="477" x2="440" y2="477" stroke="#c9a84c" stroke-width="1" opacity="0.55"/>
+  <line x1="430" y1="499" x2="440" y2="499" stroke="#c9a84c" stroke-width="1" opacity="0.55"/>
+
+  <!-- ── BOOK ORNAMENTS ── -->
+
+  <!-- Outer gold border: orig x=118,y=22,w=146,h=256 → x=189,y=115,w=234,h=410 -->
+  <rect x="189" y="115" width="234" height="410" fill="none" stroke="#c9933a" stroke-width="2.4"/>
+  <!-- Inner gold border: orig x=128,y=32,w=126,h=236 → x=205,y=131,w=202,h=378 -->
+  <rect x="205" y="131" width="202" height="378" fill="none" stroke="#c9933a" stroke-width="1" opacity="0.5"/>
+
+  <!-- Corner: Top-Left (orig cx=133,cy=37 → cx=213,cy=139) -->
+  <circle cx="213" cy="139" r="4" fill="#c9933a" filter="url(#soft-glow)"/>
+  <line x1="217" y1="139" x2="242" y2="139" stroke="#c9933a" stroke-width="1.9"/>
+  <line x1="213" y1="143" x2="213" y2="168" stroke="#c9933a" stroke-width="1.9"/>
+  <circle cx="242" cy="139" r="2.4" fill="#c9933a" opacity="0.6"/>
+  <circle cx="213" cy="168" r="2.4" fill="#c9933a" opacity="0.6"/>
+
+  <!-- Corner: Top-Right (orig cx=247,cy=37 → cx=395,cy=139) -->
+  <circle cx="395" cy="139" r="4" fill="#c9933a" filter="url(#soft-glow)"/>
+  <line x1="391" y1="139" x2="366" y2="139" stroke="#c9933a" stroke-width="1.9"/>
+  <line x1="395" y1="143" x2="395" y2="168" stroke="#c9933a" stroke-width="1.9"/>
+  <circle cx="366" cy="139" r="2.4" fill="#c9933a" opacity="0.6"/>
+  <circle cx="395" cy="168" r="2.4" fill="#c9933a" opacity="0.6"/>
+
+  <!-- Corner: Bottom-Left (orig cx=133,cy=263 → cx=213,cy=501) -->
+  <circle cx="213" cy="501" r="4" fill="#c9933a" filter="url(#soft-glow)"/>
+  <line x1="217" y1="501" x2="242" y2="501" stroke="#c9933a" stroke-width="1.9"/>
+  <line x1="213" y1="497" x2="213" y2="472" stroke="#c9933a" stroke-width="1.9"/>
+  <circle cx="242" cy="501" r="2.4" fill="#c9933a" opacity="0.6"/>
+  <circle cx="213" cy="472" r="2.4" fill="#c9933a" opacity="0.6"/>
+
+  <!-- Corner: Bottom-Right (orig cx=247,cy=263 → cx=395,cy=501) -->
+  <circle cx="395" cy="501" r="4" fill="#c9933a" filter="url(#soft-glow)"/>
+  <line x1="391" y1="501" x2="366" y2="501" stroke="#c9933a" stroke-width="1.9"/>
+  <line x1="395" y1="497" x2="395" y2="472" stroke="#c9933a" stroke-width="1.9"/>
+  <circle cx="366" cy="501" r="2.4" fill="#c9933a" opacity="0.6"/>
+  <circle cx="395" cy="472" r="2.4" fill="#c9933a" opacity="0.6"/>
+
+  <!-- ── MAGICAL SEAL (cx=306, cy=320) ── -->
+
+  <circle cx="306" cy="320" r="90"  fill="none" stroke="#c9933a" stroke-width="16" opacity="0.06" filter="url(#aura)"/>
+  <circle cx="306" cy="320" r="88"  fill="none" stroke="#c9933a" stroke-width="1.6"/>
+  <circle cx="306" cy="320" r="77"  fill="none" stroke="#c9933a" stroke-width="0.8" stroke-dasharray="6 5" opacity="0.65"/>
+
+  <polygon
+    points="306,259 316,298 349,277 328,311 366,320 328,329 349,363 316,342 306,381 296,342 263,363 283,329 245,320 283,311 263,277 296,298"
+    fill="#c9933a" opacity="0.13"/>
+  <polygon
+    points="306,259 316,298 349,277 328,311 366,320 328,329 349,363 316,342 306,381 296,342 263,363 283,329 245,320 283,311 263,277 296,298"
+    fill="none" stroke="#c9933a" stroke-width="1.6" filter="url(#soft-glow)"/>
+
+  <circle cx="306" cy="320" r="32" fill="none" stroke="#c9933a" stroke-width="1"   opacity="0.45"/>
+  <circle cx="306" cy="320" r="9"  fill="#c9933a" opacity="0.75" filter="url(#soft-glow)"/>
+
+  <!-- 8 rune tick marks -->
+  <line x1="306" y1="216" x2="306" y2="226" stroke="#c9933a" stroke-width="2.4" opacity="0.8"/>
+  <line x1="379" y1="246" x2="372" y2="253" stroke="#c9933a" stroke-width="2.4" opacity="0.8"/>
+  <line x1="410" y1="320" x2="400" y2="320" stroke="#c9933a" stroke-width="2.4" opacity="0.8"/>
+  <line x1="379" y1="394" x2="372" y2="387" stroke="#c9933a" stroke-width="2.4" opacity="0.8"/>
+  <line x1="306" y1="424" x2="306" y2="414" stroke="#c9933a" stroke-width="2.4" opacity="0.8"/>
+  <line x1="232" y1="394" x2="239" y2="387" stroke="#c9933a" stroke-width="2.4" opacity="0.8"/>
+  <line x1="202" y1="320" x2="211" y2="320" stroke="#c9933a" stroke-width="2.4" opacity="0.8"/>
+  <line x1="232" y1="246" x2="239" y2="253" stroke="#c9933a" stroke-width="2.4" opacity="0.8"/>
+
+  <!-- ── BOOK CLASP ── -->
+  <!-- orig (268,144)(277,150)(268,156)(261,150) → (429,310)(443,320)(429,330)(418,320) -->
+  <polygon points="429,310 443,320 429,330 418,320" fill="#c9933a" opacity="0.85" filter="url(#soft-glow)"/>
+  <line x1="443" y1="320" x2="456" y2="320" stroke="#c9933a" stroke-width="1.6" opacity="0.45"/>
+
+  <!-- ── TITLE ZONE ── -->
+
+  <!-- Title glow shadow (orig x=533,y=147 → x=853,y=315) -->
+  <text x="853" y="315"
+    font-family="Georgia, 'Palatino Linotype', 'Times New Roman', serif"
+    font-size="102" fill="#c9933a" text-anchor="middle" letter-spacing="16"
+    opacity="0.15" filter="url(#aura)">GRIMOIRE</text>
+
+  <!-- Title (orig x=531,y=144 → x=850,y=310) -->
+  <text x="850" y="310"
+    font-family="Georgia, 'Palatino Linotype', 'Times New Roman', serif"
+    font-size="102" fill="#c9933a" text-anchor="middle" letter-spacing="16"
+    filter="url(#title-glow)">GRIMOIRE</text>
+
+  <!-- Divider (orig y=160 → y=336) -->
+  <!-- Left line: orig x1=328,x2=486 → x1=525,x2=778 -->
+  <line x1="525" y1="336" x2="778" y2="336" stroke="#c9933a" stroke-width="1.2" opacity="0.38"/>
+  <!-- Diamond: orig center x=511 → x=818; orig points (500,160)(511,166)(522,160)(511,154) → (800,336)(818,346)(836,336)(818,326) -->
+  <polygon points="800,336 818,346 836,336 818,326" fill="#c9933a" opacity="0.52" filter="url(#soft-glow)"/>
+  <!-- Right line: orig x1=536,x2=736 → x1=858,x2=1178 -->
+  <line x1="858" y1="336" x2="1178" y2="336" stroke="#c9933a" stroke-width="1.2" opacity="0.38"/>
+
+  <!-- Subtitle line 1 (orig x=531,y=184 → x=850,y=374) -->
+  <text x="850" y="374"
+    font-family="'Courier New', Courier, monospace"
+    font-size="19" fill="#6e7ea0" text-anchor="middle" letter-spacing="0.8">
+    The world's professional best practices
+  </text>
+
+  <!-- Subtitle line 2 (orig x=531,y=202 → x=850,y=403) -->
+  <text x="850" y="403"
+    font-family="'Courier New', Courier, monospace"
+    font-size="19" fill="#6e7ea0" text-anchor="middle" letter-spacing="0.8">
+    your expert consultant, anywhere, anytime.
+  </text>
+
+  <!-- ── SPARKLES (orig positions × 1.6 for x, × 1.6 + 80 for y) ── -->
+
+  <!-- (55,55) → (88,168): R=10 r=3.2 large -->
+  <path d="M 88,158 L 91,168 L 88,178 L 85,168 Z" fill="#e8d08a" opacity="0.72" filter="url(#sparkle-glow)"/>
+  <line x1="88" y1="155" x2="88" y2="158" stroke="#e8d08a" stroke-width="1.3" opacity="0.5"/>
+  <line x1="88" y1="178" x2="88" y2="181" stroke="#e8d08a" stroke-width="1.3" opacity="0.5"/>
+  <line x1="75" y1="168" x2="78" y2="168" stroke="#e8d08a" stroke-width="1.3" opacity="0.5"/>
+  <line x1="98" y1="168" x2="101" y2="168" stroke="#e8d08a" stroke-width="1.3" opacity="0.5"/>
+
+  <!-- (80,215) → (128,424): R=6 r=2.4 medium -->
+  <path d="M 128,418 L 130,424 L 128,430 L 126,424 Z" fill="#e8d08a" opacity="0.50" filter="url(#sparkle-glow)"/>
+
+  <!-- (108,132) → (173,291): R=5 r=1.6 small -->
+  <path d="M 173,286 L 175,291 L 173,296 L 171,291 Z" fill="#e8d08a" opacity="0.38" filter="url(#sparkle-glow)"/>
+
+  <!-- (398,46) → (637,154): R=8 r=3.2 medium -->
+  <path d="M 637,146 L 640,154 L 637,162 L 634,154 Z" fill="#e8d08a" opacity="0.62" filter="url(#sparkle-glow)"/>
+  <line x1="637" y1="143" x2="637" y2="146" stroke="#e8d08a" stroke-width="1.3" opacity="0.42"/>
+  <line x1="637" y1="162" x2="637" y2="165" stroke="#e8d08a" stroke-width="1.3" opacity="0.42"/>
+  <line x1="625" y1="154" x2="628" y2="154" stroke="#e8d08a" stroke-width="1.3" opacity="0.42"/>
+  <line x1="645" y1="154" x2="648" y2="154" stroke="#e8d08a" stroke-width="1.3" opacity="0.42"/>
+
+  <!-- (474,257) → (758,491): R=5 r=1.6 small -->
+  <path d="M 758,486 L 760,491 L 758,496 L 756,491 Z" fill="#e8d08a" opacity="0.38" filter="url(#sparkle-glow)"/>
+
+  <!-- (624,70) → (998,192): R=10 r=4 large -->
+  <path d="M 998,182 L 1002,192 L 998,202 L 994,192 Z" fill="#e8d08a" opacity="0.72" filter="url(#sparkle-glow)"/>
+  <line x1="998" y1="179" x2="998" y2="182" stroke="#e8d08a" stroke-width="1.3" opacity="0.5"/>
+  <line x1="998" y1="202" x2="998" y2="205" stroke="#e8d08a" stroke-width="1.3" opacity="0.5"/>
+  <line x1="986" y1="192" x2="989" y2="192" stroke="#e8d08a" stroke-width="1.3" opacity="0.5"/>
+  <line x1="1007" y1="192" x2="1010" y2="192" stroke="#e8d08a" stroke-width="1.3" opacity="0.5"/>
+
+  <!-- (703,214) → (1125,422): R=6 r=2.4 medium -->
+  <path d="M 1125,416 L 1127,422 L 1125,428 L 1123,422 Z" fill="#e8d08a" opacity="0.50" filter="url(#sparkle-glow)"/>
+
+  <!-- (762,98) → (1219,237): R=8 r=3.2 medium -->
+  <path d="M 1219,229 L 1222,237 L 1219,245 L 1216,237 Z" fill="#e8d08a" opacity="0.62" filter="url(#sparkle-glow)"/>
+  <line x1="1219" y1="226" x2="1219" y2="229" stroke="#e8d08a" stroke-width="1.3" opacity="0.42"/>
+  <line x1="1219" y1="245" x2="1219" y2="248" stroke="#e8d08a" stroke-width="1.3" opacity="0.42"/>
+
+  <!-- (760,260) → (1216,496): R=5 r=1.6 tiny -->
+  <path d="M 1216,491 L 1218,496 L 1216,501 L 1214,496 Z" fill="#e8d08a" opacity="0.30" filter="url(#sparkle-glow)"/>
+
+</svg>
