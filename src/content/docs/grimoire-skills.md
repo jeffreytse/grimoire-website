@@ -185,6 +185,40 @@ User: "Why do code reviews matter? Can't we just rely on tests?"
 
 ---
 
+### learn-best-practice
+
+**When to use:** When the user wants to actually internalize a specific installed practice — not just understand or apply it once, but build durable recall so they can use it correctly later without an AI assistant present.
+
+**What it produces:** A baseline self-explanation check, a compressed memorable "trigger → core steps → trip-up" card, a scenario-based active-recall test (with a correction-and-retest loop if the answer reveals a real gap), a 3–5 item portable memory aid, and a recommended spaced-review schedule. Works even if the practice isn't installed but exists in a cloned repo on disk — and offers to install it afterward.
+
+**Example invocation:**
+
+```
+User: "I want to actually learn the margin-of-safety concept, not just apply it once."
+→ learn-best-practice: asks for a self-explanation first, presents a compressed card,
+  poses a stock-valuation scenario and checks the answer against calculate-margin-of-safety's
+  actual steps, produces a 4-item memory checklist, recommends re-testing in 3 days
+```
+
+---
+
+### learn-grimoire
+
+**When to use:** When a new user wants to get oriented on grimoire itself — what it is, why it exists, and how to actually use it — or an existing user has been using it without understanding the system underneath.
+
+**What it produces:** A one-paragraph explanation of what grimoire is, why it exists (an AI that knows expert standards won't enforce them without an explicit trigger), a brief map of core concepts (domains/skills/meta layer/profiles), how to use it day to day, and a close inviting a first real task.
+
+**Example invocation:**
+
+```
+User: "I just installed this. What even is grimoire?"
+→ learn-grimoire: one-paragraph explanation, the "why" (trigger + verified steps
+  an AI won't enforce unprompted), a brief map of domains/skills/meta-layer/profiles,
+  then: "Bring me a real problem you're working on right now."
+```
+
+---
+
 ### adapt-best-practice
 
 **When to use:** When the user wants to apply a practice but has constraints that differ from the canonical case — team size, regulation, budget, maturity, or tech stack.

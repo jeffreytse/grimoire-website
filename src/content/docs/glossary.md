@@ -96,7 +96,7 @@ The threshold a practice must clear to qualify for used by MOST top-tier organiz
 Mutually Exclusive, Collectively Exhaustive. A decomposition method where sub-problems don't overlap and together cover the whole problem. Used by `plan-best-practice-solution` to break complex multi-domain problems into skill-sized pieces.
 
 **Meta skill**
-A skill that operates on the grimoire framework itself rather than on a domain subject. There are 29 meta skills in `skills/meta/` — see [grimoire-skills.md](./grimoire-skills.md) for the full list, organized into user-facing and contributor/maintainer skills.
+A skill that operates on the grimoire framework itself rather than on a domain subject. There are 31 meta skills in `skills/meta/` — see [grimoire-skills.md](./grimoire-skills.md) for the full list, organized into user-facing and contributor/maintainer skills.
 
 ---
 

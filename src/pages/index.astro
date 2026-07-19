@@ -41,13 +41,13 @@ import Footer from '../components/Footer.astro';
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    { "@type": "Question", "name": "What is Grimoire?", "acceptedAnswer": { "@type": "Answer", "text": "Grimoire is a free, open-source skills manager for best practices — 1000+ skills across 26 domains (engineering, law, finance, design, health, and more), each sourced from a real institution or study. Install once, and your AI routes to the right skill automatically." } },
+    { "@type": "Question", "name": "What is Grimoire?", "acceptedAnswer": { "@type": "Answer", "text": "Grimoire is a free, open-source skills manager for best practices — 1000+ skills across 27 domains (engineering, law, finance, design, health, and more), each sourced from a real institution or study. Install once, and your AI routes to the right skill automatically." } },
     { "@type": "Question", "name": "Is Grimoire free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Grimoire is free and open-source under the MIT license, published at github.com/jeffreytse/grimoire." } },
     { "@type": "Question", "name": "How is Grimoire different from a prompt library or just asking the AI directly?", "acceptedAnswer": { "@type": "Answer", "text": "Prompt libraries collect ad-hoc instructions with no verification. Every Grimoire skill must cite a real institution, pass a quality review, and prove it changes behavior — the difference between telling an AI to 'act like an expert' and handing it the expert's actual, sourced playbook." } },
     { "@type": "Question", "name": "Does Grimoire enforce best practices, or is it just a skill library?", "acceptedAnswer": { "@type": "Answer", "text": "Both. Grimoire is a skills manager for best practices — install, manage, and update skills like npm — with a built-in compliance linter, grimoire check, that verifies any artifact against your declared standards, the same way ESLint checks code style." } },
     { "@type": "Question", "name": "How do I install Grimoire?", "acceptedAnswer": { "@type": "Answer", "text": "Run curl -fsSL https://raw.githubusercontent.com/jeffreytse/grimoire/main/scripts/install.sh | bash, then grimoire wizard — it detects your installed AI agents and walks you through setup. Works with Claude Code, Copilot CLI, Gemini CLI, Antigravity, OpenCode, OpenClaw, Codex CLI, and Cursor." } },
     { "@type": "Question", "name": "What AI assistants does Grimoire support?", "acceptedAnswer": { "@type": "Answer", "text": "Claude Code, GitHub Copilot CLI, Gemini CLI, Google Antigravity, OpenCode, OpenClaw, Codex CLI, and Cursor — install once and every detected agent picks it up automatically." } },
-    { "@type": "Question", "name": "How many best-practice skills are included, and where do they come from?", "acceptedAnswer": { "@type": "Answer", "text": "1000+ skills across 26 domains, each cited to a named institution, study, or professional standard — McKinsey, Google, WHO, ABA, NSCA, and more — not generic advice." } },
+    { "@type": "Question", "name": "How many best-practice skills are included, and where do they come from?", "acceptedAnswer": { "@type": "Answer", "text": "1000+ skills across 27 domains, each cited to a named institution, study, or professional standard — McKinsey, Google, WHO, ABA, NSCA, and more — not generic advice." } },
     { "@type": "Question", "name": "Can I contribute my own best-practice skill?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Anyone with real expertise can contribute — a doctor, lawyer, engineer, or coach. Every submission passes an automated and human quality review (source, actionability, specificity, consensus) before merging." } },
     { "@type": "Question", "name": "Does Grimoire send my data anywhere?", "acceptedAnswer": { "@type": "Answer", "text": "No. Skills run entirely inside your AI assistant, client-side — Grimoire doesn't call any external API or server. grimoire check --independent can optionally call an LLM provider for deeper AI-judged compliance checks, but only if you enable it." } }
   ]
@@ -148,11 +148,11 @@ import Footer from '../components/Footer.astro';
           <div class="mt-1 text-sm tracking-wider uppercase text-slate-400">Skills</div>
         </div>
         <div class="reveal">
-          <div class="text-4xl font-black counter gold-gradient" data-target="26">0</div>
+          <div class="text-4xl font-black counter gold-gradient" data-target="27">0</div>
           <div class="mt-1 text-sm tracking-wider uppercase text-slate-400">Domains</div>
         </div>
         <div class="reveal">
-          <div class="text-4xl font-black counter gold-gradient" data-target="7">0</div>
+          <div class="text-4xl font-black counter gold-gradient" data-target="8">0</div>
           <div class="mt-1 text-sm tracking-wider uppercase text-slate-400">AI Platforms</div>
         </div>
         <div class="reveal">
@@ -254,7 +254,7 @@ import Footer from '../components/Footer.astro';
             </div>
             <div class="pb-12">
               <h3 class="mb-2 text-lg font-bold text-white">Install once, everywhere</h3>
-              <p class="text-sm leading-relaxed text-slate-400">One command installs grimoire into every AI agent on your system. Claude Code, Cursor, Codex, Gemini CLI, OpenCode, OpenClaw — all detect it automatically.</p>
+              <p class="text-sm leading-relaxed text-slate-400">One command installs grimoire into every AI agent on your system. Claude Code, Copilot CLI, Cursor, Codex, Gemini CLI, OpenCode, OpenClaw, and Antigravity — all detect it automatically.</p>
             </div>
           </div>
           <div class="flex gap-6">
@@ -601,7 +601,7 @@ import Footer from '../components/Footer.astro';
 grimoire install   # install to all detected agents</pre>
             <button class="copy-btn px-3 py-1.5 rounded text-xs font-medium text-slate-400 border shrink-0 transition-all" style="border-color:#1e2a3a" onclick="copyText('grimoire update\\ngrimoire install', 'btn-skills')" id="btn-skills">Copy</button>
           </div>
-          <p class="text-xs text-slate-400">Detects Claude Code, Codex, Gemini CLI, OpenCode, OpenClaw, and Cursor. Installs <span id="install-total-1">1000+</span> skills to all found agents.</p>
+          <p class="text-xs text-slate-400">Detects Claude Code, Copilot CLI, Codex, Gemini CLI, OpenCode, OpenClaw, Cursor, and Antigravity. Installs <span id="install-total-1">1000+</span> skills to all found agents.</p>
         </div>
       </div>
     </div>
@@ -694,7 +694,7 @@ grimoire install   # install to all detected agents</pre>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
           <h3 class="mb-3 text-lg font-semibold text-white">What is Grimoire?</h3>
-          <p class="text-slate-400">Grimoire is a free, open-source skills manager for best practices — 1000+ skills across 26 domains (engineering, law, finance, design, health, and more), each sourced from a real institution or study. Install once, and your AI routes to the right skill automatically.</p>
+          <p class="text-slate-400">Grimoire is a free, open-source skills manager for best practices — 1000+ skills across 27 domains (engineering, law, finance, design, health, and more), each sourced from a real institution or study. Install once, and your AI routes to the right skill automatically.</p>
         </div>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
@@ -728,7 +728,7 @@ grimoire install   # install to all detected agents</pre>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
           <h3 class="mb-3 text-lg font-semibold text-white">How many best-practice skills are included, and where do they come from?</h3>
-          <p class="text-slate-400">1000+ skills across 26 domains, each cited to a named institution, study, or professional standard — McKinsey, Google, WHO, ABA, NSCA, and more — not generic advice.</p>
+          <p class="text-slate-400">1000+ skills across 27 domains, each cited to a named institution, study, or professional standard — McKinsey, Google, WHO, ABA, NSCA, and more — not generic advice.</p>
         </div>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">

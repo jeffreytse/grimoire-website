@@ -257,6 +257,8 @@ grimoire is self-managing. The meta skills in `skills/meta/` run the framework i
 | `compare-best-practices`                 | Side-by-side comparison when multiple practices apply — produces a table and a clear recommendation                       |
 | `audit-applied-best-practices`           | Audits existing work for which practices were applied, which are missing, and what gaps to close                          |
 | `explain-best-practice`                  | Educational deep-dive: problem → origin → evidence → mechanism → failure modes → misconceptions                           |
+| `learn-best-practice`                    | Builds durable, independent recall of one practice — active-recall testing, spaced review, a portable memory aid          |
+| `learn-grimoire`                         | Onboards a user to grimoire itself — what it is, why it exists, core concepts, and how to use it day to day               |
 | `adapt-best-practice`                    | Adapts a practice for specific constraints, classifying each step as Core/Adjustable/Optional                             |
 | `teach-best-practice`                    | Produces audience-tailored talking points, brief, or slide outline for sharing a practice with others                     |
 | `pin-best-practice-preference`           | Saves a practice preference at session, project, or global level for a domain or subdomain                                |
