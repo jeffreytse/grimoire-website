@@ -1,6 +1,6 @@
 # Agent Integration Guide
 
-grimoire works across eight AI agents. Each has its own plugin format and installation method. This guide covers installation, usage, and tool mapping for each.
+grimoire works across eight named AI agents, plus a generic `agent` fallback target for anything else. Each has its own plugin format and installation method. This guide covers installation, usage, and tool mapping for each.
 
 ---
 
@@ -16,6 +16,7 @@ grimoire works across eight AI agents. Each has its own plugin format and instal
 | OpenClaw           | See `.openclaw/INSTALL.md`            | `grimoire install --target openclaw`                                                                           |
 | Codex CLI          | `AGENTS.md` (auto-loaded)             | `grimoire --target codex` for skills                                                                           |
 | Cursor             | `AGENTS.md` (context injection)       | `grimoire --target cursor`                                                                                     |
+| Generic Agent      | `~/.agents/AGENTS.md`                 | `grimoire install --target agent`                                                                              |
 
 ---
 
@@ -203,11 +204,21 @@ See [`.openclaw/INSTALL.md`](https://github.com/jeffreytse/grimoire-core/blob/ma
 
 ---
 
-## Other agents
+## Generic Agent (any other AGENTS.md-reading agent)
 
-Any agent that reads `AGENTS.md` from the project root gets grimoire's bootstrap context automatically — skill path convention, domain list, and routing instructions.
+Any agent that reads `AGENTS.md` from the project root gets grimoire's bootstrap context automatically — skill path convention, domain list, and routing instructions. The `agent` target is a built-in fallback for exactly this case: it's not tied to a specific vendor, and `grimoire install` selects it automatically when no supported agent is detected in `PATH`.
 
 **Install:**
+
+```bash
+grimoire install --target agent
+```
+
+**Plugin file:** `~/.agents/AGENTS.md` (global) or `.agents/AGENTS.md` (project) — same bootstrap-context mechanism as other `AGENTS.md`-reading agents.
+
+Skills install to `~/.agents/skills` (global) or `.agents/skills` (project-scoped). The `wizard` always offers "Generic Agent" as an option alongside whatever agents it auto-detects.
+
+Or install to every detected agent at once:
 
 ```bash
 grimoire install --target all
