@@ -12,19 +12,39 @@ The test: "Would this skill make an AI agent perform like a domain expert?" If n
 
 ### Which AI agents does grimoire support?
 
-| Agent              | How it loads                                                                                                   |
-| ------------------ | -------------------------------------------------------------------------------------------------------------- |
-| Claude Code        | `/plugin marketplace add jeffreytse/grimoire-core` then `/plugin install grimoire@grimoire-core`               |
-| GitHub Copilot CLI | `copilot plugin marketplace add jeffreytse/grimoire-core` then `copilot plugin install grimoire@grimoire-core` |
-| Codex CLI          | `AGENTS.md` — auto-loaded at session start                                                                     |
-| Cursor             | `AGENTS.md` — context injection                                                                                |
-| OpenCode           | `.opencode/plugins/grimoire.js` ESM plugin                                                                     |
-| Gemini CLI         | `gemini-extension.json` → `GEMINI.md`                                                                          |
-| OpenClaw           | See `.openclaw/INSTALL.md`                                                                                     |
+| Agent                     | Native plugin                                                                                         | grimoire CLI / MCP                                  |
+| ------------------------- | ----------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
+| Claude Code               | `/plugin marketplace add jeffreytse/grimoire-core` then `/plugin install grimoire@grimoire`           | `--target claude` · MCP + prompt hook               |
+| GitHub Copilot CLI        | `copilot plugin marketplace add jeffreytse/grimoire-core` then `copilot plugin install grimoire@grimoire` | `--target copilot` · MCP                        |
+| Codex                     | `codex plugin marketplace add jeffreytse/grimoire-core` then `codex plugin add grimoire@grimoire`     | `--target codex` · MCP                              |
+| OpenCode                  | `opencode plugin 'github:jeffreytse/grimoire-core#main'`                                              | `--target opencode` · MCP                           |
+| Pi                        | `pi install git:github.com/jeffreytse/grimoire-core`                                                  | `--target pi` · MCP                                 |
+| Kimi Code                 | `/plugins install https://github.com/jeffreytse/grimoire-core`                                        | `--target kimi` · MCP                               |
+| OMP (oh-my-pi)            | `omp plugin install --scope user grimoire@grimoire`                                                   | `--target omp` · MCP                                |
+| Gemini CLI                | extension loads context only                                                                          | `--target gemini` · MCP                             |
+| Antigravity (agy)         | not supported                                                                                         | `--target antigravity` · MCP                        |
+| OpenClaw                  | see `.openclaw/INSTALL.md`                                                                            | `--target openclaw`                                 |
+| DeepSeek Harness          | —                                                                                                     | `--target dsh`                                      |
+| Grok Build / Muse / MiniMax Code | —                                                                                              | `--target grok\|muse\|minimax --global`            |
+| Cursor / Windsurf / Cline | —                                                                                                     | MCP: `grimoire mcp config --target cursor`          |
+| Any other agent           | —                                                                                                     | `--target agent` (`~/.agents/skills`)               |
+
+CLI cells are `grimoire install --target <name>`; "MCP" means `grimoire mcp install --target <name>` works. Full details: [Agent Integration Guide](./agents.md).
+
+### Skills mode or MCP mode — which should I use?
+
+- **Skills mode** (`grimoire install` or a native plugin) copies skills into your agent. Every skill is a slash command, and the `start-best-practice` trigger runs automatically before each request. Supports domain and sub-domain installs.
+- **MCP mode** (`grimoire mcp install`) copies nothing. The agent searches and loads skills on demand through grimoire's MCP server, so 1000+ skills cost no context until one is used, and one server covers every agent. In Claude Code a prompt hook suggests matching skills on every prompt.
+
+Pick MCP mode for minimal context and multi-agent setups, or for editors grimoire can't install into (Cursor, Windsurf, Cline). Pick skills mode if you want slash commands and automatic `start-best-practice`. Switching is safe either way — see [MCP Mode](./mcp-mode.md#skills-mode-or-mcp-mode).
+
+### How do I run a specific skill in MCP mode?
+
+Skills aren't slash commands in MCP mode. Write `grimoire:<skill-name>` followed by your task in any agent — e.g. `grimoire:negotiate-salary I have an offer at $140k` — or type `/grimoire:skill <skill-name>` in Claude Code. A mistyped name returns "did you mean" suggestions. Meta workflows work the same way: `grimoire:suggest-best-practice my team is losing confidence`.
 
 ### Can grimoire be used offline?
 
-Skills are loaded into the agent's context at install time. Once installed, they're available locally — no network access is required during use.
+Yes. In skills mode, skills are installed locally at install time — no network access is needed during use. In MCP mode, the grimoire server runs locally and serves skills from your local package clone; only `grimoire update` needs the network.
 
 ### What if no grimoire skill covers my situation?
 

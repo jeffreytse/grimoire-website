@@ -24,8 +24,8 @@ import FooterSimple from '../components/FooterSimple.astro';
   "description": "Install 1000+ best practices skills into Copilot in under 60 seconds.",
   "totalTime": "PT1M",
   "step": [
-    { "@type": "HowToStep", "position": 1, "name": "Run the install command", "text": "grimoire install --target all" },
-    { "@type": "HowToStep", "position": 2, "name": "Skills install to Copilot plugin directory", "text": "Grimoire installs 1000+ best practices skill files. Copilot loads them automatically." },
+    { "@type": "HowToStep", "position": 1, "name": "Run the install command", "text": "grimoire install --target copilot" },
+    { "@type": "HowToStep", "position": 2, "name": "Skills install to ~/.copilot/skills/", "text": "Grimoire installs 1000+ best practices skill files. Copilot loads them automatically." },
     { "@type": "HowToStep", "position": 3, "name": "Start using best practices", "text": "Describe any task. Grimoire routes to the matching expert skill and applies it before Copilot responds." }
   ]
 }</script>
@@ -60,13 +60,18 @@ import FooterSimple from '../components/FooterSimple.astro';
       <h2 class="mb-8 text-3xl font-bold text-center text-white">Install Grimoire for Copilot</h2>
       <div class="p-6 install-block">
         <pre class="text-sm text-slate-300 overflow-x-auto">copilot plugin marketplace add jeffreytse/grimoire-core
-copilot plugin install grimoire@grimoire-core</pre>
+copilot plugin install grimoire@grimoire</pre>
         <p class="mt-3 text-xs text-slate-400">Or use the grimoire CLI (installs to all detected agents):</p>
         <pre class="mt-2 text-sm text-slate-300">curl -fsSL https://raw.githubusercontent.com/jeffreytse/grimoire/main/scripts/install.sh | bash
 grimoire update
 grimoire install</pre>
       </div>
-      <p class="mt-4 text-sm text-center text-slate-400">Skills install to <code style="color:#e8d08a">Copilot plugin directory</code> — Copilot loads them automatically.</p>
+      <div class="p-6 mt-4 install-block">
+        <p class="mb-2 text-xs font-semibold tracking-widest uppercase" style="color:#c9933a">Or MCP mode — skills on demand</p>
+        <pre class="text-sm text-slate-300 overflow-x-auto">grimoire mcp install --target copilot</pre>
+        <p class="mt-3 text-xs text-slate-400">Nothing copied into the agent — it loads skills from grimoire's MCP server only when a task needs one. Run a specific skill with <code style="color:#e8d08a">grimoire:&lt;skill-name&gt;</code>. <a href="/docs/mcp-mode" style="color:#e8d08a">MCP mode docs →</a></p>
+      </div>
+      <p class="mt-4 text-sm text-center text-slate-400">Skills install to <code style="color:#e8d08a">~/.copilot/skills/</code> — Copilot loads them automatically.</p>
     </div>
   </section>
 
@@ -79,11 +84,11 @@ grimoire install</pre>
       <div class="space-y-5">
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
           <h3 class="mb-3 text-lg font-semibold text-white">How do I install Grimoire for Copilot?</h3>
-          <p class="text-slate-400">Run copilot plugin marketplace add jeffreytse/grimoire-core, then copilot plugin install grimoire@grimoire-core from your terminal. Copilot CLI will download and register the Grimoire plugin automatically.</p>
+          <p class="text-slate-400">Run copilot plugin marketplace add jeffreytse/grimoire-core, then copilot plugin install grimoire@grimoire from your terminal. Copilot CLI will download and register the Grimoire plugin automatically.</p>
         </div>
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
           <h3 class="mb-3 text-lg font-semibold text-white">Does the grimoire shell script install to Copilot?</h3>
-          <p class="text-slate-400">Yes. Running the grimoire script with --target all installs to all detected agents including Copilot. Auto-detection checks for the copilot binary.</p>
+          <p class="text-slate-400">Yes. Running grimoire install --target copilot installs to Copilot directly; --target all installs to every agent including Copilot. Auto-detection checks for the copilot binary.</p>
         </div>
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
           <h3 class="mb-3 text-lg font-semibold text-white">Can I use Grimoire skills in Copilot Chat?</h3>

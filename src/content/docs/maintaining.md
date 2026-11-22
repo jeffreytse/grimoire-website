@@ -58,8 +58,8 @@ If a PR contains multiple skills, ask the contributor to split it before reviewi
 If the PR adds a new domain or subdomain:
 
 - Verify the directory structure matches the pattern in [architecture.md](./architecture.md)
-- Verify plugin.json follows the naming convention: `grimoire-<domain>` / `grimoire-<domain>-<subdomain>`
-- Verify marketplace.json has entries for the new domain and each subdomain
+- Verify plugin names follow the naming convention: `grimoire-<domain>` / `grimoire-<domain>-<subdomain>`
+- Verify `make update-plugin-manifest` was run and `make check-manifest` passes (see [Agent manifests](#agent-manifests))
 - Verify at least 2 seed skills are included and all pass review-best-practice-skill
 - Apply `audit-best-practice-domain` to the new domain to confirm all seed skills PASS
 
@@ -116,17 +116,31 @@ PR title format: `deprecate(<domain>/<skill-name>): <one-line reason>`
 After the deprecation PR merges and one release cycle passes:
 
 1. Delete the skill directory
-2. Remove the entry from `.claude-plugin/marketplace.json`
-3. Remove the path from the domain's `.claude-plugin/plugin.json` `skills` array
-4. If the skill had significant install volume, tag the release with a breaking-change note
+2. Run `make update-plugin-manifest` to drop it from every agent manifest, then `make check-manifest`
+3. If the skill had significant install volume, tag the release with a breaking-change note
 
 **Never delete in the same PR as the deprecation notice** — users need time to migrate.
 
 ---
 
+## Agent manifests
+
+Skills live only under `skills/`, and each agent's manifest lists the nested skill folders explicitly. One script generates them all — run it after adding, moving, renaming, or removing a skill:
+
+```bash
+make update-plugin-manifest   # regenerates .claude-plugin, .codex-plugin, .grok-plugin, .muse-plugin,
+                              #   kimi.plugin.json and package.json (pi.skills) from skills/ + VERSION
+make check-manifest           # CI gate: fails if any manifest is out of sync or a skill name is invalid
+make bump-version V=x.y.z     # bump VERSION and regenerate manifests
+```
+
+`check-manifest` also enforces skill names: they must match their folder, use lowercase-hyphen, stay ≤ 64 characters, and be unique across all domains.
+
+---
+
 ## Release process
 
-grimoire uses semantic versioning at the domain level (each domain plugin.json has its own version).
+grimoire-core uses semantic versioning. The single source of truth is the `VERSION` file; every agent manifest is regenerated from it.
 
 ### Version bump rules
 
@@ -139,8 +153,8 @@ grimoire uses semantic versioning at the domain level (each domain plugin.json h
 
 ### Release steps
 
-1. Bump `version` in affected domain plugin.json files
-2. Update `.claude-plugin/marketplace.json` if any `source.path` values changed
+1. Run `make bump-version V=x.y.z` — bumps `VERSION` and regenerates all manifests
+2. Run `make check-manifest` to confirm every manifest is in sync
 3. Add a CHANGELOG entry (see below)
 4. Tag the release on GitHub: `git tag v<version>`
 5. Push the tag: `git push origin v<version>`

@@ -1,125 +1,132 @@
 # Agent Integration Guide
 
-grimoire works across eight named AI agents, plus a generic `agent` fallback target for anything else. Each has its own plugin format and installation method. This guide covers installation, usage, and tool mapping for each.
+grimoire works with fourteen named AI agents, plus a generic `agent` fallback target for anything that reads `~/.agents/skills`. There are three ways to get skills into an agent:
+
+1. **Native plugin** — the agent's own plugin/marketplace command.
+2. **grimoire CLI (skills mode)** — `grimoire install --target <name>` links skills into the agent's skills folder. Works for every agent below.
+3. **MCP mode** — `grimoire mcp install --target <name>` installs nothing into the agent; skills are served on demand over MCP. See [MCP Mode](./mcp-mode.md).
 
 ---
 
 ## Supported agents
 
-| Agent              | Plugin file                           | Install method                                                                                                 |
-| ------------------ | ------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| Claude Code        | `.claude-plugin/plugin.json`          | `/plugin marketplace add jeffreytse/grimoire-core` then `/plugin install grimoire@grimoire-core`               |
-| GitHub Copilot CLI | `.claude-plugin/plugin.json` (shared) | `copilot plugin marketplace add jeffreytse/grimoire-core` then `copilot plugin install grimoire@grimoire-core` |
-| Gemini CLI         | `gemini-extension.json` + `GEMINI.md` | `gemini extensions install https://github.com/jeffreytse/grimoire-core`                                        |
-| Antigravity CLI    | `~/.gemini/AGENTS.md`                 | `grimoire install --target antigravity`                                                                        |
-| OpenCode           | `.opencode/plugins/grimoire.js`       | `.opencode/plugins/` auto-load or `opencode.json` plugin array                                                 |
-| OpenClaw           | See `.openclaw/INSTALL.md`            | `grimoire install --target openclaw`                                                                           |
-| Codex CLI          | `AGENTS.md` (auto-loaded)             | `grimoire --target codex` for skills                                                                           |
-| Cursor             | `AGENTS.md` (context injection)       | `grimoire --target cursor`                                                                                     |
-| Generic Agent      | `~/.agents/AGENTS.md`                 | `grimoire install --target agent`                                                                              |
+| Agent              | Native plugin install                                                                                       | grimoire CLI                    | MCP mode |
+| ------------------ | ----------------------------------------------------------------------------------------------------------- | ------------------------------- | -------- |
+| Claude Code        | `/plugin marketplace add jeffreytse/grimoire-core`<br>`/plugin install grimoire@grimoire`                   | `--target claude`               | ✓ (+ prompt hook) |
+| GitHub Copilot CLI | `copilot plugin marketplace add jeffreytse/grimoire-core`<br>`copilot plugin install grimoire@grimoire`     | `--target copilot`              | ✓        |
+| Codex              | `codex plugin marketplace add jeffreytse/grimoire-core`<br>`codex plugin add grimoire@grimoire`             | `--target codex`                | ✓        |
+| OpenCode           | `opencode plugin 'github:jeffreytse/grimoire-core#main'`                                                    | `--target opencode`             | ✓        |
+| Pi                 | `pi install git:github.com/jeffreytse/grimoire-core`                                                        | `--target pi`                   | ✓        |
+| Kimi Code          | `/plugins install https://github.com/jeffreytse/grimoire-core`                                              | `--target kimi`                 | ✓        |
+| OMP (oh-my-pi)     | `omp plugin marketplace add jeffreytse/grimoire-core`<br>`omp plugin install --scope user grimoire@grimoire` | `--target omp`                  | ✓        |
+| Gemini CLI         | `gemini extensions install https://github.com/jeffreytse/grimoire-core` (context only)                      | `--target gemini`               | ✓        |
+| Antigravity (agy)  | not supported — use the CLI                                                                                 | `--target antigravity`          | ✓        |
+| OpenClaw           | see [`.openclaw/INSTALL.md`](https://github.com/jeffreytse/grimoire-core/blob/main/.openclaw/INSTALL.md)    | `--target openclaw`             | —        |
+| DeepSeek Harness   | —                                                                                                           | `--target dsh`                  | —        |
+| Grok Build         | —                                                                                                           | `--target grok --global`        | —        |
+| Muse               | —                                                                                                           | `--target muse --global`        | —        |
+| MiniMax Code       | —                                                                                                           | `--target minimax --global`     | —        |
+| Cursor / Windsurf / Cline | —                                                                                                    | —                               | `grimoire mcp config` |
+| Any other agent    | —                                                                                                           | `--target agent` (`~/.agents/skills`) | —  |
+
+Every CLI cell is `grimoire install --target <name>`. Add `--global` for a user-wide install; without it, skills go into the current project. Grok, Muse, and MiniMax are global-only because they load skills from a plugin bundle, which grimoire builds and registers for you. `--target all` installs to every agent, detected or not; with no `--target`, grimoire auto-detects agents on your `PATH`.
+
+**Domain plugins:** native marketplaces also offer one plugin per domain, e.g. `grimoire-engineering@grimoire`. Skills are namespaced (`/grimoire-engineering:propose-conventional-commit`). For subdomain-level installs, use the grimoire CLI.
+
+**Verification status:** native installs for Claude Code, Copilot, Codex, and OpenCode are tested end to end. Pi, Kimi, and OMP native installs follow each agent's documented format but are untested. Gemini's extension loads `GEMINI.md` context only — use the CLI for its skills. Antigravity's plugin installer ignores declared skill paths, so it cannot find grimoire's nested skills.
 
 ---
 
 ## Claude Code
 
-**Install:**
+**Native plugin:**
 
 ```
 /plugin marketplace add jeffreytse/grimoire-core
-/plugin install grimoire@grimoire-core
+/plugin install grimoire@grimoire                  # all domains
+/plugin install grimoire-engineering@grimoire      # one domain
 ```
 
-**Plugin file:** `.claude-plugin/plugin.json`
+**grimoire CLI:** `grimoire install --target claude` — skills go to `.claude/skills` (project) or `~/.claude/skills` (`--global`), and the `start-best-practice` trigger is written to `CLAUDE.md`.
 
-Loads all skill paths listed in the `skills` array. Skills are namespaced by plugin name, e.g. `/grimoire-engineering:propose-conventional-commit`.
+**MCP mode:** `grimoire mcp install` — registers the server with `claude mcp add`, writes the instruction to `~/.claude/CLAUDE.md` (or `./CLAUDE.md` with `--scope project`), and adds the `UserPromptSubmit` [prompt hook](./mcp-mode.md#the-prompt-hook-claude-code).
 
 **Using skills:**
 
 ```
 /suggest-best-practice
 /write-best-practice-skill
-/review-best-practice-skill
+/grimoire-engineering:propose-conventional-commit     # namespaced, native plugin
+grimoire:propose-conventional-commit                  # MCP mode
+/grimoire:skill propose-conventional-commit           # MCP mode slash command
 ```
 
-Invoke any meta skill by name with a leading slash. For domain skills, describe your situation and `suggest-best-practice` routes automatically.
+For domain skills, describe your situation and `suggest-best-practice` routes automatically.
 
-**Tool names:** Use native Claude Code tool names (Read, Write, Edit, Bash, Skill, TodoWrite).
+**Tool names:** native Claude Code tool names (Read, Write, Edit, Bash, Skill, TodoWrite).
 
 ---
 
 ## GitHub Copilot CLI
 
-**Install:**
+**Native plugin:**
 
 ```
 copilot plugin marketplace add jeffreytse/grimoire-core
-copilot plugin install grimoire@grimoire-core
+copilot plugin install grimoire@grimoire
 ```
 
-**Plugin files:** `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json` (Copilot CLI checks `.claude-plugin/` automatically — shared with Claude Code)
+Copilot CLI reads the shared `.claude-plugin/` manifests. Skills are namespaced by plugin name, e.g. `grimoire-engineering:propose-conventional-commit`.
 
-Skills are namespaced by plugin name, e.g. `grimoire-engineering:propose-conventional-commit`.
+**grimoire CLI:** `grimoire install --target copilot` — skills go to `.github/skills` (project) or `~/.copilot/skills` (`--global`).
 
-**Using skills:**
-Describe your task. Copilot CLI activates the matching skill based on its `description` triggering conditions.
+**MCP mode:** `grimoire mcp install --target copilot` — `copilot mcp add`, instruction in `~/.copilot/copilot-instructions.md` (user scope only).
+
+**Using skills:** describe your task. Copilot activates the matching skill from its `description` triggering conditions.
 
 ---
 
-## Codex CLI
+## Codex
 
-**Install:**
+**Native plugin:**
 
-```bash
-grimoire install --target codex
+```
+codex plugin marketplace add jeffreytse/grimoire-core
+codex plugin add grimoire@grimoire
 ```
 
-Codex CLI supports `AGENTS.md` natively — grimoire's `AGENTS.md` is auto-loaded at session start, providing skill path conventions and domain routing. For the full skill library, run `grimoire` to copy skills to the Codex skills directory.
+Uses the generated `.codex-plugin/plugin.json` and `.agents/plugins/marketplace.json`.
 
-**Using skills:**
-Codex CLI has an interactive plugin browser: run `codex` then type `/plugins` to browse and install marketplace plugins. For grimoire skills installed via `grimoire`, describe your task and Codex routes to the matching skill via `AGENTS.md` context.
+**grimoire CLI:** `grimoire install --target codex` — skills go to `.agents/skills` (project) or `~/.agents/skills` (`--global`).
 
----
+**MCP mode:** `grimoire mcp install --target codex` — `codex mcp add`, instruction in `~/.codex/AGENTS.md` (user scope only).
 
-## Cursor
-
-**Install:**
-
-```bash
-grimoire install --target cursor
-```
-
-No official Cursor CLI plugin install command exists. Skills installed via `grimoire` are available through AGENTS.md context injection. Cursor reads `AGENTS.md` from the project root automatically in Agent mode.
-
-**Using skills:**
-Describe your situation in the Cursor chat or Composer panel. Skills activate when the task matches a skill's triggering conditions.
+**Using skills:** describe your task and Codex routes to the matching skill, or run `/plugins` inside `codex` to browse the marketplace.
 
 ---
 
 ## OpenCode
 
-**Install:**
-Add to your `opencode.json` (global: `~/.config/opencode/opencode.json`, or project-level):
+**Native plugin:**
 
-```json
-{
-  "plugin": ["grimoire@git+https://github.com/jeffreytse/grimoire-core.git"]
-}
+```bash
+opencode plugin 'github:jeffreytse/grimoire-core#main'
 ```
 
-Restart OpenCode. The plugin registers all grimoire skills automatically.
+See [`.opencode/INSTALL.md`](https://github.com/jeffreytse/grimoire-core/blob/main/.opencode/INSTALL.md) for pinning a release. The plugin (`.opencode/plugins/grimoire.js`, an ESM module):
 
-**Plugin file:** `.opencode/plugins/grimoire.js` (ESM module)
-
-The plugin:
-
-1. Scans `./skills/` recursively for SKILL.md files
+1. Registers grimoire's nested skill folders with OpenCode
 2. Injects `AGENTS.md` as bootstrap context
 3. Maps Claude Code tool references to OpenCode native equivalents
+
+**grimoire CLI:** `grimoire install --target opencode` — skills go to `.opencode/skills` (project) or `~/.config/opencode/skills` (`--global`).
+
+**MCP mode:** `grimoire mcp install --target opencode` — adds `mcp.grimoire` to `opencode.json`, instruction in `~/.config/opencode/AGENTS.md` / `./AGENTS.md`.
 
 **Using skills:**
 
 ```
-use skill tool to load engineering/development/propose-conventional-commit
+use skill tool to load propose-conventional-commit
 use skill tool to list skills
 ```
 
@@ -131,16 +138,6 @@ use skill tool to list skills
 | `Read`, `Write`, `Edit`, `Bash` | native tools        |
 | `TodoWrite`                     | `todowrite`         |
 
-**Pinning a version:**
-
-```json
-{
-  "plugin": [
-    "grimoire@git+https://github.com/jeffreytse/grimoire-core.git#v1.0.0"
-  ]
-}
-```
-
 **Troubleshooting — skills not found:**
 
 ```bash
@@ -149,79 +146,153 @@ opencode run --print-logs "hello" 2>&1 | grep -i grimoire
 
 ---
 
+## Pi
+
+**Native plugin:** grimoire-core is a [Pi package](https://pi.dev/packages) — its `package.json` lists every skill folder under `pi.skills`.
+
+```bash
+pi install git:github.com/jeffreytse/grimoire-core
+pi install git:github.com/jeffreytse/grimoire-core@v0.1.0    # pin a release
+```
+
+**grimoire CLI:** `grimoire install --target pi` — skills go to `.pi/skills` (project) or `~/.pi/agent/skills` (`--global`).
+
+**MCP mode:** `grimoire mcp install --target pi` — `~/.pi/agent/mcp.json` / `.pi/mcp.json`, instruction in `~/.pi/agent/AGENTS.md` / `./AGENTS.md`.
+
+**Using skills:** Pi lists each skill by name and description and loads it on demand. Invoke one explicitly with `/skill:<name>`, e.g. `/skill:propose-conventional-commit`. The package ships skills only — tools a skill names (`Skill`, `Agent`, `TodoWrite`) map to Pi's native equivalents or are skipped. See [`.pi/INSTALL.md`](https://github.com/jeffreytse/grimoire-core/blob/main/.pi/INSTALL.md).
+
+---
+
+## Kimi Code
+
+**Native plugin:**
+
+```
+/plugins install https://github.com/jeffreytse/grimoire-core
+```
+
+Uses the generated `kimi.plugin.json`.
+
+**grimoire CLI:** `grimoire install --target kimi` — skills go to `.kimi-code/skills` (project) or `~/.kimi-code/skills` (`--global`).
+
+**MCP mode:** `grimoire mcp install --target kimi` — `~/.kimi-code/mcp.json` / `.kimi-code/mcp.json`, instruction in `~/.kimi-code/AGENTS.md` / `./AGENTS.md`.
+
+---
+
+## OMP (oh-my-pi)
+
+**Native plugin:**
+
+```
+omp plugin marketplace add jeffreytse/grimoire-core
+omp plugin install --scope user grimoire@grimoire
+```
+
+**grimoire CLI:** `grimoire install --target omp` — skills go to `.omp/skills` (project) or `~/.omp/agent/skills` (`--global`).
+
+**MCP mode:** `grimoire mcp install --target omp` — `~/.omp/agent/mcp.json` / `.omp/mcp.json`, instruction in `~/.omp/agent/AGENTS.md` / `.omp/AGENTS.md`.
+
+---
+
 ## Gemini CLI
 
-> **Note:** As of June 18, 2026, free/individual Gemini CLI access (Google AI Pro/Ultra, free Gemini Code Assist for individuals) was retired in favor of [Antigravity CLI](http://antigravity.google/blog/introducing-google-antigravity-cli) — extensions carry over as Antigravity plugins, without full feature parity yet. Paid Gemini Code Assist Standard/Enterprise and Google Cloud users are unaffected and keep Gemini CLI access via paid API keys. See the [migration announcement](https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli) for details.
+> **Note:** As of June 18, 2026, free/individual Gemini CLI access (Google AI Pro/Ultra, free Gemini Code Assist for individuals) was retired in favor of [Antigravity CLI](http://antigravity.google/blog/introducing-google-antigravity-cli). Paid Gemini Code Assist Standard/Enterprise and Google Cloud users keep Gemini CLI access via paid API keys. See the [migration announcement](https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli).
 
-**Install:**
+**Extension (context only):**
 
 ```
 gemini extensions install https://github.com/jeffreytse/grimoire-core
 ```
 
-**Plugin files:** `gemini-extension.json` (extension metadata) + `GEMINI.md` (context injected at session start)
+`gemini-extension.json` points to `GEMINI.md` via `contextFileName`, so the extension loads grimoire's routing context — skill path convention and domain list — but **not the skills themselves**. For skills, use the CLI or MCP mode.
 
-`gemini-extension.json` points to `GEMINI.md` via the `contextFileName` field. Gemini CLI loads `GEMINI.md` into context at startup, giving the agent the skill path convention and domain list.
+**grimoire CLI:** `grimoire install --target gemini` — skills go to `.gemini/skills` (project) or `~/.gemini/skills` (`--global`).
 
-**Using skills:**
-Gemini CLI loads skill metadata at session start. Activate a skill by describing your task — the agent matches to the closest skill. For explicit activation:
+**MCP mode:** `grimoire mcp install --target gemini` — `gemini mcp add`, instruction in `~/.gemini/GEMINI.md` / `./GEMINI.md`. Gemini keeps MCP servers disabled in folders you haven't trusted.
+
+**Using skills:** describe your task, or activate one explicitly:
 
 ```
-activate skill: engineering/development/propose-conventional-commit
+activate skill: propose-conventional-commit
 ```
-
-**Key difference from Claude Code:** Gemini CLI uses `activate_skill` rather than slash commands. `GEMINI.md` provides the routing bootstrap; individual skills are activated on demand from their SKILL.md files.
-
-**Tool mapping:** See `GEMINI.md` in the repo root for Gemini-specific tool references.
 
 ---
 
-## Antigravity CLI
+## Antigravity CLI (agy)
 
-Google's successor to Gemini CLI (see the note above) — grimoire treats it as its own target, binary name `agy`.
+Google's successor to Gemini CLI — grimoire treats it as its own target, binary name `agy`.
 
-**Install:**
+**Native plugin: not supported.** `agy plugin install` ignores declared skill paths, so it cannot find grimoire's nested skills. Use the CLI:
 
 ```bash
 grimoire install --target antigravity
 ```
 
-**Plugin file:** `~/.gemini/AGENTS.md` — same bootstrap-context mechanism as other `AGENTS.md`-reading agents.
+Skills go to `.gemini/antigravity-cli/skills` (project) or `~/.gemini/antigravity-cli/skills` (`--global`); the trigger line is written to `~/.gemini/AGENTS.md`.
 
-Skills install to `~/.gemini/antigravity-cli/skills` (global) or `.gemini/antigravity-cli/skills` (project-scoped) — auto-detected by `grimoire install` like any other agent.
+**MCP mode:** `grimoire mcp install --target antigravity` — registers the server in `~/.gemini/config/mcp_config.json` (user scope). agy has no user-level instruction file, so add the grimoire line to a project `AGENTS.md` yourself.
 
 ---
 
 ## OpenClaw
 
-**Install:**
-
 ```bash
 grimoire install --target openclaw
 ```
 
-See [`.openclaw/INSTALL.md`](https://github.com/jeffreytse/grimoire-core/blob/main/.openclaw/INSTALL.md) for plugin configuration.
+Skills go to `~/.openclaw/skills`; the trigger is written to `~/.openclaw/workspace/AGENTS.md`. See [`.openclaw/INSTALL.md`](https://github.com/jeffreytse/grimoire-core/blob/main/.openclaw/INSTALL.md) for plugin configuration.
 
 ---
 
-## Generic Agent (any other AGENTS.md-reading agent)
+## DeepSeek Harness
 
-Any agent that reads `AGENTS.md` from the project root gets grimoire's bootstrap context automatically — skill path convention, domain list, and routing instructions. The `agent` target is a built-in fallback for exactly this case: it's not tied to a specific vendor, and `grimoire install` selects it automatically when no supported agent is detected in `PATH`.
+```bash
+grimoire install --target dsh
+```
 
-**Install:**
+Uses the shared `~/.agents/skills` folder (project: `.agents/skills`) and `~/.agents/AGENTS.md`.
+
+---
+
+## Grok Build, Muse, MiniMax Code
+
+```bash
+grimoire install --target grok --global
+grimoire install --target muse --global
+grimoire install --target minimax --global
+```
+
+These agents load skills from a plugin bundle rather than a skills folder, so they are **global-only**: grimoire builds the bundle (e.g. under `~/.minimax/plugins/` for MiniMax) and registers it with the agent for you.
+
+---
+
+## Cursor, Windsurf, Cline — via MCP
+
+grimoire does not install skills into these editors. Serve them over MCP instead — print a config snippet and paste it into the client's MCP settings:
+
+```bash
+grimoire mcp config --target cursor      # or windsurf, cline
+```
+
+Then use skills by name: `grimoire:<skill-name> [task]`. See [MCP Mode](./mcp-mode.md#other-mcp-clients).
+
+---
+
+## Generic Agent (anything else)
+
+Any agent that reads `~/.agents/skills` or `AGENTS.md` gets grimoire through the `agent` target — a built-in fallback not tied to a vendor. `grimoire install` selects it automatically when no supported agent is detected on `PATH`.
 
 ```bash
 grimoire install --target agent
 ```
 
-**Plugin file:** `~/.agents/AGENTS.md` (global) or `.agents/AGENTS.md` (project) — same bootstrap-context mechanism as other `AGENTS.md`-reading agents.
+Skills go to `.agents/skills` (project) or `~/.agents/skills` (`--global`); bootstrap context to `~/.agents/AGENTS.md`. The `wizard` always offers "Generic Agent" alongside whatever agents it auto-detects.
 
-Skills install to `~/.agents/skills` (global) or `.agents/skills` (project-scoped). The `wizard` always offers "Generic Agent" as an option alongside whatever agents it auto-detects.
-
-Or install to every detected agent at once:
+Install to every agent at once:
 
 ```bash
 grimoire install --target all
+grimoire mcp install --target all     # or MCP mode for every supported agent
 ```
 
 ---
@@ -230,27 +301,28 @@ grimoire install --target all
 
 If you're integrating grimoire with an agent not listed here:
 
-1. **Check for a plugin format.** Most agents use either a JSON manifest (`plugin.json`) or a context file (markdown loaded at startup).
+1. **Try MCP first.** If the agent speaks MCP, `grimoire mcp serve` plus a one-line instruction is all it needs — no skill files to manage.
 
-2. **Point to `./skills/`** — all SKILL.md files live under this path in a consistent structure (`<domain>/<subdomain>/skills/<name>/SKILL.md`).
+2. **Check for a plugin format.** Most agents use either a JSON manifest (`plugin.json`) or a context file (markdown loaded at startup).
 
-3. **Inject bootstrap context** — copy `AGENTS.md` or `GEMINI.md` content into whatever context injection mechanism your agent supports. This gives the agent the skill path convention and domain list.
+3. **Point to `./skills/`** — all SKILL.md files live under this path in a consistent structure (`<domain>/<subdomain>/skills/<name>/SKILL.md`). Manifests must list the nested skill folders explicitly.
 
-4. **Map tool names** — SKILL.md files reference Claude Code tool names (Read, Write, Edit, Bash, Skill, TodoWrite). Document the equivalents for your agent so skills can be adapted.
+4. **Inject bootstrap context** — copy `AGENTS.md` or `GEMINI.md` content into whatever context mechanism your agent supports.
 
-5. **Open a PR** — add the new agent's plugin file(s) to the repo and update the supported agents table in this document.
+5. **Map tool names** — SKILL.md files reference Claude Code tool names (Read, Write, Edit, Bash, Skill, TodoWrite). Document the equivalents for your agent.
+
+6. **Open a PR** — add the manifest to `scripts/gen-manifests.py` so `make update-plugin-manifest` generates it, and update the supported agents table in this document.
 
 ---
 
 ## Keeping plugins in sync
 
-When a new domain is added to grimoire (via `design-best-practice-domain`), the following files must be updated:
+Every agent manifest is generated from `skills/` and `VERSION` by one script. After adding, moving, or renaming a skill or domain:
 
-| File                              | What to update                                  |
-| --------------------------------- | ----------------------------------------------- |
-| `.claude-plugin/plugin.json`      | Add subdomain path to `skills` array            |
-| `.claude-plugin/marketplace.json` | Add domain entry (subdomain entries not needed) |
-| `GEMINI.md`                       | Add domain row to domains table                 |
-| `AGENTS.md`                       | Same update as GEMINI.md                        |
+```bash
+make update-plugin-manifest   # .claude-plugin, .codex-plugin, .grok-plugin, .muse-plugin,
+                              #   kimi.plugin.json, package.json (pi.skills)
+make check-manifest           # CI gate: fails if any manifest is stale or a skill name is invalid
+```
 
-`.opencode/plugins/grimoire.js` discovers skills from `./skills/` recursively — no update needed when adding domains.
+When a new domain is added (via `design-best-practice-domain`), also add its row to the domains table in `GEMINI.md` and `AGENTS.md`. `.opencode/plugins/grimoire.js` needs no update.

@@ -6,6 +6,8 @@ grimoire delivers professional best practices from every field directly into you
 
 ## Install
 
+grimoire offers three install routes: your agent's **native plugin**, the **grimoire CLI** (works for every agent), or **MCP mode** (nothing copied into the agent). The [Agent Integration Guide](./agents.md) has the full per-agent table — Claude Code, Copilot, Codex, OpenCode, Pi, Kimi, OMP, Gemini, Antigravity, OpenClaw, DeepSeek Harness, Grok, Muse, MiniMax, and any agent that reads `~/.agents/skills`.
+
 ### Claude Code
 
 ```bash
@@ -14,39 +16,41 @@ grimoire delivers professional best practices from every field directly into you
 
 # Step 2: install plugins
 # Skills are namespaced: /grimoire-engineering:propose-conventional-commit
-/plugin install grimoire@grimoire-core                               # all domains
-/plugin install grimoire-engineering@grimoire-core                   # one domain
-/plugin install grimoire-engineering-development@grimoire-core       # one sub-domain
+/plugin install grimoire@grimoire                    # all domains
+/plugin install grimoire-engineering@grimoire        # one domain
 ```
+
+For sub-domain installs, use the grimoire CLI below.
 
 ### GitHub Copilot CLI
 
 ```bash
 copilot plugin marketplace add jeffreytse/grimoire-core
-copilot plugin install grimoire@grimoire-core
+copilot plugin install grimoire@grimoire
 ```
 
-### Codex / Cursor
-
-Both read `AGENTS.md` from the project root — Codex CLI auto-loads it at session start, Cursor injects it as context in Agent mode. No plugin marketplace step needed; install skill files with the CLI:
+### Codex
 
 ```bash
-grimoire install --target codex   # or --target cursor
+codex plugin marketplace add jeffreytse/grimoire-core
+codex plugin add grimoire@grimoire
 ```
 
 ### OpenCode
 
-See [`.opencode/INSTALL.md`](https://github.com/jeffreytse/grimoire-core/blob/main/.opencode/INSTALL.md) for plugin configuration.
+```bash
+opencode plugin 'github:jeffreytse/grimoire-core#main'
+```
 
-### OpenClaw
-
-See [`.openclaw/INSTALL.md`](https://github.com/jeffreytse/grimoire-core/blob/main/.openclaw/INSTALL.md) for plugin configuration.
-
-### Gemini CLI
+### Pi
 
 ```bash
-gemini extensions install https://github.com/jeffreytse/grimoire-core
+pi install git:github.com/jeffreytse/grimoire-core
 ```
+
+### Gemini CLI, Antigravity, OpenClaw, and others
+
+Gemini's extension loads routing context only, and Antigravity's plugin installer can't find grimoire's nested skills — use the grimoire CLI for these (`--target gemini`, `--target antigravity`, `--target openclaw`, `--target dsh`, `--target grok --global`, …).
 
 ### grimoire CLI (all agents)
 
@@ -64,8 +68,22 @@ grimoire install
 grimoire install --domain engineering
 grimoire install --domain engineering --subdomain development
 grimoire install --skill engineering/development/propose-conventional-commit
+grimoire install --target pi --global                  # one agent, user-wide
 grimoire install --target all    # install to all agents, even if not detected
 ```
+
+### MCP mode (skills on demand)
+
+Instead of copying skills into your agent, let it fetch them from grimoire when a task needs one:
+
+```bash
+grimoire mcp install                  # Claude Code: MCP server + CLAUDE.md instruction + prompt hook
+grimoire mcp install --target all     # every supported agent on your PATH
+```
+
+Start a new agent session afterwards. Run a specific skill by writing `grimoire:<skill-name> [task]` — e.g. `grimoire:propose-conventional-commit` — or `/grimoire:skill <skill-name>` in Claude Code. Cursor, Windsurf, and Cline: `grimoire mcp config --target cursor` prints the snippet. See [MCP Mode](./mcp-mode.md).
+
+---
 
 `grimoire install` with no arguments reads `grimoire.toml` (the package manifest) in the current directory if one exists. See the full [CLI Reference](./cli-reference.md) for every command.
 

@@ -43,6 +43,7 @@ There's no separate "personal, gitignored" file — one project file, committed.
 | `fallback`                   | `"ask"` \| `"skip"` | Behavior when no matching skill is found: `"ask"` prompts for clarification, `"skip"` silently moves on |
 | `compliance-threshold`       | `number`            | Minimum overall criteria coverage % to pass `grimoire check`                                            |
 | `compliance-threshold-error` | `number`            | Maximum allowed error-severity violations — `0` means none allowed                                      |
+| `note`                       | `string`            | Optional reason for the pin (e.g. `"agreed in ADR-014"`), shown when the pin is applied                 |
 
 Only one level of subdomain nesting is supported. A subdomain overlays its parent domain **per key** — `[standards.engineering.architecture]` replaces `practices` for architecture work specifically, while any key it doesn't set (e.g. `fallback`) still inherits from `[standards.engineering]`.
 
@@ -114,6 +115,7 @@ practices = [
   "apply-law-of-demeter",
   "apply-domain-driven-design"
 ]
+note = "agreed in ADR-014"          # optional — shown when the pin is applied
 compliance-threshold = 80           # architecture held to a higher bar
 compliance-threshold-error = 0      # zero tolerance for error-severity findings
 
@@ -187,6 +189,26 @@ The resolved spec for `engineering.architecture` work:
 | `standards.engineering.fallback`                          | `"ask"`            | project                                   |
 
 `standards.engineering.architecture` practices do not fall back to `standards.engineering` practices — they replace them for architecture-scoped work. Other keys not set at the subdomain level do inherit from the domain level.
+
+---
+
+## From the Shell
+
+Edit pins without opening the TOML file:
+
+```bash
+grimoire config add standards.engineering.practices "Google Engineering Practices" -g   # global file
+grimoire config add standards.engineering.practices "Google Engineering Practices"      # project file
+grimoire config get standards.engineering.practices   # resolved value + which file it came from
+```
+
+`set`, `unset`, and `remove` work the same way — see [CLI Reference](./cli-reference.md#configuration).
+
+---
+
+## Skills Mode and MCP Mode
+
+Every skill that reads or saves a preference — `pin-best-practice-preference`, `suggest-best-practice`, `audit-applied-best-practices`, … — reads and writes these same `grimoire.toml` files and `[standards.<domain>.<subdomain>]` keys, whether skills are installed into your agent or served over [MCP](./mcp-mode.md). In MCP mode the agent writes them through the `grimoire_config_*` tools. There is never a separate preferences file.
 
 ---
 

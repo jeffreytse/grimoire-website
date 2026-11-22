@@ -105,7 +105,8 @@ Verbs not in this table are allowed if none of the above fit. These are always r
 
 - Kebab-case only
 - 2–4 words (verb + 1–2 word subject + optional qualifier)
-- ≤50 characters
+- ≤50 characters (the hard limit enforced by `make check-manifest` is 64)
+- Must match the skill's folder name and be unique across **all** domains — Pi, Codex, and Kimi enforce the Agent Skills rule that a name identifies exactly one skill
 - No `skill-`, `guide-`, `best-practice-` prefix — redundant in a skill library
 - No noun-first: ~~`contract-review`~~, ~~`training-program-design`~~
 
@@ -211,6 +212,30 @@ Steps must be immediately executable — the reader can follow them right now.
 ```
 
 **Size:** 50–300 lines total. Under 50 lines = too shallow, add more concrete steps or examples. Over 300 lines = split into two skills.
+
+### Skill Access (for meta skills)
+
+grimoire delivers skills two ways: **skills mode** (installed into the agent via `grimoire install` or a native plugin) and **MCP mode** (`grimoire mcp install` — nothing installed; skills fetched through grimoire's MCP tools). A skill that finds, scores, or loads *other* skills must work in both.
+
+**Rule:** if your skill invokes another skill or scans installed skills, include this section verbatim before `## Steps`, then write "installed skills" and "load" / "invoke" in the steps — never "the Skill tool" or a `/skill-name` command alone.
+
+```markdown
+## Skill Access
+
+This skill finds and loads other grimoire skills. Use whichever access this session has:
+- **Skills mode** — grimoire skills are installed in the agent: they are listed in context; load one with the Skill tool (or its `/skill-name` command).
+- **MCP mode** — grimoire MCP tools are available (`grimoire_get_skill`, …): find candidates with `grimoire_search_skills` (one focused query per need) or `grimoire_list_skills` for a domain; load one with `grimoire_get_skill`. Score and name only skills these tools return.
+
+Below, "installed skills" means the skills reachable this way, and "load" / "invoke" means the matching loader.
+```
+
+**Install hints:** when no installed skill covers a domain, name all three routes rather than one agent's command:
+
+```markdown
+Claude Code plugin: `/plugin install grimoire-[domain]@grimoire` · grimoire CLI: `grimoire install --domain [domain]` · MCP mode: add a package that covers it (`grimoire_package_add`, CLI `grimoire package add <repo>`)
+```
+
+**Preferences:** read and write practice pins only in `grimoire.toml` (`[standards.<domain>.<subdomain>]`) — project, `~/.config/grimoire/`, or `/etc/grimoire/`. Never a separate preferences file. See [MCP Mode](./mcp-mode.md) and [Config](./config.md).
 
 ---
 

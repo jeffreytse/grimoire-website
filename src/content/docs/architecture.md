@@ -1,6 +1,6 @@
 # grimoire Architecture
 
-grimoire has three layers: **skills** (content), **meta skills** (framework logic), and the **plugin system** (delivery to AI agents). This document describes how each layer works and how they fit together.
+grimoire has three layers: **skills** (content), **meta skills** (framework logic), and **delivery** to AI agents — native plugins, the grimoire CLI (skills mode), or the MCP server (MCP mode). This document describes how each layer works and how they fit together.
 
 ---
 
@@ -9,13 +9,15 @@ grimoire has three layers: **skills** (content), **meta skills** (framework logi
 ```
 ┌─────────────────────────────────────────────────┐
 │                   AI Agent                      │
-│   (Claude Code / Codex / Cursor / Gemini / ...) │
+│  (Claude Code / Copilot / Codex / Pi / ...)     │
 └──────────────────────┬──────────────────────────┘
-                       │ plugin install
+                       │ plugin · grimoire install · MCP
 ┌──────────────────────▼──────────────────────────┐
-│               Plugin System                     │
-│   .claude-plugin/ · .codex-plugin/ · gemini-    │
-│   extension.json · marketplace.json             │
+│               Delivery                          │
+│   native plugin manifests (.claude-plugin/,     │
+│   .codex-plugin/, kimi.plugin.json, ...)        │
+│   grimoire CLI → agent skills folder            │
+│   grimoire mcp serve → skills on demand         │
 └──────────────────────┬──────────────────────────┘
                        │ loads
 ┌──────────────────────▼──────────────────────────┐
@@ -198,10 +200,11 @@ Install commands:
 /plugin marketplace add jeffreytse/grimoire-core
 
 # Step 2: install
-/plugin install grimoire@grimoire-core                               # all domains
-/plugin install grimoire-engineering@grimoire-core                   # one domain
-/plugin install grimoire-engineering-development@grimoire-core       # one subdomain
+/plugin install grimoire@grimoire                    # all domains
+/plugin install grimoire-engineering@grimoire        # one domain
 ```
+
+The marketplace is named `grimoire`, so plugins are `<plugin>@grimoire`. For sub-domain installs, use `grimoire install --domain <d> --subdomain <s>`.
 
 ### Marketplace
 
@@ -223,19 +226,41 @@ Install commands:
 
 ## Multi-agent support
 
-grimoire ships plugin configurations for seven AI agents:
+grimoire-core ships native plugin manifests for every agent that has a plugin system. All of them are **generated** from `skills/` and `VERSION` by `scripts/gen-manifests.py` (`make update-plugin-manifest`); `make check-manifest` fails CI when any is stale.
 
-| Agent              | Config file                           | Loading mechanism                                                                                                 |
-| ------------------ | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| Claude Code        | `.claude-plugin/plugin.json`          | `/plugin marketplace add` + `/plugin install`                                                                     |
-| GitHub Copilot CLI | `.claude-plugin/plugin.json` (shared) | `copilot plugin marketplace add` + `copilot plugin install`                                                       |
-| Codex CLI          | `AGENTS.md`                           | Auto-loaded at session start                                                                                      |
-| Cursor             | `AGENTS.md`                           | Context injection                                                                                                 |
-| OpenCode           | `.opencode/plugins/grimoire.js`       | ESM module — injects AGENTS.md into first user message via transform hook; registers skills paths via config hook |
-| Gemini CLI         | `gemini-extension.json`               | Points to `GEMINI.md`, which is loaded as context                                                                 |
-| OpenClaw           | See `.openclaw/INSTALL.md`            | Plugin configuration                                                                                              |
+| Agent              | Manifest                                                   | Loading mechanism                                                                    |
+| ------------------ | ---------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Claude Code        | `.claude-plugin/plugin.json` + `marketplace.json`          | `/plugin marketplace add` + `/plugin install grimoire@grimoire`                      |
+| GitHub Copilot CLI | `.claude-plugin/` (shared)                                 | `copilot plugin marketplace add` + `copilot plugin install`                          |
+| Codex              | `.codex-plugin/plugin.json` + `.agents/plugins/marketplace.json` | `codex plugin marketplace add` + `codex plugin add`                            |
+| OpenCode           | `.opencode/plugins/grimoire.js`                            | ESM module — registers every nested `skills` folder; injects `AGENTS.md` as context  |
+| Pi                 | `package.json` (`pi.skills`)                               | `pi install git:github.com/jeffreytse/grimoire-core`                                 |
+| Kimi Code          | `kimi.plugin.json`                                         | `/plugins install <repo>`                                                            |
+| OMP                | `.claude-plugin/` marketplace                              | `omp plugin marketplace add` + `omp plugin install`                                  |
+| Grok Build         | `.grok-plugin/plugin.json`                                 | Plugin bundle built and registered by `grimoire install --target grok --global`      |
+| Muse               | `.muse-plugin/plugin.json`                                 | Plugin bundle built and registered by `grimoire install --target muse --global`      |
+| Gemini CLI         | `gemini-extension.json` → `GEMINI.md`                      | Context only — skills via `grimoire install --target gemini`                         |
+| Antigravity, OpenClaw, DeepSeek Harness, MiniMax, generic | — | `grimoire install --target <name>` links skills into the agent's folder |
 
-All agent-facing content (CLAUDE.md, AGENTS.md, GEMINI.md) describes grimoire's available skills and how to invoke them. Agent-specific docs live at the repo root.
+Manifests list nested skill folders explicitly, so skill names must match their folder, be lowercase-hyphen, ≤ 64 characters, and unique across all domains.
+
+All agent-facing content (CLAUDE.md, AGENTS.md, GEMINI.md) describes grimoire's available skills and how to invoke them. Agent-specific docs live at the repo root. Per-agent install details: [Agent Integration Guide](./agents.md).
+
+### MCP mode
+
+`grimoire mcp install` takes a different path: nothing is copied into the agent. It registers `grimoire mcp serve` (stdio) as an MCP server and writes one instruction line to the agent's instruction file.
+
+```
+agent ──"grimoire_search_skills(query)"──▶ grimoire mcp serve ──▶ BM25 index over installed packages
+      ◀──── ranked names + descriptions ──┘
+agent ──"grimoire_get_skill(name)"───────▶ full SKILL.md
+```
+
+- **Search** is lexical BM25 with stopword removal, light stemming, and hyphen/underscore token expansion; results report which terms matched.
+- **Prompt hook (Claude Code):** a `UserPromptSubmit` hook, `grimoire hook prompt`, runs the same search on every prompt (~0.1 s) and puts the top matches — or the skill named by `grimoire:<name>` — into the model's context. It stays silent below a score threshold, and never blocks a prompt.
+- **Meta skills** chain other skills through `grimoire_search_skills` / `grimoire_get_skill` in MCP mode, via the [Skill Access](./authoring-skills.md#skill-access-for-meta-skills) section of STANDARD.md.
+
+See [MCP Mode](./mcp-mode.md).
 
 ---
 

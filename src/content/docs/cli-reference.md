@@ -1,6 +1,6 @@
 ---
 title: 'CLI Reference'
-description: 'Every grimoire CLI command — install, check, profiles, packages, settings, and MCP server integration.'
+description: 'Every grimoire CLI command — install, check, profiles, packages, settings, MCP mode, and the prompt hook.'
 ---
 
 # CLI Reference
@@ -15,6 +15,8 @@ description: 'Every grimoire CLI command — install, check, profiles, packages,
 | ------------------------------------- | ------------------------------------------------------------------------------ |
 | `grimoire init`                       | Initialize `.grimoire/` in the current project                                 |
 | `grimoire install [<grimoire-ref>]`   | Install skills from `grimoire.toml` or a grimoire-ref                          |
+| `grimoire install --target <agent>`   | Install into one agent: `claude`, `codex`, `gemini`, `antigravity`, `openclaw`, `opencode`, `copilot`, `pi`, `kimi`, `omp`, `dsh`, `grok`, `muse`, `minimax`, `agent`, `all`, or `auto` (detected agents) — see [Agents](./agents.md) |
+| `grimoire install --global`           | User-wide install (shorthand for `--scope global`); required for `grok`, `muse`, `minimax` |
 | `grimoire install --target agent`     | Install to the generic `agent` target (`~/.agents/skills`) — fallback for any AGENTS.md-reading agent with no dedicated integration |
 | `grimoire install --no-load-optimize` | Skip the per-agent load-performance cap (some agents truncate to top-N skills by default; this installs all of them anyway) |
 | `grimoire uninstall [<grimoire-ref>]` | Remove grimoire skills from agent directories                                  |
@@ -109,13 +111,24 @@ See [Practice Profiles](./profiles.md) for how profiles resolve.
 
 ## MCP server
 
-| Command               | What it does                                        |
-| --------------------- | --------------------------------------------------- |
-| `grimoire mcp`        | MCP server integration                              |
-| `grimoire mcp serve`  | Start the grimoire MCP server (stdio transport)     |
-| `grimoire mcp config` | Print MCP configuration snippet for an AI assistant |
+| Command                                   | What it does                                                                                   |
+| ----------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `grimoire mcp`                            | MCP server integration                                                                         |
+| `grimoire mcp install`                    | Set up MCP mode: register the server, write the agent instruction, add the Claude Code prompt hook |
+| `grimoire mcp install --target <list>`    | Agents to configure — `claude` (default), a comma list (`codex,gemini`), or `all`              |
+| `grimoire mcp install --scope project`    | Configure the current project instead of the user (`user` is the default)                       |
+| `grimoire mcp install --no-hook`          | Skip the Claude Code `UserPromptSubmit` prompt hook                                            |
+| `grimoire mcp install --no-configure`     | Register the server only — write no instruction and no hook                                    |
+| `grimoire mcp uninstall [--target <list>]` | Unregister the server and remove the grimoire instruction and hook                           |
+| `grimoire mcp serve`                      | Start the grimoire MCP server (stdio transport)                                                |
+| `grimoire mcp config --target <client>`   | Print an MCP config snippet for other clients (`cursor`, `windsurf`, `cline`)                  |
+| `grimoire hook prompt`                    | Claude Code `UserPromptSubmit` hook: suggest skills matching the prompt (installed by `mcp install`) |
 
-`grimoire mcp serve` exposes the CLI as MCP tools, so an AI assistant can call grimoire natively without slash commands, including `grimoire_search_skills` (BM25-ranked skill search, with hyphen/underscore token expansion) and `grimoire_get_skill` (fetch one skill's full SKILL.md on demand). Every install also writes a `_GRIMOIRE_INDEX.md` alongside the skill symlinks, so an agent can discover what's available without scanning every SKILL.md.
+`grimoire mcp serve` exposes the CLI as MCP tools, so an AI assistant can call grimoire natively without slash commands. The skill tools are `grimoire_search_skills` (BM25-ranked search with stopword removal, stemming, and hyphen/underscore token expansion; reports the terms that matched), `grimoire_get_skill` (fetch one skill's full SKILL.md by exact name; unknown names return "did you mean" matches), and `grimoire_list_skills` (domain index). Config, package, profile, install, and check commands are exposed too (`grimoire_config_add`, `grimoire_package_add`, `grimoire_check`, …).
+
+Every skills-mode install also writes a `_GRIMOIRE_INDEX.md` alongside the skill symlinks, so an agent can discover what's available without scanning every SKILL.md.
+
+See [MCP Mode](./mcp-mode.md) for which files each agent gets and how the prompt hook works.
 
 ## Editor Integration
 
