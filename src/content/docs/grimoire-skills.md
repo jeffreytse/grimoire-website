@@ -4,7 +4,7 @@ Meta skills run the grimoire framework itself. Unlike domain skills (which encod
 
 There are two audiences: **users** who want to apply best practices, and **contributors** who manage the library.
 
-> **MCP mode:** when grimoire serves skills over MCP (`grimoire mcp install`), meta skills are not agent slash commands. Run any of them as `grimoire:<name> [task]` in any agent, or `/grimoire:skill <name>` in Claude Code — e.g. `grimoire:suggest-best-practice my team is losing confidence`. When a workflow loads another skill or scores installed skills, it uses `grimoire_get_skill` / `grimoire_search_skills` instead of the Skill tool. `start-best-practice` only auto-runs in skills mode; in MCP mode the Claude Code prompt hook suggests skills instead. See [MCP Mode](./mcp-mode.md).
+> **MCP mode:** when grimoire serves skills over MCP (`grimoire mcp install`), meta skills are not agent slash commands. Run any of them as `grimoire:<name> [task]` in any agent, or `/grimoire:skill <name>` in Claude Code — e.g. `grimoire:suggest-best-practice my team is losing confidence`. When a workflow loads another skill or scores installed skills, it uses `grimoire_get_skill` / `grimoire_search_skills` instead of the Skill tool. `start-best-practice` auto-runs in skills mode; in MCP mode the instruction line routes multi-step or unclear problems to it, and the prompt hook points longer prompts at it. See [MCP Mode](./mcp-mode.md).
 
 ---
 

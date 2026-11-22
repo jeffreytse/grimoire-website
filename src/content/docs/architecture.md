@@ -257,7 +257,8 @@ agent ──"grimoire_get_skill(name)"───────▶ full SKILL.md
 ```
 
 - **Search** is lexical BM25 with stopword removal, light stemming, and hyphen/underscore token expansion; results report which terms matched.
-- **Prompt hook (Claude Code):** a `UserPromptSubmit` hook, `grimoire hook prompt`, runs the same search on every prompt (~0.1 s) and puts the top matches — or the skill named by `grimoire:<name>` — into the model's context. It stays silent below a score threshold, and never blocks a prompt.
+- **Prompt hook:** `grimoire hook prompt` runs the same search on every prompt (~0.1 s) and puts the top matches — or the skill named by `grimoire:<name>` — into the model's context; prompts of 25+ words also get a pointer to `start-best-practice`. It stays silent below a score threshold and never blocks a prompt. Installed as `UserPromptSubmit` (Claude Code, Codex), `BeforeAgent` (Gemini CLI), `PreInvocation` (Antigravity), or an OpenCode plugin; Copilot CLI has no usable hook.
+- **Routing and batch loading:** the instruction line and server instructions send multi-step or unclear problems to `start-best-practice`, and `grimoire_get_skill` accepts a `names` list so a plan loads all its skills in one call.
 - **Meta skills** chain other skills through `grimoire_search_skills` / `grimoire_get_skill` in MCP mode, via the [Skill Access](./authoring-skills.md#skill-access-for-meta-skills) section of STANDARD.md.
 
 See [MCP Mode](./mcp-mode.md).

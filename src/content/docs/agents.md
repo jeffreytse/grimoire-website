@@ -14,13 +14,13 @@ grimoire works with fourteen named AI agents, plus a generic `agent` fallback ta
 | ------------------ | ----------------------------------------------------------------------------------------------------------- | ------------------------------- | -------- |
 | Claude Code        | `/plugin marketplace add jeffreytse/grimoire-core`<br>`/plugin install grimoire@grimoire`                   | `--target claude`               | ✓ (+ prompt hook) |
 | GitHub Copilot CLI | `copilot plugin marketplace add jeffreytse/grimoire-core`<br>`copilot plugin install grimoire@grimoire`     | `--target copilot`              | ✓        |
-| Codex              | `codex plugin marketplace add jeffreytse/grimoire-core`<br>`codex plugin add grimoire@grimoire`             | `--target codex`                | ✓        |
-| OpenCode           | `opencode plugin 'github:jeffreytse/grimoire-core#main'`                                                    | `--target opencode`             | ✓        |
+| Codex              | `codex plugin marketplace add jeffreytse/grimoire-core`<br>`codex plugin add grimoire@grimoire`             | `--target codex`                | ✓ (+ prompt hook) |
+| OpenCode           | `opencode plugin 'github:jeffreytse/grimoire-core#main'`                                                    | `--target opencode`             | ✓ (+ prompt hook) |
 | Pi                 | `pi install git:github.com/jeffreytse/grimoire-core`                                                        | `--target pi`                   | ✓        |
 | Kimi Code          | `/plugins install https://github.com/jeffreytse/grimoire-core`                                              | `--target kimi`                 | ✓        |
 | OMP (oh-my-pi)     | `omp plugin marketplace add jeffreytse/grimoire-core`<br>`omp plugin install --scope user grimoire@grimoire` | `--target omp`                  | ✓        |
-| Gemini CLI         | `gemini extensions install https://github.com/jeffreytse/grimoire-core` (context only)                      | `--target gemini`               | ✓        |
-| Antigravity (agy)  | not supported — use the CLI                                                                                 | `--target antigravity`          | ✓        |
+| Gemini CLI         | `gemini extensions install https://github.com/jeffreytse/grimoire-core` (context only)                      | `--target gemini`               | ✓ (+ prompt hook) |
+| Antigravity (agy)  | not supported — use the CLI                                                                                 | `--target antigravity`          | ✓ (+ prompt hook) |
 | OpenClaw           | see [`.openclaw/INSTALL.md`](https://github.com/jeffreytse/grimoire-core/blob/main/.openclaw/INSTALL.md)    | `--target openclaw`             | —        |
 | DeepSeek Harness   | —                                                                                                           | `--target dsh`                  | —        |
 | Grok Build         | —                                                                                                           | `--target grok --global`        | —        |
@@ -49,7 +49,7 @@ Every CLI cell is `grimoire install --target <name>`. Add `--global` for a user-
 
 **grimoire CLI:** `grimoire install --target claude` — skills go to `.claude/skills` (project) or `~/.claude/skills` (`--global`), and the `start-best-practice` trigger is written to `CLAUDE.md`.
 
-**MCP mode:** `grimoire mcp install` — registers the server with `claude mcp add`, writes the instruction to `~/.claude/CLAUDE.md` (or `./CLAUDE.md` with `--scope project`), and adds the `UserPromptSubmit` [prompt hook](./mcp-mode.md#the-prompt-hook-claude-code).
+**MCP mode:** `grimoire mcp install` — registers the server with `claude mcp add`, writes the instruction to `~/.claude/CLAUDE.md` (or `./CLAUDE.md` with `--scope project`), and adds the `UserPromptSubmit` [prompt hook](./mcp-mode.md#the-prompt-hook).
 
 **Using skills:**
 
@@ -99,7 +99,7 @@ Uses the generated `.codex-plugin/plugin.json` and `.agents/plugins/marketplace.
 
 **grimoire CLI:** `grimoire install --target codex` — skills go to `.agents/skills` (project) or `~/.agents/skills` (`--global`).
 
-**MCP mode:** `grimoire mcp install --target codex` — `codex mcp add`, instruction in `~/.codex/AGENTS.md` (user scope only).
+**MCP mode:** `grimoire mcp install --target codex` — `codex mcp add`, instruction in `~/.codex/AGENTS.md` (user scope only), and a `UserPromptSubmit` [prompt hook](./mcp-mode.md#the-prompt-hook) in `~/.codex/hooks.json`. Codex runs new hooks only after you trust them — open `/hooks` once after installing.
 
 **Using skills:** describe your task and Codex routes to the matching skill, or run `/plugins` inside `codex` to browse the marketplace.
 
@@ -121,7 +121,7 @@ See [`.opencode/INSTALL.md`](https://github.com/jeffreytse/grimoire-core/blob/ma
 
 **grimoire CLI:** `grimoire install --target opencode` — skills go to `.opencode/skills` (project) or `~/.config/opencode/skills` (`--global`).
 
-**MCP mode:** `grimoire mcp install --target opencode` — adds `mcp.grimoire` to `opencode.json`, instruction in `~/.config/opencode/AGENTS.md` / `./AGENTS.md`.
+**MCP mode:** `grimoire mcp install --target opencode` — adds `mcp.grimoire` to `opencode.json`, instruction in `~/.config/opencode/AGENTS.md` / `./AGENTS.md`, and a [prompt hook](./mcp-mode.md#the-prompt-hook) as an OpenCode plugin (`plugins/grimoire.js`, using `chat.message` and a system transform).
 
 **Using skills:**
 
@@ -208,7 +208,7 @@ gemini extensions install https://github.com/jeffreytse/grimoire-core
 
 **grimoire CLI:** `grimoire install --target gemini` — skills go to `.gemini/skills` (project) or `~/.gemini/skills` (`--global`).
 
-**MCP mode:** `grimoire mcp install --target gemini` — `gemini mcp add`, instruction in `~/.gemini/GEMINI.md` / `./GEMINI.md`. Gemini keeps MCP servers disabled in folders you haven't trusted.
+**MCP mode:** `grimoire mcp install --target gemini` — `gemini mcp add`, instruction in `~/.gemini/GEMINI.md` / `./GEMINI.md`, and a `BeforeAgent` [prompt hook](./mcp-mode.md#the-prompt-hook) in `.gemini/settings.json`. Gemini keeps MCP servers disabled in folders you haven't trusted.
 
 **Using skills:** describe your task, or activate one explicitly:
 
@@ -230,7 +230,7 @@ grimoire install --target antigravity
 
 Skills go to `.gemini/antigravity-cli/skills` (project) or `~/.gemini/antigravity-cli/skills` (`--global`); the trigger line is written to `~/.gemini/AGENTS.md`.
 
-**MCP mode:** `grimoire mcp install --target antigravity` — registers the server in `~/.gemini/config/mcp_config.json` (user scope). agy has no user-level instruction file, so add the grimoire line to a project `AGENTS.md` yourself.
+**MCP mode:** `grimoire mcp install --target antigravity` — registers the server in `~/.gemini/config/mcp_config.json` (user scope). agy has no user-level instruction file, so grimoire injects the instruction with a `SessionStart` hook and adds a `PreInvocation` [prompt hook](./mcp-mode.md#the-prompt-hook) in `~/.gemini/config/hooks.json` that runs once per new prompt.
 
 ---
 

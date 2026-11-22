@@ -16,13 +16,13 @@ The test: "Would this skill make an AI agent perform like a domain expert?" If n
 | ------------------------- | ----------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
 | Claude Code               | `/plugin marketplace add jeffreytse/grimoire-core` then `/plugin install grimoire@grimoire`           | `--target claude` · MCP + prompt hook               |
 | GitHub Copilot CLI        | `copilot plugin marketplace add jeffreytse/grimoire-core` then `copilot plugin install grimoire@grimoire` | `--target copilot` · MCP                        |
-| Codex                     | `codex plugin marketplace add jeffreytse/grimoire-core` then `codex plugin add grimoire@grimoire`     | `--target codex` · MCP                              |
-| OpenCode                  | `opencode plugin 'github:jeffreytse/grimoire-core#main'`                                              | `--target opencode` · MCP                           |
+| Codex                     | `codex plugin marketplace add jeffreytse/grimoire-core` then `codex plugin add grimoire@grimoire`     | `--target codex` · MCP + prompt hook                |
+| OpenCode                  | `opencode plugin 'github:jeffreytse/grimoire-core#main'`                                              | `--target opencode` · MCP + prompt hook             |
 | Pi                        | `pi install git:github.com/jeffreytse/grimoire-core`                                                  | `--target pi` · MCP                                 |
 | Kimi Code                 | `/plugins install https://github.com/jeffreytse/grimoire-core`                                        | `--target kimi` · MCP                               |
 | OMP (oh-my-pi)            | `omp plugin install --scope user grimoire@grimoire`                                                   | `--target omp` · MCP                                |
-| Gemini CLI                | extension loads context only                                                                          | `--target gemini` · MCP                             |
-| Antigravity (agy)         | not supported                                                                                         | `--target antigravity` · MCP                        |
+| Gemini CLI                | extension loads context only                                                                          | `--target gemini` · MCP + prompt hook               |
+| Antigravity (agy)         | not supported                                                                                         | `--target antigravity` · MCP + prompt hook          |
 | OpenClaw                  | see `.openclaw/INSTALL.md`                                                                            | `--target openclaw`                                 |
 | DeepSeek Harness          | —                                                                                                     | `--target dsh`                                      |
 | Grok Build / Muse / MiniMax Code | —                                                                                              | `--target grok\|muse\|minimax --global`            |
@@ -34,7 +34,7 @@ CLI cells are `grimoire install --target <name>`; "MCP" means `grimoire mcp inst
 ### Skills mode or MCP mode — which should I use?
 
 - **Skills mode** (`grimoire install` or a native plugin) copies skills into your agent. Every skill is a slash command, and the `start-best-practice` trigger runs automatically before each request. Supports domain and sub-domain installs.
-- **MCP mode** (`grimoire mcp install`) copies nothing. The agent searches and loads skills on demand through grimoire's MCP server, so 1000+ skills cost no context until one is used, and one server covers every agent. In Claude Code a prompt hook suggests matching skills on every prompt.
+- **MCP mode** (`grimoire mcp install`) copies nothing. The agent searches and loads skills on demand through grimoire's MCP server, so 1000+ skills cost no context until one is used, and one server covers every agent. In Claude Code, Codex, Gemini CLI, OpenCode, and Antigravity a prompt hook suggests matching skills on every prompt, and multi-step problems are routed to `start-best-practice`.
 
 Pick MCP mode for minimal context and multi-agent setups, or for editors grimoire can't install into (Cursor, Windsurf, Cline). Pick skills mode if you want slash commands and automatic `start-best-practice`. Switching is safe either way — see [MCP Mode](./mcp-mode.md#skills-mode-or-mcp-mode).
 
