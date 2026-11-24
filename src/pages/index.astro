@@ -6,9 +6,9 @@ import Footer from '../components/Footer.astro';
 
 <Layout
   title="Grimoire — Best Practices for Claude, OpenCode, OpenClaw & Every AI"
-  description="1000+ best practices skills for Claude, Codex, Copilot, OpenCode, Gemini & every AI assistant. Free and open-source on GitHub — expert frameworks for engineering, law, medicine, finance, and 26 domains."
+  description="1,300+ best practices skills for Claude, Codex, Copilot, OpenCode, Gemini & every AI assistant. Free and open-source on GitHub — expert frameworks for engineering, law, medicine, finance, and 26 domains."
   ogTitle="Grimoire — Best Practices for Claude, OpenCode, OpenClaw & Every AI"
-  ogDescription="1000+ best practices skills for Claude, Codex, Copilot, OpenCode, OpenClaw, Gemini, and every AI assistant. Free on GitHub — engineering, law, medicine, finance, and 26 domains. Start in 60 seconds."
+  ogDescription="1,300+ best practices skills for Claude, Codex, Copilot, OpenCode, OpenClaw, Gemini, and every AI assistant. Free on GitHub — engineering, law, medicine, finance, and 26 domains. Start in 60 seconds."
   ogImage="https://grimoire.jeffreytse.net/assets/banner-1280x640.svg"
   ogUrl="https://grimoire.jeffreytse.net/"
   canonical="https://grimoire.jeffreytse.net/"
@@ -20,7 +20,7 @@ import Footer from '../components/Footer.astro';
   "@type": "SoftwareApplication",
   "name": "Grimoire",
   "url": "https://grimoire.jeffreytse.net/",
-  "description": "1000+ best practices skills for Claude, Codex, Copilot, OpenCode, Gemini, and every AI assistant. Free and open-source on GitHub.",
+  "description": "1,300+ best practices skills for Claude, Codex, Copilot, OpenCode, Gemini, and every AI assistant. Free and open-source on GitHub.",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Any",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
@@ -41,13 +41,13 @@ import Footer from '../components/Footer.astro';
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    { "@type": "Question", "name": "What is Grimoire?", "acceptedAnswer": { "@type": "Answer", "text": "Grimoire is a free, open-source skills manager for best practices — 1000+ skills across 27 domains (engineering, law, finance, design, health, and more), each sourced from a real institution or study. Install once, and your AI routes to the right skill automatically." } },
+    { "@type": "Question", "name": "What is Grimoire?", "acceptedAnswer": { "@type": "Answer", "text": "Grimoire is a free, open-source skills manager for best practices — 1,300+ skills across 27 domains (engineering, law, finance, design, health, and more), each sourced from a real institution or study. Install once, and your AI routes to the right skill automatically." } },
     { "@type": "Question", "name": "Is Grimoire free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Grimoire is free and open-source under the MIT license, published at github.com/jeffreytse/grimoire." } },
     { "@type": "Question", "name": "How is Grimoire different from a prompt library or just asking the AI directly?", "acceptedAnswer": { "@type": "Answer", "text": "Prompt libraries collect ad-hoc instructions with no verification. Every Grimoire skill must cite a real institution, pass a quality review, and prove it changes behavior — the difference between telling an AI to 'act like an expert' and handing it the expert's actual, sourced playbook." } },
     { "@type": "Question", "name": "Does Grimoire enforce best practices, or is it just a skill library?", "acceptedAnswer": { "@type": "Answer", "text": "Both. Grimoire is a skills manager for best practices — install, manage, and update skills like npm — with a built-in compliance linter, grimoire check, that verifies any artifact against your declared standards, the same way ESLint checks code style." } },
-    { "@type": "Question", "name": "How do I install Grimoire?", "acceptedAnswer": { "@type": "Answer", "text": "Run curl -fsSL https://raw.githubusercontent.com/jeffreytse/grimoire/main/scripts/install.sh | bash, then grimoire wizard — it detects your installed AI agents and walks you through setup. Works with Claude Code, Copilot CLI, Codex, Gemini CLI, Antigravity, OpenCode, OpenClaw, Pi, Kimi Code, OMP, DeepSeek Harness, Grok Build, Muse, MiniMax Code, and Cursor/Windsurf/Cline via MCP." } },
-    { "@type": "Question", "name": "What AI assistants does Grimoire support?", "acceptedAnswer": { "@type": "Answer", "text": "Claude Code, GitHub Copilot CLI, Codex, Gemini CLI, Google Antigravity, OpenCode, OpenClaw, Pi, Kimi Code, OMP, DeepSeek Harness, Grok Build, Muse, MiniMax Code, and any agent that reads ~/.agents/skills — plus Cursor, Windsurf, and Cline via MCP. Install once and every detected agent picks it up automatically, or run grimoire mcp install to serve skills on demand over MCP." } },
-    { "@type": "Question", "name": "How many best-practice skills are included, and where do they come from?", "acceptedAnswer": { "@type": "Answer", "text": "1000+ skills across 27 domains, each cited to a named institution, study, or professional standard — McKinsey, Google, WHO, ABA, NSCA, and more — not generic advice." } },
+    { "@type": "Question", "name": "How do I install Grimoire?", "acceptedAnswer": { "@type": "Answer", "text": "Run curl -fsSL https://raw.githubusercontent.com/jeffreytse/grimoire/main/scripts/install.sh | bash, then grimoire wizard — it detects your installed AI agents and walks you through setup. Works with Claude Code, Copilot CLI, Codex, Gemini CLI, Antigravity, OpenCode, OpenClaw, Pi, Kimi Code, OMP, DeepSeek Harness, Grok Build, Muse, MiniMax Code, Claude Desktop, and Cursor/Windsurf/Cline via MCP. MCP mode (grimoire mcp install) is recommended: it serves the whole library on demand." } },
+    { "@type": "Question", "name": "What AI assistants does Grimoire support?", "acceptedAnswer": { "@type": "Answer", "text": "Claude Code, GitHub Copilot CLI, Codex, Gemini CLI, Google Antigravity, OpenCode, OpenClaw, Pi, Kimi Code, OMP, DeepSeek Harness, Grok Build, Muse, MiniMax Code, and any agent that reads ~/.agents/skills — plus Claude Desktop, Cursor, Windsurf, and Cline via MCP. Install once and every detected agent picks it up automatically, or run grimoire mcp install to serve skills on demand over MCP." } },
+    { "@type": "Question", "name": "How many best-practice skills are included, and where do they come from?", "acceptedAnswer": { "@type": "Answer", "text": "1,300+ skills across 27 domains, each cited to a named institution, study, or professional standard — McKinsey, Google, WHO, ABA, NSCA, and more — not generic advice." } },
     { "@type": "Question", "name": "Can I contribute my own best-practice skill?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Anyone with real expertise can contribute — a doctor, lawyer, engineer, or coach. Every submission passes an automated and human quality review (source, actionability, specificity, consensus) before merging." } },
     { "@type": "Question", "name": "Does Grimoire send my data anywhere?", "acceptedAnswer": { "@type": "Answer", "text": "No. Skills run entirely inside your AI assistant, client-side — Grimoire doesn't call any external API or server. grimoire check --independent can optionally call an LLM provider for deeper AI-judged compliance checks, but only if you enable it." } }
   ]
@@ -82,10 +82,10 @@ import Footer from '../components/Footer.astro';
       <p class="max-w-2xl mx-auto mb-4 text-xl font-light leading-relaxed md:text-2xl text-slate-400">
         The world's knowledge is in your AI.<br/>
         <span class="font-medium text-slate-300">The world's practice is not.</span><br/>
-        <span class="text-base font-medium" style="color:#e8d08a">Install like a package manager. Enforce like a linter.</span>
+        <span class="text-base font-medium" style="color:#e8d08a">Grimoire makes AI agents follow best practices — routed to the right one, applied visibly, enforced in CI.</span>
       </p>
       <p class="max-w-xl mx-auto mb-10 text-base text-slate-400">
-        <span id="hero-total">1000+</span> verified best practices across <span id="hero-domains">26</span> domains — engineering, law, medicine, finance, and more.
+        <span id="hero-total">1,300+</span> verified best practices across <span id="hero-domains">26</span> domains — engineering, law, medicine, finance, and more.
         Works with every major AI assistant.
       </p>
       <p class="sr-only">
@@ -96,11 +96,11 @@ import Footer from '../components/Footer.astro';
         <div class="flex items-start justify-between gap-4">
           <pre class="flex-1 min-w-0 overflow-x-auto text-sm text-slate-300" id="hero-cmd"><span style="color:#c9933a">$</span> curl -fsSL https://raw.githubusercontent.com/jeffreytse/grimoire/main/scripts/install.sh | bash
 <span style="color:#c9933a">$</span> grimoire update
-<span style="color:#c9933a">$</span> grimoire install</pre>
+<span style="color:#c9933a">$</span> grimoire mcp install --target all</pre>
           <button
             id="hero-copy"
             class="copy-btn flex-shrink-0 px-3 py-1.5 rounded text-xs font-medium transition-all text-slate-400 border border-night-border"
-            onclick="copyText('curl -fsSL https://raw.githubusercontent.com/jeffreytse/grimoire/main/scripts/install.sh | bash\\ngrimoire update\\ngrimoire install', 'hero-copy')"
+            onclick="copyText('curl -fsSL https://raw.githubusercontent.com/jeffreytse/grimoire/main/scripts/install.sh | bash\\ngrimoire update\\ngrimoire mcp install --target all', 'hero-copy')"
             title="Copy"
           >
             Copy
@@ -117,7 +117,7 @@ import Footer from '../components/Footer.astro';
           onmouseover="this.style.transform='scale(1.03)'; this.style.boxShadow='0 6px 32px rgba(201,147,58,0.45)'"
           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 24px rgba(201,147,58,0.3)'"
         >
-          Browse <span id="cta-total">1000+</span> Skills
+          Browse <span id="cta-total">1,300+</span> Skills
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
         </a>
         <a
@@ -144,7 +144,7 @@ import Footer from '../components/Footer.astro';
     <div class="max-w-5xl px-6 mx-auto">
       <div class="text-center grid grid-cols-2 md:grid-cols-4 gap-6">
         <div class="reveal">
-          <div id="domain-total-label" class="text-4xl font-black gold-gradient">1000+</div>
+          <div id="domain-total-label" class="text-4xl font-black gold-gradient">1,300+</div>
           <div class="mt-1 text-sm tracking-wider uppercase text-slate-400">Skills</div>
         </div>
         <div class="reveal">
@@ -315,7 +315,7 @@ import Footer from '../components/Footer.astro';
       <div class="mb-12 text-center reveal">
         <p id="domain-count-label" class="mb-4 text-sm font-semibold tracking-widest uppercase" style="color:#c9933a">26 Domains</p>
         <h2 class="mb-4 text-3xl font-bold text-white md:text-4xl">Every field. Every expert.</h2>
-        <p class="max-w-xl mx-auto text-slate-400">A McKinsey engagement costs $1M. A senior lawyer bills $800/hr. The practices they follow are not proprietary — they belong to everyone. Browse <span id="domains-section-total">1000+</span> skills across every professional domain, free.</p>
+        <p class="max-w-xl mx-auto text-slate-400">A McKinsey engagement costs $1M. A senior lawyer bills $800/hr. The practices they follow are not proprietary — they belong to everyone. Browse <span id="domains-section-total">1,300+</span> skills across every professional domain, free.</p>
       </div>
 
       <!-- 26 user-facing subject domains. The `meta` domain (routing/framework skills) is intentionally excluded — it's not a subject a user browses. -->
@@ -328,7 +328,7 @@ import Footer from '../components/Footer.astro';
         <a href="https://github.com/jeffreytse/grimoire-core/tree/main/skills/business" target="_blank" class="p-4 domain-card" data-domain="business">
           <div class="mb-2 text-2xl">💼</div>
           <div class="text-sm font-semibold text-slate-200">Business</div>
-          <div class="mt-1 text-xs skill-count" style="color:#c9933a">225 skills</div>
+          <div class="mt-1 text-xs skill-count" style="color:#c9933a">226 skills</div>
         </a>
         <a href="https://github.com/jeffreytse/grimoire-core/tree/main/skills/health" target="_blank" class="p-4 domain-card" data-domain="health">
           <div class="mb-2 text-2xl">🏥</div>
@@ -338,7 +338,7 @@ import Footer from '../components/Footer.astro';
         <a href="https://github.com/jeffreytse/grimoire-core/tree/main/skills/law" target="_blank" class="p-4 domain-card" data-domain="law">
           <div class="mb-2 text-2xl">⚖️</div>
           <div class="text-sm font-semibold text-slate-200">Law</div>
-          <div class="mt-1 text-xs skill-count" style="color:#c9933a">52 skills</div>
+          <div class="mt-1 text-xs skill-count" style="color:#c9933a">53 skills</div>
         </a>
         <a href="https://github.com/jeffreytse/grimoire-core/tree/main/skills/writing" target="_blank" class="p-4 domain-card" data-domain="writing">
           <div class="mb-2 text-2xl">✍️</div>
@@ -348,7 +348,7 @@ import Footer from '../components/Footer.astro';
         <a href="https://github.com/jeffreytse/grimoire-core/tree/main/skills/design" target="_blank" class="p-4 domain-card" data-domain="design">
           <div class="mb-2 text-2xl">🎨</div>
           <div class="text-sm font-semibold text-slate-200">Design</div>
-          <div class="mt-1 text-xs skill-count" style="color:#c9933a">65 skills</div>
+          <div class="mt-1 text-xs skill-count" style="color:#c9933a">69 skills</div>
         </a>
         <a href="https://github.com/jeffreytse/grimoire-core/tree/main/skills/finance" target="_blank" class="p-4 domain-card" data-domain="finance">
           <div class="mb-2 text-2xl">💰</div>
@@ -383,7 +383,7 @@ import Footer from '../components/Footer.astro';
         <a href="https://github.com/jeffreytse/grimoire-core/tree/main/skills/psychology" target="_blank" class="p-4 domain-card" data-domain="psychology">
           <div class="mb-2 text-2xl">🧠</div>
           <div class="text-sm font-semibold text-slate-200">Psychology</div>
-          <div class="mt-1 text-xs skill-count" style="color:#c9933a">64 skills</div>
+          <div class="mt-1 text-xs skill-count" style="color:#c9933a">65 skills</div>
         </a>
         <a href="https://github.com/jeffreytse/grimoire-core/tree/main/skills/science" target="_blank" class="p-4 domain-card" data-domain="science">
           <div class="mb-2 text-2xl">🔬</div>
@@ -466,6 +466,13 @@ import Footer from '../components/Footer.astro';
             <div class="mb-2 text-2xl">🤖</div>
             <div class="text-sm font-semibold text-slate-200">Claude Code</div>
             <div class="mt-1 text-xs text-slate-400">Anthropic</div>
+          </div>
+        </a>
+        <a href="/docs/mcp-mode#claude-desktop" class="block" style="text-decoration:none">
+          <div class="p-5 text-center rounded-xl card-hover" style="background:#111826; border:1px solid #1e2a3a">
+            <div class="mb-2 text-2xl">🖥️</div>
+            <div class="text-sm font-semibold text-slate-200">Claude Desktop</div>
+            <div class="mt-1 text-xs text-slate-400">via MCP</div>
           </div>
         </a>
         <a href="/docs/mcp-mode#other-mcp-clients" class="block" style="text-decoration:none">
@@ -629,7 +636,7 @@ import Footer from '../components/Footer.astro';
             <pre class="flex-1 min-w-0 overflow-x-auto text-sm text-slate-300">/plugin marketplace add jeffreytse/grimoire-core</pre>
             <button class="copy-btn px-3 py-1.5 rounded text-xs font-medium text-slate-400 border shrink-0 transition-all" style="border-color:#1e2a3a" onclick="copyText('/plugin marketplace add jeffreytse/grimoire-core', 'btn-claude')" id="btn-claude">Copy</button>
           </div>
-          <p class="text-xs text-slate-400">Step 1: register the marketplace inside Claude Code. Then run <code style="color:#e8d08a">/plugin install grimoire@grimoire</code> to install all <span id="install-total-2">1000+</span> skills. No CLI needed.</p>
+          <p class="text-xs text-slate-400">Step 1: register the marketplace inside Claude Code. Then run <code style="color:#e8d08a">/plugin install grimoire@grimoire</code> to install all <span id="install-total-2">1,300+</span> skills. No CLI needed.</p>
         </div>
       </div>
 
@@ -643,25 +650,25 @@ import Footer from '../components/Footer.astro';
             <pre class="flex-1 min-w-0 overflow-x-auto text-sm text-slate-300">grimoire wizard</pre>
             <button class="copy-btn px-3 py-1.5 rounded text-xs font-medium text-slate-400 border shrink-0 transition-all" style="border-color:#1e2a3a" onclick="copyText('grimoire wizard', 'btn-wizard')" id="btn-wizard">Copy</button>
           </div>
-          <p class="text-xs text-slate-400">Guided setup — detects your installed AI agents and walks you through registry and domain choice. No config editing required.</p>
+          <p class="text-xs text-slate-400">Guided setup — asks MCP or skills mode first (MCP recommended), detects your installed AI agents, and sets each one up. No config editing required.</p>
         </div>
-        <p class="mb-3 text-xs font-semibold tracking-widest text-center uppercase" style="color:#94a3b8">Or set up manually</p>
+        <p class="mb-3 text-xs font-semibold tracking-widest text-center uppercase" style="color:#94a3b8">Or set up manually — MCP mode (recommended)</p>
         <div class="p-5 install-block">
           <div class="flex items-start justify-between mb-3 gap-4">
-            <pre class="flex-1 min-w-0 overflow-x-auto text-sm text-slate-300">grimoire update    # clone skill library → ~/.grimoire
-grimoire install   # install to all detected agents</pre>
-            <button class="copy-btn px-3 py-1.5 rounded text-xs font-medium text-slate-400 border shrink-0 transition-all" style="border-color:#1e2a3a" onclick="copyText('grimoire update\\ngrimoire install', 'btn-skills')" id="btn-skills">Copy</button>
-          </div>
-          <p class="text-xs text-slate-400">Detects Claude Code, Copilot CLI, Codex, Gemini CLI, OpenCode, OpenClaw, Antigravity, Pi, Kimi Code, OMP, and more. Installs <span id="install-total-1">1000+</span> skills to all found agents.</p>
-        </div>
-        <p class="mt-6 mb-3 text-xs font-semibold tracking-widest text-center uppercase" style="color:#94a3b8">Or use MCP mode — skills on demand</p>
-        <div class="p-5 install-block">
-          <div class="flex items-start justify-between mb-3 gap-4">
-            <pre class="flex-1 min-w-0 overflow-x-auto text-sm text-slate-300">grimoire mcp install                # Claude Code: server + instruction + prompt hook
+            <pre class="flex-1 min-w-0 overflow-x-auto text-sm text-slate-300">grimoire update                     # clone skill library → ~/.grimoire
+grimoire mcp install                # Claude Code: server + instruction + hooks + badge
 grimoire mcp install --target all   # every supported agent on your PATH</pre>
-            <button class="copy-btn px-3 py-1.5 rounded text-xs font-medium text-slate-400 border shrink-0 transition-all" style="border-color:#1e2a3a" onclick="copyText('grimoire mcp install', 'btn-mcp')" id="btn-mcp">Copy</button>
+            <button class="copy-btn px-3 py-1.5 rounded text-xs font-medium text-slate-400 border shrink-0 transition-all" style="border-color:#1e2a3a" onclick="copyText('grimoire update\\ngrimoire mcp install', 'btn-mcp')" id="btn-mcp">Copy</button>
           </div>
-          <p class="text-xs text-slate-400">Nothing copied into your agent — it searches and loads skills from grimoire's MCP server only when a task needs one. Run a specific skill with <code style="color:#e8d08a">grimoire:&lt;skill-name&gt;</code>. <a href="/docs/mcp-mode" style="color:#e8d08a">Learn more →</a></p>
+          <p class="text-xs text-slate-400">The whole library on demand, nothing copied into your agent. Agents list only ~8–16k characters of skill descriptions, so MCP mode searches all <span id="install-total-1">1,300+</span> skills when a task needs one. Claude Desktop: <code style="color:#e8d08a">--target claude-desktop</code>. Run a specific skill with <code style="color:#e8d08a">grimoire:&lt;skill-name&gt;</code>. <a href="/docs/mcp-mode" style="color:#e8d08a">Learn more →</a></p>
+        </div>
+        <p class="mt-6 mb-3 text-xs font-semibold tracking-widest text-center uppercase" style="color:#94a3b8">Or skills mode — agents without MCP, or a small subset</p>
+        <div class="p-5 install-block">
+          <div class="flex items-start justify-between mb-3 gap-4">
+            <pre class="flex-1 min-w-0 overflow-x-auto text-sm text-slate-300">grimoire install --domain engineering --subdomain testing</pre>
+            <button class="copy-btn px-3 py-1.5 rounded text-xs font-medium text-slate-400 border shrink-0 transition-all" style="border-color:#1e2a3a" onclick="copyText('grimoire install --domain engineering --subdomain testing', 'btn-skills')" id="btn-skills">Copy</button>
+          </div>
+          <p class="text-xs text-slate-400">Links skills into each detected agent as slash commands — for OpenClaw, DeepSeek Harness, Grok, Muse, MiniMax, or ~30 hand-picked skills. Install warns when more than the agent can list.</p>
         </div>
       </div>
     </div>
@@ -754,7 +761,7 @@ grimoire mcp install --target all   # every supported agent on your PATH</pre>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
           <h3 class="mb-3 text-lg font-semibold text-white">What is Grimoire?</h3>
-          <p class="text-slate-400">Grimoire is a free, open-source skills manager for best practices — 1000+ skills across 27 domains (engineering, law, finance, design, health, and more), each sourced from a real institution or study. Install once, and your AI routes to the right skill automatically.</p>
+          <p class="text-slate-400">Grimoire is a free, open-source skills manager for best practices — 1,300+ skills across 27 domains (engineering, law, finance, design, health, and more), each sourced from a real institution or study. Install once, and your AI routes to the right skill automatically.</p>
         </div>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
@@ -783,12 +790,12 @@ grimoire mcp install --target all   # every supported agent on your PATH</pre>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
           <h3 class="mb-3 text-lg font-semibold text-white">What AI assistants does Grimoire support?</h3>
-          <p class="text-slate-400">Claude Code, GitHub Copilot CLI, Codex, Gemini CLI, Google Antigravity, OpenCode, OpenClaw, Pi, Kimi Code, OMP, DeepSeek Harness, Grok Build, Muse, MiniMax Code, and any agent that reads <code style="color:#e8d08a">~/.agents/skills</code> — plus Cursor, Windsurf, and Cline via MCP. Install once and every detected agent picks it up automatically — or run <code style="color:#e8d08a">grimoire mcp install</code> to serve skills on demand over MCP.</p>
+          <p class="text-slate-400">Claude Code, GitHub Copilot CLI, Codex, Gemini CLI, Google Antigravity, OpenCode, OpenClaw, Pi, Kimi Code, OMP, DeepSeek Harness, Grok Build, Muse, MiniMax Code, and any agent that reads <code style="color:#e8d08a">~/.agents/skills</code> — plus Claude Desktop, Cursor, Windsurf, and Cline via MCP. Install once and every detected agent picks it up automatically — or run <code style="color:#e8d08a">grimoire mcp install</code> to serve skills on demand over MCP.</p>
         </div>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">
           <h3 class="mb-3 text-lg font-semibold text-white">How many best-practice skills are included, and where do they come from?</h3>
-          <p class="text-slate-400">1000+ skills across 27 domains, each cited to a named institution, study, or professional standard — McKinsey, Google, WHO, ABA, NSCA, and more — not generic advice.</p>
+          <p class="text-slate-400">1,300+ skills across 27 domains, each cited to a named institution, study, or professional standard — McKinsey, Google, WHO, ABA, NSCA, and more — not generic advice.</p>
         </div>
 
         <div class="p-6 rounded-xl" style="background:#0d1120; border:1px solid #1e2a3a">

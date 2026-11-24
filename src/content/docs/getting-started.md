@@ -1,91 +1,131 @@
 # Getting Started with grimoire
 
-grimoire delivers professional best practices from every field directly into your AI agent. This guide walks through installation, your first skill, and the three meta-skills that help you find and apply the right practice for any situation.
+grimoire makes AI agents follow best practices — routed to the right one, applied visibly, enforced in CI. This guide walks through installation, one task end to end, your first skill, and the meta-skills that help you find and apply the right practice for any situation.
 
 ---
 
 ## Install
 
-grimoire offers three install routes: your agent's **native plugin**, the **grimoire CLI** (works for every agent), or **MCP mode** (nothing copied into the agent). The [Agent Integration Guide](./agents.md) has the full per-agent table — Claude Code, Copilot, Codex, OpenCode, Pi, Kimi, OMP, Gemini, Antigravity, OpenClaw, DeepSeek Harness, Grok, Muse, MiniMax, and any agent that reads `~/.agents/skills`.
-
-### Claude Code
-
 ```bash
-# Step 1: add the marketplace
-/plugin marketplace add jeffreytse/grimoire-core
+# 1. Download the grimoire CLI
+curl -fsSL https://raw.githubusercontent.com/jeffreytse/grimoire/main/scripts/install.sh | bash
 
-# Step 2: install plugins
-# Skills are namespaced: /grimoire-engineering:propose-conventional-commit
-/plugin install grimoire@grimoire                    # all domains
-/plugin install grimoire-engineering@grimoire        # one domain
+# 2. Guided setup (asks MCP or skills mode first — MCP is recommended)
+grimoire wizard
 ```
 
-For sub-domain installs, use the grimoire CLI below.
+Or set it up directly.
 
-### GitHub Copilot CLI
+### MCP mode (recommended)
+
+The whole library, served on demand — nothing copied into your agent:
 
 ```bash
-copilot plugin marketplace add jeffreytse/grimoire-core
-copilot plugin install grimoire@grimoire
+grimoire update                               # fetch the official skill library
+grimoire mcp install                          # Claude Code: MCP server + CLAUDE.md instruction + hooks + status badge
+grimoire mcp install --target all             # every supported agent on your PATH
+grimoire mcp install --target claude-desktop  # Claude Desktop, no terminal agent needed
 ```
 
-### Codex
+Start a new agent session afterwards. From then on, just describe your task — grimoire routes it to the right practice. Run a specific skill by writing `grimoire:<skill-name> [task]` — e.g. `grimoire:propose-conventional-commit` — or `/grimoire:skill <skill-name>` in Claude Code. Cursor, Windsurf, and Cline: `grimoire mcp config --target cursor` prints the snippet. See [MCP Mode](./mcp-mode.md).
+
+**Why MCP first?** grimoire-core has 1,300+ skills, but agents load only a small listing of skill descriptions — about 8,000–16,000 characters in Claude Code and Codex, against ~320,000 for the whole library. In skills mode most skills are invisible to the agent's own discovery. MCP mode searches the whole library when a task needs it.
+
+### Skills mode (agents without MCP, or a small subset)
 
 ```bash
-codex plugin marketplace add jeffreytse/grimoire-core
-codex plugin add grimoire@grimoire
+grimoire update                                              # clone the skill library
+grimoire install --domain engineering --subdomain testing    # link a small subset to all detected agents
+grimoire install --skill engineering/development/propose-conventional-commit
+grimoire install --target openclaw --global                  # one agent, user-wide
+grimoire install                                             # everything declared in grimoire.toml
 ```
 
-### OpenCode
+Use skills mode for OpenClaw, DeepSeek Harness, Grok, Muse, MiniMax and the generic `agent` target, or to link ~30 skills as slash commands. When the skills you link exceed an agent's listing, `grimoire install` says how many it will actually see and suggests MCP mode or a smaller `--domain`/`--subdomain`.
+
+### Native plugins
+
+Each agent's own plugin command also works (skills mode under the hood):
 
 ```bash
+/plugin marketplace add jeffreytse/grimoire-core        # Claude Code
+/plugin install grimoire@grimoire                       # all domains
+/plugin install grimoire-engineering@grimoire           # one domain — namespaced: /grimoire-engineering:propose-conventional-commit
+
+copilot plugin marketplace add jeffreytse/grimoire-core && copilot plugin install grimoire@grimoire
+codex plugin marketplace add jeffreytse/grimoire-core && codex plugin add grimoire@grimoire
 opencode plugin 'github:jeffreytse/grimoire-core#main'
-```
-
-### Pi
-
-```bash
 pi install git:github.com/jeffreytse/grimoire-core
 ```
 
-### Gemini CLI, Antigravity, OpenClaw, and others
-
-Gemini's extension loads routing context only, and Antigravity's plugin installer can't find grimoire's nested skills — use the grimoire CLI for these (`--target gemini`, `--target antigravity`, `--target openclaw`, `--target dsh`, `--target grok --global`, …).
-
-### grimoire CLI (all agents)
-
-```bash
-# 1. Download binary
-curl -fsSL https://raw.githubusercontent.com/jeffreytse/grimoire/main/scripts/install.sh | bash
-
-# 2. Clone skill library
-grimoire update
-
-# 3. Install to all detected agents
-grimoire install
-
-# Granular options
-grimoire install --domain engineering
-grimoire install --domain engineering --subdomain development
-grimoire install --skill engineering/development/propose-conventional-commit
-grimoire install --target pi --global                  # one agent, user-wide
-grimoire install --target all    # install to all agents, even if not detected
-```
-
-### MCP mode (skills on demand)
-
-Instead of copying skills into your agent, let it fetch them from grimoire when a task needs one:
-
-```bash
-grimoire mcp install                  # Claude Code: MCP server + CLAUDE.md instruction + prompt hook
-grimoire mcp install --target all     # every supported agent on your PATH
-```
-
-Start a new agent session afterwards. Run a specific skill by writing `grimoire:<skill-name> [task]` — e.g. `grimoire:propose-conventional-commit` — or `/grimoire:skill <skill-name>` in Claude Code. Cursor, Windsurf, and Cline: `grimoire mcp config --target cursor` prints the snippet. See [MCP Mode](./mcp-mode.md).
+Gemini's extension loads routing context only, and Antigravity's plugin installer can't find grimoire's nested skills — use MCP mode or the grimoire CLI for these. The [Agent Integration Guide](./agents.md) has the full per-agent table.
 
 ---
 
 `grimoire install` with no arguments reads `grimoire.toml` (the package manifest) in the current directory if one exists. See the full [CLI Reference](./cli-reference.md) for every command.
+
+---
+
+## How it works — one task, end to end
+
+**1. Describe the task.** No skill names, no setup:
+
+```
+❯ plan our move from REST to GraphQL and from Jenkins to GitHub Actions this quarter
+```
+
+**2. grimoire routes it and shows the plan.** One line says what it's doing; the plan names a practice per step, offers a choice where several fit, and waits:
+
+```
+grimoire ▸ planning several skills — two migrations need coordinated practices in order
+
+**Plan** — 5 steps
+⎿  Step 1  write-adr — record why each migration is happening, its scope and the exit criteria
+⎿  Step 2  Jenkins → GitHub Actions — nested plan, 2 skills
+     2a. design-ci-pipeline — move build and test stages over, running both systems side by side
+     2b. design-cicd-pipeline-security — set up secrets, OIDC, least-privilege tokens, pinned actions
+⎿  Step 3  REST → GraphQL — nested plan, 2 skills
+     3a. apply-strangler-fig-pattern — put a GraphQL layer over REST and move clients one at a time
+     3b. design-contract-testing — keep existing consumers working during the cutover
+⎿  Step 4  release safety — choose one
+     4a. apply-feature-toggles — move each client to GraphQL behind a flag ★ recommended
+     4b. design-deployment-strategy — canary or blue-green at the service level
+⎿  Step 5  apply-premortem — find what's likely to sink two migrations in one quarter
+Apply this plan? Reply "yes", or pick another choice (e.g. "4b"). Steps that change files or run commands ask first.
+```
+
+**3. You decide; the agent applies each practice.** Reply "yes", or swap a choice ("4b"). Each step runs as its practice says, and shows where you are:
+
+```
+**design-ci-pipeline** — step 2a of 5
+⎿  Approach  Run Jenkins and Actions on the same commits, compare results, then cut over job by job
+```
+
+**4. Make it the team's standard, and check it in CI.** Declare the practices your project follows; the assistant prefers them for everyone on the team, and `grimoire check` verifies the work:
+
+```toml
+# grimoire.toml
+[standards.engineering]
+practices = ["apply-strangler-fig-pattern", "design-contract-testing"]
+```
+
+```bash
+grimoire check --ci    # fails the build when declared practices aren't followed
+```
+
+That's the whole loop: **ask → routed and planned → applied visibly → verified.** It works the same in any field — when one practice clearly fits, grimoire applies it directly with no plan to confirm:
+
+```
+❯ my partner and I want to retire early — how much do we need, and how do we get there?
+
+grimoire ▸ finding a practice for early-retirement planning — goal stated, no approach yet
+
+**calculate-fire-number**
+⎿  Goal  portfolio size that funds your spending indefinitely, and how long it takes to get there
+⎿  Note  I don't know your country yet, so I haven't looked up current tax, healthcare or pension rules
+```
+
+Say **"grimoire help"** in any session to see the controls — "show grimoire details", "quiet grimoire", "skip grimoire", "grimoire off". See [What You See](./mcp-mode.md#what-you-see).
 
 ---
 
@@ -153,27 +193,18 @@ Some problems span multiple disciplines. `plan-best-practice-solution` decompose
 ```
 User: I want to launch a SaaS startup.
 
-Claude: Your situation spans 5 domains. Here is the solution plan:
+grimoire ▸ planning several skills — a launch spans strategy, finance, law, marketing and hiring
 
-  1. design-business-model — validate revenue model before building
-     Domain: business/strategy
-
-  2. calculate-unit-economics — confirm LTV/CAC before committing to go-to-market
-     Domain: finance/corporate
-
-  3. review-saas-contract — legal structure before signing vendors or hiring
-     Domain: law/contracts
-
-  4. design-go-to-market — customer acquisition after unit economics confirmed
-     Domain: marketing/growth
-
-  5. plan-hiring — team structure after role and revenue model are clear
-     Domain: business/hr
-
-  Apply in order? I'll pause for your confirmation after each step.
+**Plan** — 5 steps
+⎿  Step 1  design-business-model — validate the revenue model before building
+⎿  Step 2  calculate-unit-economics — confirm LTV/CAC before committing to go-to-market
+⎿  Step 3  review-saas-contract — legal structure before signing vendors or hiring
+⎿  Step 4  design-go-to-market — customer acquisition after unit economics are confirmed
+⎿  Step 5  plan-hiring — team structure once role and revenue model are clear
+Apply this plan? Steps that change files or run commands ask first.
 ```
 
-Skills run one at a time, with your confirmation between each. The plan adapts if an earlier step reveals new constraints.
+You confirm the plan once. grimoire pauses again only when the plan changes, before a step that changes files or runs commands, or after every step if you ask to go step by step. Where several skills fit a step, it offers lettered choices (`2a`, `2b`) you can swap by replying "2b". The plan adapts if an earlier step reveals new constraints.
 
 `suggest-best-practice` routes to `plan-best-practice-solution` automatically when it detects a multi-domain problem. You can also invoke it directly.
 

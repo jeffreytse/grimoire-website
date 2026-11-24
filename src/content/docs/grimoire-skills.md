@@ -4,7 +4,9 @@ Meta skills run the grimoire framework itself. Unlike domain skills (which encod
 
 There are two audiences: **users** who want to apply best practices, and **contributors** who manage the library.
 
-> **MCP mode:** when grimoire serves skills over MCP (`grimoire mcp install`), meta skills are not agent slash commands. Run any of them as `grimoire:<name> [task]` in any agent, or `/grimoire:skill <name>` in Claude Code — e.g. `grimoire:suggest-best-practice my team is losing confidence`. When a workflow loads another skill or scores installed skills, it uses `grimoire_get_skill` / `grimoire_search_skills` instead of the Skill tool. `start-best-practice` auto-runs in skills mode; in MCP mode the instruction line routes multi-step or unclear problems to it, and the prompt hook points longer prompts at it. See [MCP Mode](./mcp-mode.md).
+> **MCP mode:** when grimoire serves skills over MCP (`grimoire mcp install`), meta skills are not agent slash commands. Run any of them as `grimoire:<name> [task]` in any agent, or `/grimoire:skill <name>` in Claude Code — e.g. `grimoire:suggest-best-practice my team is losing confidence`. When a workflow loads another skill or scores installed skills, it uses `grimoire_get_skill` / `grimoire_search_skills` instead of the Skill tool. `start-best-practice` routes every request in both modes — via the trigger in skills mode, and via the instruction line, session hook and prompt hook in MCP mode. See [MCP Mode](./mcp-mode.md).
+
+> **One display for every workflow:** all workflows use the exact templates in `start-best-practice`'s **Display** section — one `grimoire ▸` route line per request, ⎿ rows, at most 4 numbered options with one ★, plans with lettered per-step choices — at the level set by `core.trace` (`brief`, `full`, `hidden`). A question or "Apply this plan?" always ends the reply. See [What You See](./mcp-mode.md#what-you-see).
 
 ---
 
@@ -16,7 +18,7 @@ These skills cover every stage of the user journey: defining the problem, findin
 
 **When to use:** Any time a user describes a situation, problem, goal, or question — including when they don't know which domain applies or don't know a best practice exists for their situation.
 
-**What it produces:** Either applies the best-matching skill directly, or presents a ranked list of candidates for the user to choose from. If no installed skill matches, it identifies which domain to install.
+**What it produces:** Either applies the best-matching skill directly, or presents up to 4 numbered candidates with one ★ recommended for the user to choose from. A practice declared in the project's `grimoire.toml` that fits takes the ★ ahead of higher-scoring matches, and other listed skills are marked `not a declared standard`. If no installed skill matches, it says what need it searched for and how to add coverage.
 
 **Example invocation:**
 
@@ -36,7 +38,7 @@ User: "I need to write a performance review for a direct report."
 
 **When to use:** When the problem spans multiple domains, requires coordinating several best practices in sequence, or is too complex for a single skill — e.g., launching a startup, handling a compliance audit, building a hiring process from scratch.
 
-**What it produces:** A sequenced plan — sub-problems identified, each matched to the best skill, ordered by dependency. Executes one skill at a time through the plan.
+**What it produces:** A sequenced plan — sub-problems identified, each matched to the best skill, ordered by dependency. Where several skills fit a step, it offers lettered choices (`2a`, `2b`, at most 3, one ★) you can swap by replying "2b"; one level of nested sub-plans is allowed. You confirm the plan once; it pauses again only when the plan changes, before steps that change files or run commands, or when you ask to go step by step. Each step shows progress (`step 2 of 5`).
 
 **Example invocation:**
 
@@ -101,17 +103,17 @@ User: "What best practices exist for contract negotiation?"
 
 ### start-best-practice
 
-**When to use:** When the user signals they are about to begin a task — "I'm going to write X", "starting to build Y", "planning to do Z" — before they have started.
+**When to use:** Every user request — it is grimoire's entry point. The trigger line (skills mode) or the instruction line and session hook (MCP mode) run it first. Direct tasks route too (write, fix, refactor, test, commit, review); small talk and explicit skill invocations pass through silently.
 
-**What it produces:** A proactive surface of the most relevant practice for that task, with the key gaps it would prevent, and an offer to apply it before they begin.
+**What it produces:** A routing decision to the workflow that fits — `suggest-best-practice`, `plan-best-practice-solution`, `apply-best-practice-tree`, `review-best-practice-fit`, … Standing preferences ("we always use Y") go to `pin-best-practice-preference`; "why does X work?" questions go to `explain-best-practice`. It also holds the **Display** section, the single definition of grimoire's output: `brief`/`full`/`hidden` levels, a three-tier visual hierarchy, a fixed glyph set (`▸ ⎿ → ✓ ★ ⚠`) and a plain style for screen readers.
 
 **Example invocation:**
 
 ```
 User: "I'm about to refactor our auth module."
-→ start-best-practice: "Before you start: review-security-posture applies here.
-   Common gaps at this stage: token expiry strategy, rate limiting, audit logging.
-   Apply now, or continue without? [y/n]"
+→ grimoire ▸ finding a practice for an auth refactor — task stated, no approach yet
+→ suggest-best-practice applies review-security-posture before the work starts:
+   token expiry strategy, rate limiting, audit logging
 ```
 
 ---
@@ -628,7 +630,7 @@ audit-best-practice-domain                ← weekly or pre-release
 | ------------------------------- | ----------- | ------------------------------------------- | ------------------------------------------------------ |
 | `analyze-best-practice-problem` | User        | problem isn't clearly defined               | problem statement + space map + possible routes        |
 | `discover-best-practices`       | User        | user mentions a domain, no specific problem | grouped practice list with gap framing                 |
-| `start-best-practice`           | User        | about to begin a task                       | proactive practice match + apply offer                 |
+| `start-best-practice`           | User        | every request (entry point)                 | route to the matching workflow; Display format         |
 | `suggest-best-practice`         | User        | any situation or question                   | matching skill, ranked list, or install recommendation |
 | `plan-best-practice-solution`   | User        | multi-domain or complex problem             | sequenced skill application plan                       |
 | `apply-best-practice-tree`      | User        | complex single-domain problem               | recursive skill tree applied in sequence               |

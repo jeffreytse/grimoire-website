@@ -237,6 +237,8 @@ Claude Code plugin: `/plugin install grimoire-[domain]@grimoire` · grimoire CLI
 
 **Preferences:** read and write practice pins only in `grimoire.toml` (`[standards.<domain>.<subdomain>]`) — project, `~/.config/grimoire/`, or `/etc/grimoire/`. Never a separate preferences file. See [MCP Mode](./mcp-mode.md) and [Config](./config.md).
 
+**Display:** workflow skills don't define their own announcement wording. They use the exact templates in `start-best-practice`'s **Display** section — one `grimoire ▸` route line per request, ⎿ rows, at most 4 options with one ★, skills named by id, a question as the last line — at the level the session sets (`brief`, `full`, `hidden`). Point to that section instead of copying it. A package that ships its own `start-best-practice` must keep the router small enough for grimoire's session hook: `grimoire package validate` fails when the Display section would exceed the session budget. Packages without a Display section get a one-line-per-decision fallback.
+
 ---
 
 ## Step 7: Add domain safety footer (if applicable)

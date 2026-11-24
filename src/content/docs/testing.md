@@ -145,6 +145,22 @@ If the footer is missing or paraphrased, the skill's Steps section is incomplete
 
 ---
 
+## Measuring routing and selection (package authors)
+
+The grimoire CLI repo ships evals you can run against your own package to see whether grimoire leads agents to the right practice. Point them at a draft package with `GRIMOIRE_SOURCE=<package>` (a real copy — skill discovery doesn't follow symlinked domain directories).
+
+| Eval | Command | Measures | Cost |
+| --- | --- | --- | --- |
+| Hook | `GRIMOIRE_HOOK_EVAL=1 go test ./cmd -run TestHookEval -v` | Does the prompt hook surface the right candidates? | Free (lexical) |
+| Selection | `GRIMOIRE_SELECTION_EVAL=1 go test ./cmd -run TestSelectionEval -v` | Does the assistant end up applying the labeled practice? Routing recall/precision, top-1, hit rate, with 95% Wilson intervals; a hard set covers paraphrase, vague, multi-problem, near-miss and non-English prompts | API credits |
+| Workflow | `GRIMOIRE_WORKFLOW_EVAL=1 go test ./cmd -run TestWorkflowEval -v` | Is each meta workflow reached as the router's table says? | API credits |
+| Display | `GRIMOIRE_DISPLAY_EVAL=1 go test ./cmd -run TestDisplayEval -v -timeout 60m` | Shown when routed, silent when not, answer free of grimoire formatting, evidence at `full`, hierarchy, stop-on-question, format and progress | API credits |
+| Outcome | `GRIMOIRE_OUTCOME_EVAL=1 go test ./cmd -run TestOutcomeEval -v` | Does grimoire make the agent's work *better*? Each task runs with and without grimoire; a different model judges both, blinded, against rubrics written from each practice's original source | API credits |
+
+Eval runs start in a seeded git repo with a source file and a staged change, so code and commit prompts have something to work on. `GRIMOIRE_DISPLAY_EVAL_MODEL=<model>` pins the model — do this when comparing runs — and `GRIMOIRE_DISPLAY_EVAL_MODE=mcp|skills|both` picks the grimoire mode. Change one thing at a time and compare against the baseline.
+
+---
+
 ## Common testing gaps
 
 | Gap                                             | What goes wrong                                                            | Fix                                                                                            |

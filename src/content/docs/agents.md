@@ -1,10 +1,12 @@
 # Agent Integration Guide
 
-grimoire works with fourteen named AI agents, plus a generic `agent` fallback target for anything that reads `~/.agents/skills`. There are three ways to get skills into an agent:
+grimoire works with fourteen named AI agents and Claude Desktop, plus a generic `agent` fallback target for anything that reads `~/.agents/skills`. There are three ways to get skills into an agent:
 
-1. **Native plugin** — the agent's own plugin/marketplace command.
+1. **MCP mode (recommended)** — `grimoire mcp install --target <name>` installs nothing into the agent; the whole library is served on demand over MCP, with grimoire's hooks, display and status badge. See [MCP Mode](./mcp-mode.md).
 2. **grimoire CLI (skills mode)** — `grimoire install --target <name>` links skills into the agent's skills folder. Works for every agent below.
-3. **MCP mode** — `grimoire mcp install --target <name>` installs nothing into the agent; skills are served on demand over MCP. See [MCP Mode](./mcp-mode.md).
+3. **Native plugin** — the agent's own plugin/marketplace command.
+
+**Why MCP first:** agents load only a small listing of skill names and descriptions — about 8,000–16,000 characters in Claude Code and Codex, against ~320,000 for grimoire-core. In skills mode most skills are invisible to the agent's own skill discovery; `grimoire install` warns when that happens. Use skills mode (or a native plugin) for agents without MCP, or for a small subset (~30 skills).
 
 ---
 
@@ -12,20 +14,21 @@ grimoire works with fourteen named AI agents, plus a generic `agent` fallback ta
 
 | Agent              | Native plugin install                                                                                       | grimoire CLI                    | MCP mode |
 | ------------------ | ----------------------------------------------------------------------------------------------------------- | ------------------------------- | -------- |
-| Claude Code        | `/plugin marketplace add jeffreytse/grimoire-core`<br>`/plugin install grimoire@grimoire`                   | `--target claude`               | ✓ (+ prompt hook) |
+| Claude Code        | `/plugin marketplace add jeffreytse/grimoire-core`<br>`/plugin install grimoire@grimoire`                   | `--target claude`               | ✓ (+ hooks, badge) |
 | GitHub Copilot CLI | `copilot plugin marketplace add jeffreytse/grimoire-core`<br>`copilot plugin install grimoire@grimoire`     | `--target copilot`              | ✓        |
-| Codex              | `codex plugin marketplace add jeffreytse/grimoire-core`<br>`codex plugin add grimoire@grimoire`             | `--target codex`                | ✓ (+ prompt hook) |
-| OpenCode           | `opencode plugin 'github:jeffreytse/grimoire-core#main'`                                                    | `--target opencode`             | ✓ (+ prompt hook) |
+| Codex              | `codex plugin marketplace add jeffreytse/grimoire-core`<br>`codex plugin add grimoire@grimoire`             | `--target codex`                | ✓ (+ hooks) |
+| OpenCode           | `opencode plugin 'github:jeffreytse/grimoire-core#main'`                                                    | `--target opencode`             | ✓ (+ hooks) |
 | Pi                 | `pi install git:github.com/jeffreytse/grimoire-core`                                                        | `--target pi`                   | ✓        |
 | Kimi Code          | `/plugins install https://github.com/jeffreytse/grimoire-core`                                              | `--target kimi`                 | ✓        |
 | OMP (oh-my-pi)     | `omp plugin marketplace add jeffreytse/grimoire-core`<br>`omp plugin install --scope user grimoire@grimoire` | `--target omp`                  | ✓        |
-| Gemini CLI         | `gemini extensions install https://github.com/jeffreytse/grimoire-core` (context only)                      | `--target gemini`               | ✓ (+ prompt hook) |
-| Antigravity (agy)  | not supported — use the CLI                                                                                 | `--target antigravity`          | ✓ (+ prompt hook) |
+| Gemini CLI         | `gemini extensions install https://github.com/jeffreytse/grimoire-core` (context only)                      | `--target gemini`               | ✓ (+ hooks) |
+| Antigravity (agy)  | not supported — use the CLI                                                                                 | `--target antigravity`          | ✓ (+ hooks) |
 | OpenClaw           | see [`.openclaw/INSTALL.md`](https://github.com/jeffreytse/grimoire-core/blob/main/.openclaw/INSTALL.md)    | `--target openclaw`             | —        |
 | DeepSeek Harness   | —                                                                                                           | `--target dsh`                  | —        |
 | Grok Build         | —                                                                                                           | `--target grok --global`        | —        |
 | Muse               | —                                                                                                           | `--target muse --global`        | —        |
 | MiniMax Code       | —                                                                                                           | `--target minimax --global`     | —        |
+| Claude Desktop     | —                                                                                                           | —                               | `--target claude-desktop` |
 | Cursor / Windsurf / Cline | —                                                                                                    | —                               | `grimoire mcp config` |
 | Any other agent    | —                                                                                                           | `--target agent` (`~/.agents/skills`) | —  |
 
@@ -47,9 +50,9 @@ Every CLI cell is `grimoire install --target <name>`. Add `--global` for a user-
 /plugin install grimoire-engineering@grimoire      # one domain
 ```
 
-**grimoire CLI:** `grimoire install --target claude` — skills go to `.claude/skills` (project) or `~/.claude/skills` (`--global`), and the `start-best-practice` trigger is written to `CLAUDE.md`.
+**MCP mode (recommended):** `grimoire mcp install` — registers the server with `claude mcp add`, writes the instruction to `~/.claude/CLAUDE.md` (or `./CLAUDE.md` with `--scope project`), adds the `SessionStart`, `UserPromptSubmit` and `PostToolUse` [hooks](./mcp-mode.md#hooks), pre-approves grimoire's read-only tools in `permissions.allow`, and puts the [`GRIMOIRE` badge](./mcp-mode.md#status-line-badge-claude-code) in the status line (`--statusline` chains an existing one).
 
-**MCP mode:** `grimoire mcp install` — registers the server with `claude mcp add`, writes the instruction to `~/.claude/CLAUDE.md` (or `./CLAUDE.md` with `--scope project`), and adds the `UserPromptSubmit` [prompt hook](./mcp-mode.md#the-prompt-hook).
+**grimoire CLI:** `grimoire install --target claude` — skills go to `.claude/skills` (project) or `~/.claude/skills` (`--global`), the `start-best-practice` trigger is written to `CLAUDE.md`, and the skills-mode display hooks and badge are added. Claude Code's skill listing holds only ~30 grimoire skills; install warns when you link more.
 
 **Using skills:**
 
@@ -99,7 +102,7 @@ Uses the generated `.codex-plugin/plugin.json` and `.agents/plugins/marketplace.
 
 **grimoire CLI:** `grimoire install --target codex` — skills go to `.agents/skills` (project) or `~/.agents/skills` (`--global`).
 
-**MCP mode:** `grimoire mcp install --target codex` — `codex mcp add`, instruction in `~/.codex/AGENTS.md` (user scope only), and a `UserPromptSubmit` [prompt hook](./mcp-mode.md#the-prompt-hook) in `~/.codex/hooks.json`. Codex runs new hooks only after you trust them — open `/hooks` once after installing.
+**MCP mode:** `grimoire mcp install --target codex` — `codex mcp add`, instruction in `~/.codex/AGENTS.md` (user scope only), and `SessionStart` + `UserPromptSubmit` [hooks](./mcp-mode.md#hooks) in `~/.codex/hooks.json`. Codex runs new hooks only after you trust them — open `/hooks` once after installing.
 
 **Using skills:** describe your task and Codex routes to the matching skill, or run `/plugins` inside `codex` to browse the marketplace.
 
@@ -121,7 +124,7 @@ See [`.opencode/INSTALL.md`](https://github.com/jeffreytse/grimoire-core/blob/ma
 
 **grimoire CLI:** `grimoire install --target opencode` — skills go to `.opencode/skills` (project) or `~/.config/opencode/skills` (`--global`).
 
-**MCP mode:** `grimoire mcp install --target opencode` — adds `mcp.grimoire` to `opencode.json`, instruction in `~/.config/opencode/AGENTS.md` / `./AGENTS.md`, and a [prompt hook](./mcp-mode.md#the-prompt-hook) as an OpenCode plugin (`plugins/grimoire.js`, using `chat.message` and a system transform).
+**MCP mode:** `grimoire mcp install --target opencode` — adds `mcp.grimoire` to `opencode.json`, instruction in `~/.config/opencode/AGENTS.md` / `./AGENTS.md`, and a [prompt hook](./mcp-mode.md#hooks) as an OpenCode plugin (`plugins/grimoire.js`). OpenCode has no session-start hook, so the plugin keeps the router in every turn's system prompt (`chat.message` + system transform) and shows the session status once as a toast.
 
 **Using skills:**
 
@@ -208,7 +211,7 @@ gemini extensions install https://github.com/jeffreytse/grimoire-core
 
 **grimoire CLI:** `grimoire install --target gemini` — skills go to `.gemini/skills` (project) or `~/.gemini/skills` (`--global`).
 
-**MCP mode:** `grimoire mcp install --target gemini` — `gemini mcp add`, instruction in `~/.gemini/GEMINI.md` / `./GEMINI.md`, and a `BeforeAgent` [prompt hook](./mcp-mode.md#the-prompt-hook) in `.gemini/settings.json`. Gemini keeps MCP servers disabled in folders you haven't trusted.
+**MCP mode:** `grimoire mcp install --target gemini` — `gemini mcp add`, instruction in `~/.gemini/GEMINI.md` / `./GEMINI.md`, and `SessionStart` + `BeforeAgent` [hooks](./mcp-mode.md#hooks) in `.gemini/settings.json`. Gemini keeps MCP servers disabled in folders you haven't trusted.
 
 **Using skills:** describe your task, or activate one explicitly:
 
@@ -230,7 +233,7 @@ grimoire install --target antigravity
 
 Skills go to `.gemini/antigravity-cli/skills` (project) or `~/.gemini/antigravity-cli/skills` (`--global`); the trigger line is written to `~/.gemini/AGENTS.md`.
 
-**MCP mode:** `grimoire mcp install --target antigravity` — registers the server in `~/.gemini/config/mcp_config.json` (user scope). agy has no user-level instruction file, so grimoire injects the instruction with a `SessionStart` hook and adds a `PreInvocation` [prompt hook](./mcp-mode.md#the-prompt-hook) in `~/.gemini/config/hooks.json` that runs once per new prompt.
+**MCP mode:** `grimoire mcp install --target antigravity` — registers the server in `~/.gemini/config/mcp_config.json` (user scope). agy has no user-level instruction file, so grimoire injects the instruction with a `SessionStart` hook and adds a `PreInvocation` [prompt hook](./mcp-mode.md#hooks) in `~/.gemini/config/hooks.json` that runs once per new prompt. grimoire's read-only tools are pre-approved, since agy's headless mode refuses unapproved MCP tools.
 
 ---
 
@@ -263,6 +266,18 @@ grimoire install --target minimax --global
 ```
 
 These agents load skills from a plugin bundle rather than a skills folder, so they are **global-only**: grimoire builds the bundle (e.g. under `~/.minimax/plugins/` for MiniMax) and registers it with the agent for you.
+
+---
+
+## Claude Desktop — via MCP
+
+For people who don't use a terminal agent:
+
+```bash
+grimoire mcp install --target claude-desktop
+```
+
+grimoire registers itself in `claude_desktop_config.json` (macOS, Windows and Linux paths) using an absolute path, since desktop apps don't inherit your shell's `PATH`. Claude Desktop has no hooks or instruction file — grimoire's server instructions tell the model when to use it. It's not part of `--target all`; name it explicitly. `grimoire mcp config --target claude-desktop` prints the snippet instead. Restart Claude Desktop afterwards.
 
 ---
 

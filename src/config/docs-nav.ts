@@ -33,7 +33,7 @@ export const docsNav: DocNavSection[] = [
       { slug: 'authoring-skills', label: 'Authoring Skills', blurb: 'Write a new SKILL.md from scratch to PR.' },
       { slug: 'testing', label: 'Testing Skills', blurb: 'How skills are validated before merge.' },
       { slug: 'agents', label: 'Agent Integration Guide', blurb: 'Install and use grimoire in every supported agent.' },
-      { slug: 'mcp-mode', label: 'MCP Mode', blurb: 'Serve skills on demand over MCP — nothing copied into your agent.' },
+      { slug: 'mcp-mode', label: 'MCP Mode', blurb: 'Recommended: the whole library on demand, hooks, display levels and on/off controls.' },
       { slug: 'agent-interactive-ui', label: 'Agent Interactive UI', blurb: 'Reference for interactive UI elements in skills.' },
       { slug: 'maintaining', label: 'Maintaining grimoire', blurb: 'Deprecation, releases, and library upkeep.' },
     ],

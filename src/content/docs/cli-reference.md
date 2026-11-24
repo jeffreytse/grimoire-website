@@ -1,6 +1,6 @@
 ---
 title: 'CLI Reference'
-description: 'Every grimoire CLI command — install, check, profiles, packages, settings, MCP mode, and the prompt hook.'
+description: 'Every grimoire CLI command — install, check, profiles, packages, settings, on/off, MCP mode, hooks and the status line badge.'
 ---
 
 # CLI Reference
@@ -18,10 +18,14 @@ description: 'Every grimoire CLI command — install, check, profiles, packages,
 | `grimoire install --target <agent>`   | Install into one agent: `claude`, `codex`, `gemini`, `antigravity`, `openclaw`, `opencode`, `copilot`, `pi`, `kimi`, `omp`, `dsh`, `grok`, `muse`, `minimax`, `agent`, `all`, or `auto` (detected agents) — see [Agents](./agents.md) |
 | `grimoire install --global`           | User-wide install (shorthand for `--scope global`); required for `grok`, `muse`, `minimax` |
 | `grimoire install --target agent`     | Install to the generic `agent` target (`~/.agents/skills`) — fallback for any AGENTS.md-reading agent with no dedicated integration |
-| `grimoire install --no-load-optimize` | Skip the per-agent load-performance cap (some agents truncate to top-N skills by default; this installs all of them anyway) |
+| `grimoire install --no-load-optimize` | Install everything and silence the listing-budget warning. Agents load only ~8,000–16,000 characters of skill names and descriptions; without this flag, install says how many linked skills each agent will actually see and points to MCP mode or a smaller `--domain`/`--subdomain` |
+| `grimoire install --no-hook`          | Skip grimoire's skills-mode session and prompt hooks (Claude Code, Codex, Gemini CLI) |
+| `grimoire install --statusline` / `--no-statusline` | Chain an existing Claude Code status line with the `GRIMOIRE` badge / skip the badge |
 | `grimoire uninstall [<grimoire-ref>]` | Remove grimoire skills from agent directories                                  |
-| `grimoire update`                     | Update all packages to latest                                                  |
+| `grimoire update`                     | Update all packages to latest; clones the project's missing `[dependencies]` packages and relinks only agents that already have grimoire skills |
 | `grimoire clean`                      | Remove stale grimoire-managed skills from agent directories                    |
+| `grimoire enable`                     | Turn grimoire on for all sessions: route every request through its workflows (writes `core.active`) |
+| `grimoire disable`                    | Turn grimoire off for all sessions: stop routing (named `grimoire:<skill>` still loads; nothing uninstalled) |
 | `grimoire lock`                       | Regenerate `grimoire.lock` from the current `grimoire.toml` without installing |
 
 ## Discovery
@@ -57,8 +61,9 @@ Not to be confused with `grimoire package validate` above, which checks a packag
 
 | Command                | What it does                                         |
 | ---------------------- | ---------------------------------------------------- |
-| `grimoire doctor`      | Run a health check on the grimoire installation      |
-| `grimoire wizard`      | Open the interactive TUI wizard                      |
+| `grimoire doctor`      | Run a health check: per-agent MCP or skills mode, instruction line, hooks, status badge, duplicate installs, and skill-listing overflow |
+| `grimoire wizard`      | Open the interactive TUI wizard — asks MCP or skills mode first (MCP recommended) |
+| `grimoire statusline`  | Claude Code status line badge for grimoire (`--then '<command>'` chains another status line) |
 | `grimoire version`     | Show grimoire version information                    |
 | `grimoire self-update` | Update the grimoire CLI binary to the latest release |
 
@@ -75,6 +80,8 @@ Not to be confused with `grimoire package validate` above, which checks a packag
 | `grimoire config show`                   | Show resolved grimoire config for the current project — see [Config](./config.md) |
 | `grimoire config show --domain <prefix>` | Show only sections matching this domain prefix                                    |
 | `grimoire config show --json`            | Output the resolved config as JSON                                                |
+
+Display and activation keys: `core.trace` (`brief` · `full` · `hidden`), `core.display-style` (`plain`), `core.active` (`true`/`false`, set by `grimoire enable`/`disable`). See [Config](./config.md#display-and-activation).
 
 ## Profiles
 
@@ -114,21 +121,37 @@ See [Practice Profiles](./profiles.md) for how profiles resolve.
 | Command                                   | What it does                                                                                   |
 | ----------------------------------------- | ---------------------------------------------------------------------------------------------- |
 | `grimoire mcp`                            | MCP server integration                                                                         |
-| `grimoire mcp install`                    | Set up MCP mode: register the server, write the agent instruction, add the prompt hook |
-| `grimoire mcp install --target <list>`    | Agents to configure — `claude` (default), a comma list (`codex,gemini`), or `all`              |
+| `grimoire mcp install`                    | Set up MCP mode: register the server, write the agent instruction, add hooks, pre-approve read-only tools, add the status badge |
+| `grimoire mcp install --target <list>`    | Agents to configure — `claude` (default), a comma list (`codex,gemini`), `all` (on `PATH`), or `claude-desktop` (never in `all`) |
 | `grimoire mcp install --scope project`    | Configure the current project instead of the user (`user` is the default)                       |
-| `grimoire mcp install --no-hook`          | Skip the prompt hook                                                                           |
+| `grimoire mcp install --no-hook`          | Skip the session and prompt hooks                                                              |
+| `grimoire mcp install --no-allow`         | Don't pre-approve grimoire's read-only tools (Claude Code, Antigravity)                        |
+| `grimoire mcp install --statusline`       | Chain an existing Claude Code status line so the `GRIMOIRE` badge shows after it               |
+| `grimoire mcp install --no-statusline`    | Skip the `GRIMOIRE` status line badge                                                          |
 | `grimoire mcp install --no-configure`     | Register the server only — write no instruction and no hook                                    |
-| `grimoire mcp uninstall [--target <list>]` | Unregister the server and remove the grimoire instruction and hook                           |
+| `grimoire mcp uninstall [--target <list>]` | Unregister the server; remove the instruction, hooks, tool pre-approvals and badge (restores a chained status line) |
 | `grimoire mcp serve`                      | Start the grimoire MCP server (stdio transport)                                                |
-| `grimoire mcp config --target <client>`   | Print an MCP config snippet for other clients (`cursor`, `windsurf`, `cline`)                  |
-| `grimoire hook prompt`                    | Prompt hook (Claude Code, Codex, Gemini CLI, OpenCode, Antigravity): suggest skills matching the prompt (installed by `mcp install`) |
+| `grimoire mcp config --target <client>`   | Print an MCP config snippet (`claude`, `claude-desktop`, `cursor`, `windsurf`, `cline`)        |
 
-`grimoire mcp serve` exposes the CLI as MCP tools, so an AI assistant can call grimoire natively without slash commands. The skill tools are `grimoire_search_skills` (BM25-ranked search with stopword removal, stemming, and hyphen/underscore token expansion; reports the terms that matched), `grimoire_get_skill` (fetch a skill's full SKILL.md by exact name, or several at once with `names`; unknown names return "did you mean" matches), and `grimoire_list_skills` (domain index). Config, package, profile, install, and check commands are exposed too (`grimoire_config_add`, `grimoire_package_add`, `grimoire_check`, …).
+## Hooks
+
+Installed for you by `grimoire mcp install` or `grimoire install`; you never run them by hand.
+
+| Command                               | What it does                                                                                       |
+| ------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `grimoire hook session`               | MCP-mode session-start hook (Claude Code, Codex, Gemini CLI): inject the `start-best-practice` router, Display section and resolved preferences |
+| `grimoire hook prompt`                | MCP-mode prompt hook (Claude Code, Codex, Gemini CLI, OpenCode): routing reminder plus unverified keyword-matched candidates; inlines `grimoire:<name>` |
+| `grimoire hook antigravity-session`   | Antigravity `SessionStart`: inject the grimoire instruction                                        |
+| `grimoire hook antigravity-prompt`    | Antigravity `PreInvocation`: suggest skills matching the prompt                                    |
+| `grimoire hook skills-session`        | Skills-mode session hook: grimoire's display format                                                |
+| `grimoire hook skills-prompt`         | Skills-mode prompt hook: routing reminder and status line                                          |
+| `grimoire hook skill-used`            | Claude Code `PostToolUse`: record each skill loaded, per session, for the status badge             |
+
+`grimoire mcp serve` exposes the CLI as MCP tools, so an AI assistant can call grimoire natively without slash commands. The skill tools are `grimoire_search_skills` (hybrid search — field-weighted BM25F fused with a full-text ranking; takes several `queries`, `domain`/`subdomain`/`tags` filters and `offset` paging; results carry rank, matched terms and `related` skills), `grimoire_get_skill` (fetch a skill's full SKILL.md by exact name, or up to 20 at once with `names`; unknown names return "did you mean" matches), and `grimoire_list_skills` (domain index). Every tool carries a title and read-only/destructive hints. Config, package, profile, install, and check commands are exposed too (`grimoire_config_add`, `grimoire_package_add`, `grimoire_check`, …).
 
 Every skills-mode install also writes a `_GRIMOIRE_INDEX.md` alongside the skill symlinks, so an agent can discover what's available without scanning every SKILL.md.
 
-See [MCP Mode](./mcp-mode.md) for which files each agent gets and how the prompt hook works.
+See [MCP Mode](./mcp-mode.md) for which files each agent gets, how the hooks work, and the display levels.
 
 ## Editor Integration
 

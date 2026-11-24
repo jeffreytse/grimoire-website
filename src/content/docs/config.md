@@ -16,7 +16,24 @@ Grimoire reads three files, in this order. First value found per key wins.
 
 Each key resolves independently — a project file can set `standards.engineering.practices` while the global file supplies `standards.profiles`, and both apply without conflict.
 
-**`[core]` and `[[package]]` are user-level only.** If a project `grimoire.toml` sets either, they're silently stripped and ignored — set them in the global file instead. Everything else (`[standards]`, `[dependencies]`, `[profiles.*]`) is read normally from the project file.
+**A project can't add a skill source.** If a project `grimoire.toml` sets `[[package]]` or `core.home`, they're silently stripped and ignored: a cloned repository must not decide what your agent loads. It names the libraries it needs in `[dependencies]` instead, which `grimoire update`, `grimoire install` or `grimoire mcp install` fetch when you run them. Everything else (`[standards]`, `[dependencies]`, `[profiles.*]`, other `[core]` keys) is read normally from the project file.
+
+`GRIMOIRE_SYSTEM_CONFIG` moves the system file — for containers, managed machines and tests.
+
+### What each layer can declare
+
+Libraries first, then the people and teams that use them: an organization lists its libraries and standards in the system file, each user adds their own, and each project adds its standards on top.
+
+|                                                   | System (org) | Global (user)                                       | Project                     |
+| ------------------------------------------------- | ------------ | --------------------------------------------------- | --------------------------- |
+| Libraries (`[[package]]`)                         | ✓            | ✓ (wins per name — e.g. to disable an org library)  | — via `[dependencies]` only |
+| `[dependencies]`                                  | ✓            | ✓                                                   | ✓                           |
+| Pinned practices `[standards.<domain>] practices` | ✓            | ✓                                                   | ✓ (nearest wins per domain) |
+| `[standards] profiles`, `extends`                 | ✓            | ✓                                                   | ✓                           |
+| `[standards] scope = "strict"`                    | —            | —                                                   | ✓                           |
+| `[core]` settings                                 | ✓            | ✓                                                   | ✓ except `home`             |
+
+Libraries from all three layers are unioned by name, user over system. Declared practices are labeled with the layer they came from — `standard: "project"`, `"user"` or `"org"`, nearest wins — so a user's own preference never shows as a project standard. See [Project standards in MCP mode](./mcp-mode.md#project-standards-in-mcp-mode).
 
 There's no separate "personal, gitignored" file — one project file, committed. If you want a preference that only applies to you, set it in your own global `grimoire.toml` (`~/.config/grimoire/grimoire.toml`), or ask your AI assistant to pin it for the current conversation only (see [Session Pin](#session-pin-conversational-only) below — this is a convention some skills follow, not something the `grimoire` binary itself reads).
 
@@ -33,6 +50,9 @@ There's no separate "personal, gitignored" file — one project file, committed.
 | `report-path`    | `string`   | Where `grimoire check` writes its report                                                                                     |
 | `staleness-days` | `number`   | How many days before a compliance report is considered stale                                                                 |
 | `exclude`        | `string[]` | Glob patterns for files `grimoire check` should skip                                                                         |
+| `scope`          | `"strict"` | Project file only. In MCP mode, serve **only** the declared practices (dependencies, profiles, pins). Unset, declared practices are preferred but the whole library stays available |
+
+`profiles` must sit under `[standards]` — a top-level `profiles = [...]` is not read.
 
 ### `[standards.<domain>]` / `[standards.<domain>.<subdomain>]`
 
@@ -47,16 +67,19 @@ There's no separate "personal, gitignored" file — one project file, committed.
 
 Only one level of subdomain nesting is supported. A subdomain overlays its parent domain **per key** — `[standards.engineering.architecture]` replaces `practices` for architecture work specifically, while any key it doesn't set (e.g. `fallback`) still inherits from `[standards.engineering]`.
 
-### `[core]` (user-level — set in your global file, not the project file)
+### `[core]`
 
 | Key                  | Type                    | Description                                                     |
 | -------------------- | ----------------------- | --------------------------------------------------------------- |
-| `home`               | `string`                | Override where grimoire stores its data (default `~/.grimoire`) |
+| `home`               | `string`                | Override where grimoire stores its data (default `~/.grimoire`) — not read from a project file |
+| `active`             | `boolean`               | `true` (default): route every request through grimoire's workflows. `false`: stay out of the way (named skills still load). Written by `grimoire enable` / `disable` |
+| `trace`              | `"brief"` \| `"full"` \| `"hidden"` | How much grimoire shows (default `brief`; `off` = `hidden`, `on` = `brief`) |
+| `display-style`      | `"rich"` \| `"plain"`   | `plain`: words instead of glyphs, for screen readers (implied by `NO_COLOR`) |
 | `agents`             | `string[]`              | Pin specific agent targets instead of auto-detecting            |
 | `install-mode`       | `"symlink"` \| `"copy"` | How skill files are placed into agent directories               |
 | `update-concurrency` | `number`                | Max concurrent package updates (default 8; `0` = unlimited)     |
 
-### `[[package]]` (user-level, table array)
+### `[[package]]` (system or user file, table array)
 
 | Key        | Type      | Description                                                                             |
 | ---------- | --------- | --------------------------------------------------------------------------------------- |
@@ -67,6 +90,20 @@ Only one level of subdomain nesting is supported. A subdomain overlays its paren
 | `enabled`  | `boolean` | `false` skips this package in resolution without removing the entry                     |
 
 `registry` is accepted as a legacy alias for the same table — if you have an older `[[registry]]` block it still works, but `[[package]]` is the current name. Each enabled package can ship its own `grimoire.toml` with its own `[standards]` — those are loaded as a base layer beneath yours, which is how `standards.extends` reaches into an installed package's defaults.
+
+### `[dependencies]`
+
+The packages (or single skills) this file needs, as `"<grimoire-ref>" = "<version>"` keys. The older `skills = ["<ref>", …]` list is still read.
+
+```toml
+[dependencies]
+"jeffreytse/grimoire-core"             = "*"   # official package
+"jeffreytse/grimoire-core:engineering" = "*"   # one domain only
+"jeffreytse/grimoire-core@0.1.0"       = "*"   # pinned to a release
+"mycompany/internal-skills"            = "*"   # private company package
+```
+
+This is the only way a project names a library. Each dependency becomes a low-priority package; its skills count as declared practices in MCP mode.
 
 ### `[profiles.<name>]` (inline profiles)
 
@@ -150,6 +187,19 @@ practices = ["apply-aida-framework", "write-value-proposition"]
 
 ---
 
+## Display and Activation
+
+```bash
+grimoire config set core.trace full            # brief (default) · full · hidden
+grimoire config set core.display-style plain   # words instead of glyphs
+grimoire disable                               # core.active = false, all sessions
+grimoire enable                                # core.active = true
+```
+
+Environment variables override the files for one run: `GRIMOIRE_TRACE`, `GRIMOIRE_DISPLAY_STYLE`, `GRIMOIRE_ACTIVE=0|1`. In a session you can also say "show grimoire details", "quiet grimoire", "plain grimoire" or "grimoire off" — see [What You See](./mcp-mode.md#what-you-see). For activation the order is `GRIMOIRE_ACTIVE`, then the session toggle, then `core.active`.
+
+---
+
 ## Session Pin (conversational-only)
 
 Some meta skills (like `pin-best-practice-preference`) can agree to prefer a practice for the rest of the current conversation without writing to any file — a purely conversational convention, not a mechanism `grimoire.toml`'s loader participates in:
@@ -208,7 +258,9 @@ grimoire config get standards.engineering.practices   # resolved value + which f
 
 ## Skills Mode and MCP Mode
 
-Every skill that reads or saves a preference — `pin-best-practice-preference`, `suggest-best-practice`, `audit-applied-best-practices`, … — reads and writes these same `grimoire.toml` files and `[standards.<domain>.<subdomain>]` keys, whether skills are installed into your agent or served over [MCP](./mcp-mode.md). In MCP mode the agent writes them through the `grimoire_config_*` tools. There is never a separate preferences file.
+Every skill that reads or saves a preference — `pin-best-practice-preference`, `suggest-best-practice`, `audit-applied-best-practices`, … — reads and writes these same `grimoire.toml` files and `[standards.<domain>.<subdomain>]` keys, whether skills are installed into your agent or served over [MCP](./mcp-mode.md). In MCP mode the agent writes them through the `grimoire_config_*` tools. There is never a separate preferences file. grimoire's session hook passes your resolved preferences into the session, so workflows read them without a shell command or tool call.
+
+In MCP mode a project's declared practices rank first in skill search and are labeled with their layer; `suggest-best-practice` gives a matching declared standard the ★ ahead of higher-scoring matches.
 
 ---
 

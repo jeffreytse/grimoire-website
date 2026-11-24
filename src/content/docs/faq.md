@@ -10,22 +10,27 @@ Prompt libraries collect ad-hoc instructions — they tell an AI what to do, but
 
 The test: "Would this skill make an AI agent perform like a domain expert?" If not, it doesn't belong.
 
+### How is grimoire different from other skill package managers or agents' plugin marketplaces?
+
+They distribute skills: find, install, version and share them, and some evaluate them. That's a useful, solved layer, and grimoire does it too. grimoire's focus is the next step — getting the agent to *apply* the right practice. It routes each request to the practices that fit, serves a 1,300+ skill library on demand without filling the agent's context, shows its decisions so you can redirect them, respects your project's declared standards, and checks compliance in CI. Its skills are also plain `SKILL.md` folders, so they install through agents' native plugin commands as well.
+
 ### Which AI agents does grimoire support?
 
 | Agent                     | Native plugin                                                                                         | grimoire CLI / MCP                                  |
 | ------------------------- | ----------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
-| Claude Code               | `/plugin marketplace add jeffreytse/grimoire-core` then `/plugin install grimoire@grimoire`           | `--target claude` · MCP + prompt hook               |
+| Claude Code               | `/plugin marketplace add jeffreytse/grimoire-core` then `/plugin install grimoire@grimoire`           | `--target claude` · MCP + hooks                     |
 | GitHub Copilot CLI        | `copilot plugin marketplace add jeffreytse/grimoire-core` then `copilot plugin install grimoire@grimoire` | `--target copilot` · MCP                        |
-| Codex                     | `codex plugin marketplace add jeffreytse/grimoire-core` then `codex plugin add grimoire@grimoire`     | `--target codex` · MCP + prompt hook                |
-| OpenCode                  | `opencode plugin 'github:jeffreytse/grimoire-core#main'`                                              | `--target opencode` · MCP + prompt hook             |
+| Codex                     | `codex plugin marketplace add jeffreytse/grimoire-core` then `codex plugin add grimoire@grimoire`     | `--target codex` · MCP + hooks                      |
+| OpenCode                  | `opencode plugin 'github:jeffreytse/grimoire-core#main'`                                              | `--target opencode` · MCP + hooks                   |
 | Pi                        | `pi install git:github.com/jeffreytse/grimoire-core`                                                  | `--target pi` · MCP                                 |
 | Kimi Code                 | `/plugins install https://github.com/jeffreytse/grimoire-core`                                        | `--target kimi` · MCP                               |
 | OMP (oh-my-pi)            | `omp plugin install --scope user grimoire@grimoire`                                                   | `--target omp` · MCP                                |
-| Gemini CLI                | extension loads context only                                                                          | `--target gemini` · MCP + prompt hook               |
-| Antigravity (agy)         | not supported                                                                                         | `--target antigravity` · MCP + prompt hook          |
+| Gemini CLI                | extension loads context only                                                                          | `--target gemini` · MCP + hooks                     |
+| Antigravity (agy)         | not supported                                                                                         | `--target antigravity` · MCP + hooks                |
 | OpenClaw                  | see `.openclaw/INSTALL.md`                                                                            | `--target openclaw`                                 |
 | DeepSeek Harness          | —                                                                                                     | `--target dsh`                                      |
 | Grok Build / Muse / MiniMax Code | —                                                                                              | `--target grok\|muse\|minimax --global`            |
+| Claude Desktop            | —                                                                                                     | MCP: `grimoire mcp install --target claude-desktop` |
 | Cursor / Windsurf / Cline | —                                                                                                     | MCP: `grimoire mcp config --target cursor`          |
 | Any other agent           | —                                                                                                     | `--target agent` (`~/.agents/skills`)               |
 
@@ -33,14 +38,27 @@ CLI cells are `grimoire install --target <name>`; "MCP" means `grimoire mcp inst
 
 ### Skills mode or MCP mode — which should I use?
 
-- **Skills mode** (`grimoire install` or a native plugin) copies skills into your agent. Every skill is a slash command, and the `start-best-practice` trigger runs automatically before each request. Supports domain and sub-domain installs.
-- **MCP mode** (`grimoire mcp install`) copies nothing. The agent searches and loads skills on demand through grimoire's MCP server, so 1000+ skills cost no context until one is used, and one server covers every agent. In Claude Code, Codex, Gemini CLI, OpenCode, and Antigravity a prompt hook suggests matching skills on every prompt, and multi-step problems are routed to `start-best-practice`.
+**MCP mode, wherever the agent supports it** (Claude Code, Codex, Gemini CLI, Copilot CLI, OpenCode, Pi, Kimi Code, OMP, Antigravity, Claude Desktop).
 
-Pick MCP mode for minimal context and multi-agent setups, or for editors grimoire can't install into (Cursor, Windsurf, Cline). Pick skills mode if you want slash commands and automatic `start-best-practice`. Switching is safe either way — see [MCP Mode](./mcp-mode.md#skills-mode-or-mcp-mode).
+Agents put every installed skill's name and description into a fixed listing — about 8,000–16,000 characters in Claude Code and Codex — and silently truncate or drop what doesn't fit. grimoire-core's descriptions total ~320,000 characters, so a full skills-mode install leaves the agent able to discover only a few percent of it. MCP mode keeps the listing empty, finds skills by search when a task needs them, and adds grimoire's hooks and display. Every request is routed through `start-best-practice`.
+
+**Skills mode** (`grimoire install` or a native plugin) is for agents without MCP support (OpenClaw, DeepSeek Harness, Grok, Muse, MiniMax), or a deliberately small subset that fits the listing — about 30 skills — as slash commands. `grimoire install` warns when you link more than the agent will see. Switching is safe either way — see [MCP Mode](./mcp-mode.md#skills-mode-or-mcp-mode).
 
 ### How do I run a specific skill in MCP mode?
 
 Skills aren't slash commands in MCP mode. Write `grimoire:<skill-name>` followed by your task in any agent — e.g. `grimoire:negotiate-salary I have an offer at $140k` — or type `/grimoire:skill <skill-name>` in Claude Code. A mistyped name returns "did you mean" suggestions. Meta workflows work the same way: `grimoire:suggest-best-practice my team is losing confidence`.
+
+### How do I turn grimoire off, or make it quieter?
+
+- **Quieter:** say "quiet grimoire" (notes hidden, routing continues) or set `grimoire config set core.trace hidden`. "show grimoire details" or `core.trace full` shows more.
+- **Off for this session:** say "grimoire off"; "grimoire on" resumes.
+- **Off everywhere:** `grimoire disable` (`grimoire enable` to undo). `GRIMOIRE_ACTIVE=0` for one run.
+
+While off, a skill you name with `grimoire:<name>` still loads and nothing is uninstalled. Say "grimoire help" for every control. See [MCP Mode](./mcp-mode.md#turn-grimoire-on-or-off).
+
+### Can my team require specific practices?
+
+Yes. Declare them in the project's `grimoire.toml` — `[dependencies]`, `[standards] profiles`, or pinned `[standards.<domain>] practices`. In MCP mode the assistant then prefers them for everyone, labeled as project standards; `[standards] scope = "strict"` serves only those; and `grimoire check --ci` fails the build when they aren't followed. An organization can set libraries and standards for every user in the system file. See [Config](./config.md#what-each-layer-can-declare).
 
 ### Can grimoire be used offline?
 

@@ -1,6 +1,6 @@
 # grimoire Architecture
 
-grimoire has three layers: **skills** (content), **meta skills** (framework logic), and **delivery** to AI agents — native plugins, the grimoire CLI (skills mode), or the MCP server (MCP mode). This document describes how each layer works and how they fit together.
+grimoire has three layers: **skills** (content), **meta skills** (framework logic), and **delivery** to AI agents — the MCP server (MCP mode, recommended), the grimoire CLI (skills mode), or native plugins. This document describes how each layer works and how they fit together.
 
 ---
 
@@ -248,18 +248,28 @@ All agent-facing content (CLAUDE.md, AGENTS.md, GEMINI.md) describes grimoire's 
 
 ### MCP mode
 
-`grimoire mcp install` takes a different path: nothing is copied into the agent. It registers `grimoire mcp serve` (stdio) as an MCP server and writes one instruction line to the agent's instruction file.
+`grimoire mcp install` takes a different path, and is the recommended one: nothing is copied into the agent. It registers `grimoire mcp serve` (stdio) as an MCP server, writes one instruction line to the agent's instruction file, adds hooks, pre-approves the read-only tools, and (Claude Code) adds a status line badge.
+
+Why it matters: agents load only a fixed listing of installed skills' names and descriptions — ~8,000–16,000 characters in Claude Code and Codex — while grimoire-core's descriptions total ~320,000. Linked skills beyond the listing are invisible to the agent. MCP mode replaces the listing with search.
 
 ```
-agent ──"grimoire_search_skills(query)"──▶ grimoire mcp serve ──▶ BM25 index over installed packages
-      ◀──── ranked names + descriptions ──┘
-agent ──"grimoire_get_skill(name)"───────▶ full SKILL.md
+session start ──▶ grimoire hook session ──▶ start-best-practice router + Display + preferences
+each prompt   ──▶ grimoire hook prompt  ──▶ routing reminder + unverified candidates
+agent ──"grimoire_search_skills(queries)"──▶ grimoire mcp serve ──▶ hybrid index over installed packages
+      ◀── ranked names + descriptions + related, declared standards first ──┘
+agent ──"grimoire_get_skill(names)"──────▶ full SKILL.md (up to 20)
 ```
 
-- **Search** is lexical BM25 with stopword removal, light stemming, and hyphen/underscore token expansion; results report which terms matched.
-- **Prompt hook:** `grimoire hook prompt` runs the same search on every prompt (~0.1 s) and puts the top matches — or the skill named by `grimoire:<name>` — into the model's context; prompts of 25+ words also get a pointer to `start-best-practice`. It stays silent below a score threshold and never blocks a prompt. Installed as `UserPromptSubmit` (Claude Code, Codex), `BeforeAgent` (Gemini CLI), `PreInvocation` (Antigravity), or an OpenCode plugin; Copilot CLI has no usable hook.
-- **Routing and batch loading:** the instruction line and server instructions send multi-step or unclear problems to `start-best-practice`, and `grimoire_get_skill` accepts a `names` list so a plan loads all its skills in one call.
+- **Search** is hybrid: field-weighted BM25F (name ×3, tags ×2, description and domain ×1) fused by reciprocal rank with a ranking over each skill's full text, with stopword removal, stemming and hyphen/underscore token expansion. It takes several phrasings at once, `domain`/`subdomain`/`tags` filters and `offset` paging.
+- **Session hook:** `grimoire hook session` injects the `start-best-practice` routing table, its Display section and resolved preferences once per session (`SessionStart` in Claude Code, Codex, Gemini CLI). Under a size budget it degrades in steps — examples first, then Display — but never drops the routing table.
+- **Prompt hook:** `grimoire hook prompt` (~0.1 s) adds a routing reminder to every request plus keyword-matched candidates labeled unverified, or inlines the skill named by `grimoire:<name>`. It stays silent on small talk and never blocks a prompt. Installed as `UserPromptSubmit` (Claude Code, Codex), `BeforeAgent` (Gemini CLI), `PreInvocation` (Antigravity), or an OpenCode plugin; Copilot CLI has no usable hook.
+- **Hookless agents:** the routing directive opens the `grimoire_get_skill` and `grimoire_search_skills` tool descriptions and the server instructions, so every MCP client routes.
+- **Project scope:** the server reads the project's `grimoire.toml`; declared practices rank first and are labeled `standard: project|user|org`, and `[standards] scope = "strict"` limits search to them.
+- **Display and activation:** `core.trace` (`brief`/`full`/`hidden`) and `core.active` reach the model through hooks, server instructions and every `grimoire_get_skill` result.
+- **Routing and batch loading:** every request routes through `start-best-practice`, and `grimoire_get_skill` accepts a `names` list so a plan loads all its skills in one call.
 - **Meta skills** chain other skills through `grimoire_search_skills` / `grimoire_get_skill` in MCP mode, via the [Skill Access](./authoring-skills.md#skill-access-for-meta-skills) section of STANDARD.md.
+
+Skills mode gets the same display through its own hooks (`grimoire hook skills-session`, `skills-prompt`, and `skill-used` for the badge); each agent runs one mode.
 
 See [MCP Mode](./mcp-mode.md).
 
@@ -275,7 +285,7 @@ grimoire is self-managing. The meta skills in `skills/meta/` run the framework i
 | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
 | `analyze-best-practice-problem`          | Clarifies an ill-defined problem through structured questioning, then maps the problem space and surfaces possible routes |
 | `discover-best-practices`                | Surfaces available practices for a domain before the user has a specific problem — grouped by subdomain, framed as gaps   |
-| `start-best-practice`                    | Proactively fires before a task starts — matches the most relevant practice and offers to apply it before gaps emerge     |
+| `start-best-practice`                    | Entry point for every request — routes it to the matching workflow; defines grimoire's Display format                    |
 | `suggest-best-practice`                  | Universal entry point — classifies any situation and routes to the matching skill or install command                      |
 | `plan-best-practice-solution`            | Decomposes multi-domain problems into sequenced skill applications (MECE methodology)                                     |
 | `apply-best-practice-tree`               | Recursively decomposes a complex single-domain problem into sub-problems, matching each to the best installed skill       |
